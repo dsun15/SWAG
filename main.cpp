@@ -1,5 +1,6 @@
 /*
-* dsun15@jhu.edu 
+* S.W.A.G. 
+* Chris, Devin, Kevin, William 
 * 600.255 Intro to Video Game Design
 *
 */
@@ -9,7 +10,6 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include <math.h>
 
 const int width = 800;
 const int height = 600;
@@ -25,10 +25,10 @@ SDL_Renderer* gRenderer;
 SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
 
-Mix_Music* gMusic;
+//Mix_Music* gMusic;
 //Mix_Chunk* gMusic;
-TTF_Font* gFont;
-TTF_Font* gFont2;
+//TTF_Font* gFont;
+//TTF_Font* gFont2;
 
 int center(int large, int small) {
 
@@ -51,12 +51,12 @@ void setup() {
 		std::cerr << "oops. Failed to init: " << SDL_GetError() << "\n";
 	}
 	
-	if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
-    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
-    			  << Mix_GetError() << "\n";
-    }
+//	if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
+//    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
+//    			  << Mix_GetError() << "\n";
+//    }
     
-   	TTF_Init();
+//   	TTF_Init();
    	gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, 
    							  SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
    	if(gWindow == NULL) {
@@ -72,36 +72,30 @@ void setup() {
 }
 
 void load() {
-	Mix_SetMusicCMD("xmp");
-	gMusic = Mix_LoadMUS(musicTitle);
-	std::cout << "loaded music" << "\n";
+	//gMusic = Mix_LoadMUS(musicTitle);
+	//std::cout << "loaded music" << "\n";
 
-	SDL_Surface* image = IMG_Load("rick.jpg");
-	SDL_Surface* image2 = IMG_Load("megaman.png");
-	if(!image) {
+	SDL_Surface* hero = IMG_Load("ship.png");
+	SDL_Surface* enemy = IMG_Load("baddie.png");
+	if(!hero) {
     	std::cout << "IMG_Load: " << IMG_GetError() << "\n";
 	}
 	
-	gTexture = SDL_CreateTextureFromSurface(gRenderer, image);
-	gTexture2 = SDL_CreateTextureFromSurface(gRenderer, image2);
+	gTexture = SDL_CreateTextureFromSurface(gRenderer, hero);
+	gTexture2 = SDL_CreateTextureFromSurface(gRenderer, enemy);
 	if (gTexture || gTexture2 == NULL) {
 		std::cout << "Something broke: " << SDL_GetError();
 	}
-	gFont = TTF_OpenFont("comic.ttf", 72);
-	
-	gFont2 = TTF_OpenFont("comic.ttf", 74);
 	
 	return;
 }
 
 void cleanup() {
-	TTF_CloseFont(gFont2);
-	TTF_CloseFont(gFont);
-	Mix_FreeMusic(gMusic);
+//	Mix_FreeMusic(gMusic);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
-	TTF_Quit();
-	Mix_Quit();
+//	TTF_Quit();
+//	Mix_Quit();
 	SDL_Quit();
 }
 
@@ -112,22 +106,22 @@ void run() {
 	unsigned int currentTime;
 	double time = 0.0;
 	SDL_Color blue = {0,0,255,255};
-	SDL_Surface* text = TTF_RenderUTF8_Blended(gFont, bigtext, blue);
-	SDL_Texture* textex =  SDL_CreateTextureFromSurface(gRenderer, text);
+//	SDL_Surface* text = TTF_RenderUTF8_Blended(gFont, bigtext, blue);
+	//SDL_Texture* textex =  SDL_CreateTextureFromSurface(gRenderer, text);
 	SDL_Color black ={0,0,0,255};
-	SDL_Surface* shadow = TTF_RenderUTF8_Blended(gFont2, bigtext, black);
-	SDL_SetSurfaceAlphaMod(shadow, 128);
-	SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
+	//SDL_Surface* shadow = TTF_RenderUTF8_Blended(gFont2, bigtext, black);
+	//SDL_SetSurfaceAlphaMod(shadow, 128);
+	//SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
 	int textureW;
 	int textureH;
 	textureSize(gTexture, &textureW, &textureH);
 	SDL_Rect  textureRect = {center(width, textureW), center(height, textureH),
 							 textureW, textureH};
 	SDL_Rect  textureRect2 = {width/2-textureW/16, height/2-textureW/16, textureW/8, textureW/8};
-	SDL_Rect  shadowRect = {center(width, shadow->w), center(height, shadow->h),
-							shadow->w, shadow->h};
-	SDL_Rect  textRect = {center(width, text->w), center(height, text->h),
-						  text->w, text->h};
+//	SDL_Rect  shadowRect = {center(width, shadow->w), center(height, shadow->h),
+//							shadow->w, shadow->h};
+//	SDL_Rect  textRect = {center(width, text->w), center(height, text->h),
+//						  text->w, text->h};
 	
 	while(running) {
 		currentTime = SDL_GetTicks();
@@ -166,13 +160,13 @@ void run() {
 		}
 
 						 
-		if (SDL_RenderCopy(gRenderer, shadowex, NULL, &shadowRect) < 0) {
-			std::cout << "Something broke: " << SDL_GetError();
-		}
+	//	if (SDL_RenderCopy(gRenderer, shadowex, NULL, &shadowRect) < 0) {
+	//		std::cout << "Something broke: " << SDL_GetError();
+	//	}
 		
-		if (SDL_RenderCopy(gRenderer, textex, NULL, &textRect) < 0) {
-			std::cout << "Something broke: " << SDL_GetError();
-		}
+	//	if (SDL_RenderCopy(gRenderer, textex, NULL, &textRect) < 0) {
+	//		std::cout << "Something broke: " << SDL_GetError();
+	//	}
 		SDL_RenderPresent(gRenderer);
 		
 	}
@@ -185,7 +179,7 @@ int main() {
 	
 	load();
 	
-	Mix_PlayMusic(gMusic, -1);
+//	Mix_PlayMusic(gMusic, -1);
 	
 	run();
 	
