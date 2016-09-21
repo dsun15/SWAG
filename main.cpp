@@ -13,7 +13,7 @@
 
 const int width = 800;
 const int height = 600;
-const char* title = "how do i use ogg";
+const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
 const char* musicTitle = "metal.xm";
 //const double twoPi = 2 * M_PI;
@@ -105,10 +105,10 @@ void run() {
 	unsigned int lastTime = 0;
 	unsigned int currentTime;
 	double time = 0.0;
-	SDL_Color blue = {0,0,255,255};
-//	SDL_Surface* text = TTF_RenderUTF8_Blended(gFont, bigtext, blue);
+	//SDL_Color blue = {0,0,255,255};
+	//SDL_Surface* text = TTF_RenderUTF8_Blended(gFont, bigtext, blue);
 	//SDL_Texture* textex =  SDL_CreateTextureFromSurface(gRenderer, text);
-	SDL_Color black ={0,0,0,255};
+	//SDL_Color black ={0,0,0,255};
 	//SDL_Surface* shadow = TTF_RenderUTF8_Blended(gFont2, bigtext, black);
 	//SDL_SetSurfaceAlphaMod(shadow, 128);
 	//SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
@@ -117,7 +117,9 @@ void run() {
 	textureSize(gTexture, &textureW, &textureH);
 	SDL_Rect  textureRect = {center(width, textureW), center(height, textureH),
 							 textureW, textureH};
-	SDL_Rect  textureRect2 = {width/2-textureW/16, height/2-textureW/16, textureW/8, textureW/8};
+	SDL_Rect  textureRect2 = {center(width, textureW)+100, center(height, textureH),
+							 textureW, textureH};
+	//SDL_Rect  textureRect2 = {width/2-textureW/16, height/2-textureW/16, textureW/8, textureW/8};
 //	SDL_Rect  shadowRect = {center(width, shadow->w), center(height, shadow->h),
 //							shadow->w, shadow->h};
 //	SDL_Rect  textRect = {center(width, text->w), center(height, text->h),
