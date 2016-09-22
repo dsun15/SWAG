@@ -10,7 +10,8 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include <Movable.h>
+#include <string>
+#include "Movable.h"
 
 const int width = 800;
 const int height = 600;

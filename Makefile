@@ -1,4 +1,4 @@
-OBJS = main.cpp
+OBJS = main.cpp Movable.cpp
 
 CC = g++
 

@@ -10,14 +10,16 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include <Movable.h>
+#include <string>
+#include "Movable.h"
 
-using namespace Movable;
+//using namespace Movable;
 using namespace std;
+using std::string;
 
-Movable(){}
+Movable::Movable(){}
 
-Movable(str fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH){ 
+Movable::Movable(string fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH){ 
 	this->fileName = fileName;
 	if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || windowW < 0 || windowH < 0) {
 		cout << "something's negative/n";
@@ -34,8 +36,8 @@ Movable(str fileName, int width, int height, int cornerX, int cornerY, int windo
 	//MAKE THE SDL RECT HERE
 }	
 
-Movable(const Movable & m) {
-	this->filename = m.filename;
+Movable::Movable(const Movable & m) {
+	this->fileName = m.fileName;
 	this->width = m.width;
 	this->height = m.height;
 	this->cornerX = m.cornerX;
@@ -45,9 +47,9 @@ Movable(const Movable & m) {
 	this->rect = m.rect;
 }
 
-~Movable() {}
+Movable::~Movable() {}
 
-void move(int x, int y) {
+void Movable::move(int x, int y) {
 	this->cornerX += x;
 	this->cornerY += y;
 	if (cornerX < 0) {
@@ -64,6 +66,8 @@ void move(int x, int y) {
 	}
 }
 
-bool checkCollide(Movable * m) {
-	return SDL_HasIntersection(this->rect, m->rect);
+bool Movable::checkCollide(Movable * m) {
+	const SDL_Rect * r1 = &(this->rect);
+	const SDL_Rect * r2 = &(m->rect);
+	return SDL_HasIntersection(r1, r2);
 }

@@ -10,13 +10,16 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <string>
 
-#ifndf _MOVABLE_H
+using std::string;
+
+#ifndef _MOVABLE_H
 #define _MOVABLE_H
 
-class Movable() {
+class Movable {
 
-	str fileName;
+	string fileName;
 	int width;
 	int height;
 	int cornerX;
@@ -25,9 +28,10 @@ class Movable() {
 	int windowH; //y axis
 	SDL_Rect rect;
 
+public:
 	Movable(); 
 	
-	Movable(str fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH);
+	Movable(string fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH);
 
 	Movable(const Movable&);
 
@@ -37,6 +41,8 @@ class Movable() {
 
 	bool checkCollide(Movable *m);
 
-}	
+private:
+
+};	
 
 #endif
