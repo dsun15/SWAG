@@ -20,10 +20,6 @@ using std::string;
 class Movable {
 
 	string fileName;
-	int width;
-	int height;
-	int cornerX;
-	int cornerY;
 	int windowW; //x axis
 	int windowH; //y axis
 	SDL_Rect rect;
