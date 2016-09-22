@@ -27,23 +27,15 @@ Movable::Movable(string fileName, int width, int height, int cornerX, int corner
 	if (cornerX+width > windowW || cornerY+height > windowH) {
 		cout << "beyond window boundaries/n";
 	}
-	this->width = width;
-	this->height = height;
-	this->cornerX = cornerX;
-	this->cornerY = cornerY;
 	this->windowW = windowW;
 	this->windowH = windowH;
 	this->rect = {cornerX, cornerY, width, height};
-	SDL_Surface* img = IMG_Load(fileName);
+	img = IMG_Load(fileName);
 	
 }	
 
 Movable::Movable(const Movable & m) {
 	this->fileName = m.fileName;
-	this->width = m.width;
-	this->height = m.height;
-	this->cornerX = m.cornerX;
-	this->cornerY = m.cornerY;
 	this->windowW = m.windowW;
 	this->windowH = m.windowH;
 	this->rect = m.rect;
@@ -55,21 +47,22 @@ Movable::~Movable() {
 }
 
 void Movable::move(int x, int y) {
-	this->cornerX += x;
-	this->cornerY += y;
-	if (cornerX < 0) {
-		cornerX = 0;
+	//setting
+	this->rect.x += x;
+	this->rect.y += y;
+	//checking for boundary collisions
+	if (this->rect.x < 0) {
+		this->rect.x = 0;
 	}
-	if (cornerY < 0) {
-		cornerY = 0;
+	if (this->rect.y < 0) {
+		this->rect.y = 0;
 	}
-	if (cornerX + width > windowW) {
-		cornerX = windowW - width;
+	if (this->rect.x + this->rect.w > windowW) {
+		this->rect.x = windowW - this->rect.w;
 	}
-	if (cornerY + height > windowH) {
-		cornerY = windowH - height;
+	if (this->rect.y + this->rect.h > windowH) {
+		this->rect.y = windowH - this->rect.h;
 	}
-	this->rect = {cornerX,cornerY,width,height};
 }
 
 bool Movable::checkCollide(Movable * m) {

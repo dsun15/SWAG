@@ -23,7 +23,7 @@ class Movable {
 	int windowW; //x axis
 	int windowH; //y axis
 	SDL_Rect rect;
-
+	SDL_Surface* img; 
 public:
 	Movable(); 
 	
