@@ -26,6 +26,8 @@ SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
 SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
+Movable player;
+Movable enemy;
 
 //Mix_Music* gMusic;
 //Mix_Chunk* gMusic;
@@ -76,6 +78,8 @@ void setup() {
 void load() {
 	//gMusic = Mix_LoadMUS(musicTitle);
 	//std::cout << "loaded music" << "\n";
+	
+	player = new Movable("ship.png",50,50,0,0,width,height);
 
 	SDL_Surface* hero = IMG_Load("ship.png");
 	SDL_Surface* enemy = IMG_Load("baddie.png");
@@ -147,6 +151,10 @@ void run() {
 				if(event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
 					running = false;
 				}
+				if(event.key.keysym.sym == SDLK_RIGHT) {
+					m.move(1,0);
+				}
+					
 			}
 		
 		}
@@ -163,6 +171,7 @@ void run() {
 			std::cout << "Something broke2: " << SDL_GetError();
 		}
 
+		player.draw(gRenderer);
 						 
 	//	if (SDL_RenderCopy(gRenderer, shadowex, NULL, &shadowRect) < 0) {
 	//		std::cout << "Something broke: " << SDL_GetError();
