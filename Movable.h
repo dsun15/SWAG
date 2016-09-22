@@ -40,6 +40,8 @@ public:
 	void move(int x, int y);
 
 	bool checkCollide(Movable *m);
+	
+	void draw(SDL_Renderer * renderer);
 
 private:
 

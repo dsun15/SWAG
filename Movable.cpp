@@ -33,7 +33,7 @@ Movable::Movable(string fileName, int width, int height, int cornerX, int corner
 	this->cornerY = cornerY;
 	this->windowW = windowW;
 	this->windowH = windowH;
-	//MAKE THE SDL RECT HERE
+	this->rect = {cornerX, cornerY, width, height};
 }	
 
 Movable::Movable(const Movable & m) {
@@ -64,10 +64,15 @@ void Movable::move(int x, int y) {
 	if (cornerY + height > windowH) {
 		cornerY = windowH - height;
 	}
+	this->rect = {cornerX,cornerY,width,height};
 }
 
 bool Movable::checkCollide(Movable * m) {
 	const SDL_Rect * r1 = &(this->rect);
 	const SDL_Rect * r2 = &(m->rect);
 	return SDL_HasIntersection(r1, r2);
+}
+
+void draw(SDL_Renderer * renderer) {
+	SDL_RenderCopy(renderer, 
 }
