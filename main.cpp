@@ -62,12 +62,12 @@ void setup() {
    	gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, 
    							  SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
    	if(gWindow == NULL) {
-	   std::cout << "Something broke: " << SDL_GetError();
+	   std::cout << "Something broke in setup1: " << SDL_GetError();
 	}
 	
    	gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
    	if(gRenderer == NULL) {
-	   std::cout << "Something broke: " << SDL_GetError();
+	   std::cout << "Something broke insetup2: " << SDL_GetError();
 	}
 	
    	return;
@@ -86,7 +86,7 @@ void load() {
 	gTexture = SDL_CreateTextureFromSurface(gRenderer, hero);
 	gTexture2 = SDL_CreateTextureFromSurface(gRenderer, enemy);
 	if (gTexture || gTexture2 == NULL) {
-		std::cout << "Something broke: " << SDL_GetError();
+		std::cout << "Something broke in load: " << SDL_GetError();
 	}
 	
 	return;
@@ -156,11 +156,11 @@ void run() {
 		
 		if (SDL_RenderCopyEx(gRenderer, gTexture, NULL, &textureRect,
 						 radToDegs(time), NULL, SDL_FLIP_NONE) < 0) {
-			std::cout << "Something broke: " << SDL_GetError();
+			std::cout << "Something broke1: " << SDL_GetError();
 		}
 		if (SDL_RenderCopyEx(gRenderer, gTexture2, NULL, &textureRect2,
 						 radToDegs(sin(time)), NULL,SDL_FLIP_NONE) < 0) {
-			std::cout << "Something broke: " << SDL_GetError();
+			std::cout << "Something broke2: " << SDL_GetError();
 		}
 
 						 
