@@ -79,7 +79,7 @@ void load() {
 	//gMusic = Mix_LoadMUS(musicTitle);
 	//std::cout << "loaded music" << "\n";
 	
-	player = new Movable("ship.png",50,50,0,0,width,height);
+	player =  Movable("ship.png",50,50,0,0,width,height);
 
 	SDL_Surface* hero = IMG_Load("ship.png");
 	SDL_Surface* enemy = IMG_Load("baddie.png");
@@ -151,10 +151,12 @@ void run() {
 				if(event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
 					running = false;
 				}
+				break;
+			case SDL_KEYDOWN:
 				if(event.key.keysym.sym == SDLK_RIGHT) {
-					m.move(1,0);
+					player.move(1,0);
 				}
-					
+				break;
 			}
 		
 		}

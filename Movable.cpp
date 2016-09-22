@@ -19,7 +19,7 @@ using std::string;
 
 Movable::Movable(){}
 
-Movable::Movable(string fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH){ 
+Movable::Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH){ 
 	this->fileName = fileName;
 	if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || windowW < 0 || windowH < 0) {
 		cout << "something's negative/n";
@@ -30,7 +30,7 @@ Movable::Movable(string fileName, int width, int height, int cornerX, int corner
 	this->windowW = windowW;
 	this->windowH = windowH;
 	this->rect = {cornerX, cornerY, width, height};
-	img = IMG_Load(fileName);
+	this->img = IMG_Load(fileName);
 	
 }	
 
@@ -39,7 +39,7 @@ Movable::Movable(const Movable & m) {
 	this->windowW = m.windowW;
 	this->windowH = m.windowH;
 	this->rect = m.rect;
-	SDL_Surface* img = IMG_Load(fileName);
+	this->img = IMG_Load(fileName);
 }
 
 Movable::~Movable() {
@@ -71,7 +71,7 @@ bool Movable::checkCollide(Movable * m) {
 	return SDL_HasIntersection(r1, r2);
 }
 
-void draw(SDL_Renderer * renderer) {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, img);
-	SDL_RenderCopy(renderer, texture, NULL, &rect);
+void Movable::draw(SDL_Renderer * renderer) {
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
+	SDL_RenderCopy(renderer, texture, NULL, &(this->rect));
 }

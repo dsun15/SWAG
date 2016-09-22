@@ -19,7 +19,7 @@ using std::string;
 
 class Movable {
 
-	string fileName;
+	const char * fileName;
 	int windowW; //x axis
 	int windowH; //y axis
 	SDL_Rect rect;
@@ -27,7 +27,7 @@ class Movable {
 public:
 	Movable(); 
 	
-	Movable(string fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH);
+	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH);
 
 	Movable(const Movable&);
 
