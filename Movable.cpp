@@ -34,6 +34,8 @@ Movable::Movable(string fileName, int width, int height, int cornerX, int corner
 	this->windowW = windowW;
 	this->windowH = windowH;
 	this->rect = {cornerX, cornerY, width, height};
+	SDL_Surface* img = IMG_Load(fileName);
+	
 }	
 
 Movable::Movable(const Movable & m) {
@@ -45,9 +47,12 @@ Movable::Movable(const Movable & m) {
 	this->windowW = m.windowW;
 	this->windowH = m.windowH;
 	this->rect = m.rect;
+	SDL_Surface* img = IMG_Load(fileName);
 }
 
-Movable::~Movable() {}
+Movable::~Movable() {
+	
+}
 
 void Movable::move(int x, int y) {
 	this->cornerX += x;
@@ -74,5 +79,6 @@ bool Movable::checkCollide(Movable * m) {
 }
 
 void draw(SDL_Renderer * renderer) {
-	SDL_RenderCopy(renderer, 
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, img);
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
