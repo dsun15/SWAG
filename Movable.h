@@ -20,10 +20,10 @@ using std::string;
 class Movable {
 
 	const char * fileName;
-	int windowW; //x axis
-	int windowH; //y axis
-	SDL_Rect rect;
-	SDL_Surface* img; 
+	protected: int windowW; //x axis
+	protected: int windowH; //y axis
+	protected: SDL_Rect rect;
+	protected: SDL_Surface* img; 
 public:
 	Movable(); 
 	

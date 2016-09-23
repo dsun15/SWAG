@@ -19,9 +19,9 @@
 using namespace std;
 using std::string;
 
-AutoMovable::AutoMovable(){};
+AutoMovable::AutoMovable(){}
 
-~AutoMovable::AutoMovable(){};
+AutoMovable::~AutoMovable(){}
 
 void AutoMovable::automove(int time) {
 	//for time based movement
@@ -45,16 +45,16 @@ void AutoMovable::automove(int time) {
 			break;		
 	}
 	this->numMoves++;
-	if (this.cornerX = 0) {
+	if (this->rect.x == 0) {
 		this->dir = 'E';
 		this->numMoves = '0';
-	} else if (this.cornerY = 0) {
+	} else if (this->rect.y == 0) {
 		this->dir = 'S';
 		this->numMoves = '0';
-	} else if (this->rect.x + this->rect.w = windowW) {
+	} else if (this->rect.x + this->rect.w >= windowW) {
 		this->dir = 'W';
 		this->numMoves = '0';
-	} else if (this->rect.y + this->rect.h > windowH) {
+	} else if (this->rect.y + this->rect.h >= windowH) {
 		this->dir = 'N';
 		this->numMoves = '0';
 	}
@@ -69,8 +69,9 @@ void AutoMovable::automove(int time) {
 	}
 }
 
-void AutoMovable::genDir {
-	int temp = rand()%4;
+void AutoMovable::genDir() {
+	int temp;
+	temp = rand()%4;
 	switch(temp) {
 		case 0:
 			this->dir = 'N';
