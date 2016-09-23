@@ -17,7 +17,7 @@ const int width = 800;
 const int height = 600;
 const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
-const char* musicTitle = "metal.xm";
+const char* musicTitle = "sqPP.wav";
 //const double twoPi = 2 * M_PI;
 const double radToDeg = 180 / M_PI;
 
@@ -29,8 +29,7 @@ SDL_Texture* gTexture2;
 Movable player;
 Movable enemy;
 
-//Mix_Music* gMusic;
-//Mix_Chunk* gMusic;
+Mix_Music* gMusic;
 //TTF_Font* gFont;
 //TTF_Font* gFont2;
 
@@ -55,10 +54,10 @@ void setup() {
 		std::cerr << "oops. Failed to init: " << SDL_GetError() << "\n";
 	}
 	
-//	if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
-//    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
-//    			  << Mix_GetError() << "\n";
-//    }
+	if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) { 
+   	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
+    			  << Mix_GetError() << "\n";
+    }
     
 //   	TTF_Init();
    	gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, 
@@ -76,8 +75,8 @@ void setup() {
 }
 
 void load() {
-	//gMusic = Mix_LoadMUS(musicTitle);
-	//std::cout << "loaded music" << "\n";
+	gMusic = Mix_LoadMUS(musicTitle);
+	std::cout << "loaded music" << "\n";
 	
 	player =  Movable("ship.png",50,50,0,0,width,height);
 
@@ -97,11 +96,11 @@ void load() {
 }
 
 void cleanup() {
-//	Mix_FreeMusic(gMusic);
+	Mix_FreeMusic(gMusic);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 //	TTF_Quit();
-//	Mix_Quit();
+	Mix_Quit();
 	SDL_Quit();
 }
 
