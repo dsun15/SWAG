@@ -26,19 +26,23 @@ AutoMovable::~AutoMovable(){}
 void AutoMovable::automove(int time) {
 	//for time based movement
 	//srand(time(NULL));
-
+	
+	int speed = time / 2;
+	if (speed == 0) {
+		speed = 1;
+	}
 	switch(this->dir) {
 		case 'N':
-			Movable::move(0,-1*time);
+			Movable::move(0,-1*speed);
 			break;
 		case 'E':
-			Movable::move(time,0);
+			Movable::move(speed,0);
 			break;
 		case 'S':
-			Movable::move(0,time);
+			Movable::move(0,speed);
 			break;
 		case 'W':
-			Movable::move(-1*time,0);
+			Movable::move(-1*speed,0);
 			break;
 		default:
 			AutoMovable::genDir();
@@ -60,13 +64,17 @@ void AutoMovable::automove(int time) {
 	}
 	
 	//***PUT IN TERMS OF TIME***
-	if (numMoves >= 5) {
+	if (time == 3 && this->button) {
 		int percent = rand()%100;
 		if (percent <=30) {
 			AutoMovable::genDir();
 			this->numMoves = '0';
+			this->button = false;
 		}
+	} else if (time == 2) {
+		this->button = true;
 	}
+
 }
 
 void AutoMovable::genDir() {

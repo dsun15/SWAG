@@ -12,12 +12,14 @@
 #include <iostream>
 #include <string>
 #include "Movable.h"
+#include "AutoMovable.h"
 
 const int width = 800;
 const int height = 600;
 const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
 const char* musicTitle = "sqPP.wav";
+const char* effect = "bump.wav";
 //const double twoPi = 2 * M_PI;
 const double radToDeg = 180 / M_PI;
 
@@ -27,9 +29,9 @@ SDL_Renderer* gRenderer;
 SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
 Movable player;
-Movable enemy;
-
+AutoMovable enemy[5];
 Mix_Music* gMusic;
+Mix_Music* sfx;
 //TTF_Font* gFont;
 //TTF_Font* gFont2;
 
@@ -76,27 +78,19 @@ void setup() {
 
 void load() {
 	gMusic = Mix_LoadMUS(musicTitle);
+	sfx = Mix_LoadMUS(effect);
 	std::cout << "loaded music" << "\n";
 	
-	player =  Movable("ship.png",50,50,0,0,width,height);
-
-	SDL_Surface* hero = IMG_Load("ship.png");
-	SDL_Surface* enemy = IMG_Load("baddie.png");
-	if(!hero) {
-    	std::cout << "IMG_Load: " << IMG_GetError() << "\n";
+	player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
+	for (int i = 0; i <=4; i++) {
+		enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
 	}
-	
-	gTexture = SDL_CreateTextureFromSurface(gRenderer, hero);
-	gTexture2 = SDL_CreateTextureFromSurface(gRenderer, enemy);
-	if (gTexture || gTexture2 == NULL) {
-		std::cout << "Something broke in load: " << SDL_GetError();
-	}
-	
 	return;
 }
 
 void cleanup() {
 	Mix_FreeMusic(gMusic);
+	Mix_FreeMusic(sfx);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 //	TTF_Quit();
@@ -117,18 +111,7 @@ void run() {
 	//SDL_Surface* shadow = TTF_RenderUTF8_Blended(gFont2, bigtext, black);
 	//SDL_SetSurfaceAlphaMod(shadow, 128);
 	//SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
-	int textureW;
-	int textureH;
-	textureSize(gTexture, &textureW, &textureH);
-	SDL_Rect  textureRect = {center(width, textureW), center(height, textureH),
-							 textureW, textureH};
-	SDL_Rect  textureRect2 = {center(width, textureW)+100, center(height, textureH),
-							 textureW, textureH};
-	//SDL_Rect  textureRect2 = {width/2-textureW/16, height/2-textureW/16, textureW/8, textureW/8};
-//	SDL_Rect  shadowRect = {center(width, shadow->w), center(height, shadow->h),
-//							shadow->w, shadow->h};
-//	SDL_Rect  textRect = {center(width, text->w), center(height, text->h),
-//						  text->w, text->h};
+	bool play[] = {true,true,true,true,true};
 	
 	while(running) {
 		currentTime = SDL_GetTicks();
@@ -136,9 +119,9 @@ void run() {
 		time += (double) dt / 1000.00;
 		lastTime = currentTime;
 		
-		/**if( time > twoPi) {
-			time -= twoPi;
-		}*/
+		if( time > 4) {
+			time -= 2;
+		}
 		
 		while(SDL_PollEvent( &event ) != 0) {
 			switch(event.type) {
@@ -153,43 +136,34 @@ void run() {
 				break;
 			case SDL_KEYDOWN:
 				if(event.key.keysym.sym == SDLK_RIGHT) {
-					player.move(5,0);
+					player.move(10,0);
 				}
 				if(event.key.keysym.sym == SDLK_LEFT) {
-					player.move(-5,0);
+					player.move(-10,0);
 				}
 				if(event.key.keysym.sym == SDLK_DOWN) {
-					player.move(0,5);
+					player.move(0,10);
 				}
 				if(event.key.keysym.sym == SDLK_UP) {
-					player.move(0,-5);
+					player.move(0,-10);
 				}
 				break;
 			}
 		
 		}
-	
 		SDL_RenderClear(gRenderer);
-
-		
-		if (SDL_RenderCopyEx(gRenderer, gTexture, NULL, &textureRect,
-						 radToDegs(time), NULL, SDL_FLIP_NONE) < 0) {
-			std::cout << "Something broke1: " << SDL_GetError();
-		}
-		if (SDL_RenderCopyEx(gRenderer, gTexture2, NULL, &textureRect2,
-						 radToDegs(sin(time)), NULL,SDL_FLIP_NONE) < 0) {
-			std::cout << "Something broke2: " << SDL_GetError();
-		}
-
 		player.draw(gRenderer);
-						 
-	//	if (SDL_RenderCopy(gRenderer, shadowex, NULL, &shadowRect) < 0) {
-	//		std::cout << "Something broke: " << SDL_GetError();
-	//	}
-		
-	//	if (SDL_RenderCopy(gRenderer, textex, NULL, &textRect) < 0) {
-	//		std::cout << "Something broke: " << SDL_GetError();
-	//	}
+		for (int i=0;i<5;i++) {
+			enemy[i].automove(time);
+			enemy[i].draw(gRenderer);		
+			if (player.checkCollide(&(enemy[i])) && play[i]) {
+				Mix_PlayMusic(sfx,0);
+				play[i] = false;
+			}
+			else if (!player.checkCollide(&(enemy[i]))){
+				play[i] = true;
+			}
+		}
 		SDL_RenderPresent(gRenderer);
 		
 	}
