@@ -136,16 +136,16 @@ void run() {
 				break;
 			case SDL_KEYDOWN:
 				if(event.key.keysym.sym == SDLK_RIGHT) {
-					player.move(10,0);
+					player.inputMove(time,3);
 				}
 				if(event.key.keysym.sym == SDLK_LEFT) {
-					player.move(-10,0);
+					player.inputMove(time,4);
 				}
 				if(event.key.keysym.sym == SDLK_DOWN) {
-					player.move(0,10);
+					player.inputMove(time,1);
 				}
 				if(event.key.keysym.sym == SDLK_UP) {
-					player.move(0,-10);
+					player.inputMove(time,2);
 				}
 				break;
 			}

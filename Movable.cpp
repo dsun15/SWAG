@@ -46,6 +46,28 @@ Movable::~Movable() {
 	
 }
 
+void Movable::inputMove(int time, int direction) {
+	switch (direction) {
+		//down
+		case 1:
+			move(0,time);	
+			break;
+		//up
+		case 2:
+			move(0,-1*time);
+			break;
+		//right
+		case 3:
+			move(time, 0);
+			break;
+		//left
+		case 4:
+			move(-1*time, 0);
+			break;
+	}
+}
+		
+
 void Movable::move(int x, int y) {
 	//setting
 	this->rect.x += x;

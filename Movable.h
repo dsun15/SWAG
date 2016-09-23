@@ -31,7 +31,9 @@ public:
 
 	Movable(const Movable&);
 
-	~Movable(); 
+	~Movable();
+
+	void inputMove(int time, int direction); 
 
 	void move(int x, int y);
 
