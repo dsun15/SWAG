@@ -1,71 +1,89 @@
-Super Wicked Awesome Group
-GAME VISION & DEVELOPMENT PLANS
-
-Background Story:
+﻿Background Story:
 There was once a world divided between the simple shapes and the rejects (jagged or curved shapes). However, practically the entire population of perfect shapes died out once the rejects took over. Our story follows a lonely square on a path to find safe land away from the jagged shapes. Along the way, the square will meet many other simple shape survivors that will help it solve puzzles and fight enemies within levels. Each different shape encountered will have different properties (attacks, jumping, movement) based on the size and geometry of the shape. 
+
+
 
 
 Game Settings:
 We pictured the setting of our game as a world consisting of many different geometric shapes. Within the world there were will be puzzles that are solved using the main characters’ different geometric properties. There will be enemies on each level that will consist of non-traditional shapes (jagged or curved). At the end of each level will be some sort of boss battle or complicated puzzle. 
 
+
 Rough Levels
+
 
 We want to increase level difficulty consistently so that the player becomes accustomed to the game's core mechanics.  We will continue by presenting the player with more complex puzzles.  That will force the player to utilize more than one concept at a time
 
+
 We want to increase level difficulty consistently so that the player becomes accustomed to the game's core mechanics. We will continue by presenting the player with more complicated puzzles that will force players to utilize more than one concept at a time. 
 
+
 Level 1 -
-We will introduce the main character in the beginning of the level.
-We will probably not use any other characters for this level.
-This level’s purpose is to introduce the player to the basics of platforming. Ie. jumping and running.
-The level will be designed with simple jump tasks to progress through the level and will not punish the player for failing here. Ie, not making pits for where the player could die.
-Boss Battle
-A large arbitrary shape as a boss with Ferriswheel like platforms that circle him.
-The goal would be to jump on the platform and damage the boss by jumping onto specific platforms on the boss’s head, dropping the bosses HP by 1 with a total of 3 HP.
+* We will introduce the main character in the beginning of the level.
+* We will probably not use any other characters for this level.
+* This level’s purpose is to introduce the player to the basics of platforming. Ie. jumping and running.
+* The level will be designed with simple jump tasks to progress through the level and will not punish the player for failing here. Ie, not making pits for where the player could die.
+* Boss Battle
+   * A large arbitrary shape as a boss with Ferriswheel like platforms that circle him.
+   * The goal would be to jump on the platform and damage the boss by jumping onto specific platforms on the boss’s head, dropping the bosses HP by 1 with a total of 3 HP.
 Level 2 -
-The main character will come in contact with friends that will help him along his journey and help him solve puzzles.
-This level will be used to introduce the stacking mechanic.
-There will be ledges too high for the player to cross, which will force the player to stack the pieces he comes into contact with to overcome the obstacle.
-We may add more depth by forcing the player to stack objects in a specific way in order to progress.
-Boss Battle (not planned.)
+* The main character will come in contact with friends that will help him along his journey and help him solve puzzles.
+* This level will be used to introduce the stacking mechanic.
+* There will be ledges too high for the player to cross, which will force the player to stack the pieces he comes into contact with to overcome the obstacle.
+* We may add more depth by forcing the player to stack objects in a specific way in order to progress.
+* Boss Battle (not planned.)
 Level 3 -
-The mechanic of falling platforms and floating will be introduced.
-Before the level starts we will show a cutscene where a platform falls underneath multiple shapes and underneath those platforms will be water. The specific shapes that are given the property to float (indicated by their color) will float and the ones that are normal will sink.
-Then the player will come across a piece that is already in the water that is floating.
-The player will have to overcome obstacles that require him to stack pieces according to their property of floating.
-Boss battle (not planned.)
+* The mechanic of falling platforms and floating will be introduced.
+* Before the level starts we will show a cutscene where a platform falls underneath multiple shapes and underneath those platforms will be water. The specific shapes that are given the property to float (indicated by their color) will float and the ones that are normal will sink.
+* Then the player will come across a piece that is already in the water that is floating.
+* The player will have to overcome obstacles that require him to stack pieces according to their property of floating.
+* Boss battle (not planned.)
 Level 4 - 
-We will introduce a bouncy piece. (will allow player to jump higher than normal if they jump off this piece.)
-Puzzles will be introduced that will force the player to incorporate both the floating mechanic and the higher jump mechanics in conjunction to progress through the level.
-Boss battle (not planned.)
+* We will introduce a bouncy piece. (will allow player to jump higher than normal if they jump off this piece.)
+* Puzzles will be introduced that will force the player to incorporate both the floating mechanic and the higher jump mechanics in conjunction to progress through the level.
+* Boss battle (not planned.)
 Level All Star-
-Have a level that has the bosses back to back, but slightly harder than originally presented.
+* Have a level that has the bosses back to back, but slightly harder than originally presented.
+
 
 Game Mechanics
 
+
 Move multiple shapes in order to complete platforming puzzles; additional shapes are encountered and used to allow the primary shape (a square) to advance to the next level.  The additional shapes do not follow to next level; more additional shapes are encountered in the next level.  The shapes can be stacked, used to fill gaps, etc.
 
-No camera chase; each screen is a unique entity, puzzles compartmentalized
+
+Screen follows character
+
 
 Basic gravity; falling and stuff
 
+
 Water level
+
 
 acceleration/deceleration
 
+
 Falling platforms
 
-Square shoots enemies, other shapes will have different attacks, speed, jump, additional puzzle solving properties based on the color and geometry of the shape (for example, green shapes can be bounced on, long shapes can float longer after a jump, blue shapes can float in water). 
 
-Levels may also include boss battles in which the square fights the boss and stuff
+Shapes will have different attacks, speed, jump, additional puzzle solving properties based on the color and geometry of the shape (for example, green shapes can be bounced on, long shapes can float longer after a jump, blue shapes can float in water). 
+
+
+There will either be a boss battle or a complex puzzle at the end of the levels; bosses will be spaced out and not put in every level. If levels do not consist of bosses, they will most likely be supplemented with a complex puzzel.
+
+
+
+
 
 
 PLAN
 
+
 Milestones:
 Alpha - Functional proof of concept with simple graphics. Basic movement and mechanics (possibly music) working. Instructional level (first level of the game). 
-Beta - A few more functional stages with more polished mechanics and graphics. Most or all mechanics and gameplay elements implemented. Storyline present (at least the backbone).
+Beta - A few more functional stages with more polished mechanics and graphics. Most or all mechanics and gameplay elements implemented. Storyline present (at least the backbone). We will add a level editor.
 Gold - Working demo with all the necessary submission requirements and more levels. As few bugs as possible. Most or all planned elements (including story, sprites, music, etc) completed and implemented.
+
 
 Expected Responsibilities:
 Chris - level design, music
@@ -74,14 +92,16 @@ Kevin - graphics, enemy design
 Devin - graphics, scripting, character design
 All responsible for some measure of coding and gameplay design
 
+
 Risks:
-Code and implementation quality - None of us consider ourselves experts in coding. We will have to pay extra attention to the code that affects the user experience, such as controls and physics, so that the game doesn’t become a sloppy mess. By targeting what the user sees, as long as they are having a good time, the quality of our code isn’t easily noticed.
-We are working with geometric shapes that will have to fit into specific areas (like a puzzle piece). Because of this we have to make sure our hit detection is accurate. 
-We have little experience in the creative pursuits. Our music and art may not be top tier. We will use simple, minimalistic graphics and music to avoid them being hot garbage. That is, it still might be bad, but less bad than if we tried making them more complex.
+1. Code and implementation quality - None of us consider ourselves experts in coding. We may need to spend more time than expected to overcome technical hurdles. Fortunately we are all willing to provide the time needed to provide a polished user experience.
+2. We are working with geometric shapes that will have to fit into specific areas (like a puzzle piece). Because of this we have to make sure our hit detection is accurate. 
+3. We have little experience in the creative pursuits. Our music and art will probably not win many awards. We will use simple, minimalistic graphics and music so that we can focus more on the technical and design areas.
+
 
 Technical Decisions:
 Game development will proceed using C++.
 We will organize work using a git repository on GitHub.
-We communicate primarily through chat or in person. We also meet informally every Friday afternoon, subject to change.
+We communicate primarily through chat or in person. We will also meet outside of class/lab  every Friday afternoon. Additional dates may be scheduled as necessary. Devin will be responsible for the group submissions.
 No plan to port to code to other platforms. Game will run on anything that can compile C++ code with the necessary libraries.
 Submission designations to be decided using the power of communication throughout the week before the due date.
