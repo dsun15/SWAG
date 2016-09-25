@@ -33,7 +33,7 @@ public:
 
 	~Movable();
 
-	void inputMove(int time, int direction); 
+	void inputMove(int dt, int direction); 
 
 	void move(int x, int y);
 

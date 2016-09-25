@@ -46,23 +46,23 @@ Movable::~Movable() {
 	
 }
 
-void Movable::inputMove(int time, int direction) {
+void Movable::inputMove(int dt, int direction) {
 	switch (direction) {
 		//down
 		case 1:
-			move(0,time);	
+			move(0,dt);	
 			break;
 		//up
 		case 2:
-			move(0,-1*time);
+			move(0,-1*dt);
 			break;
 		//right
 		case 3:
-			move(time, 0);
+			move(dt, 0);
 			break;
 		//left
 		case 4:
-			move(-1*time, 0);
+			move(-1*dt, 0);
 			break;
 	}
 }

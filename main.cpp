@@ -112,7 +112,9 @@ void run() {
 	//SDL_SetSurfaceAlphaMod(shadow, 128);
 	//SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
 	bool play[] = {true,true,true,true,true};
-	
+	int option;
+	double timePress;
+	bool playerMoving[] = {false,false,false,false};	
 	while(running) {
 		currentTime = SDL_GetTicks();
 		unsigned int dt = currentTime - lastTime;
@@ -123,7 +125,9 @@ void run() {
 			time -= 2;
 		}
 		
+
 		while(SDL_PollEvent( &event ) != 0) {
+
 			switch(event.type) {
 			
 			case SDL_QUIT:
@@ -133,23 +137,53 @@ void run() {
 				if(event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
 					running = false;
 				}
-				break;
-			case SDL_KEYDOWN:
+				
 				if(event.key.keysym.sym == SDLK_RIGHT) {
-					player.inputMove(time,3);
+					//timePress = (currentTime - timePress) / 1000.0;
+					playerMoving[2]=false;				
 				}
 				if(event.key.keysym.sym == SDLK_LEFT) {
-					player.inputMove(time,4);
+					//timePress = (currentTime - timePress) / 1000.0;
+					playerMoving[3]=false;
 				}
 				if(event.key.keysym.sym == SDLK_DOWN) {
-					player.inputMove(time,1);
+					//timePress = (currentTime - timePress) / 1000.0;
+					playerMoving[0]=false;
 				}
 				if(event.key.keysym.sym == SDLK_UP) {
-					player.inputMove(time,2);
+					//timePress = (currentTime - timePress) / 1000.0;
+					playerMoving[1]=false;
+				}
+				break;
+				
+			case SDL_KEYDOWN:
+				timePress = SDL_GetTicks(); 
+				if(event.key.keysym.sym == SDLK_RIGHT) {
+					option = 3;
+					playerMoving[2] = true;
+					//player.inputMove(timePress, 3);
+				}
+				if(event.key.keysym.sym == SDLK_LEFT) {
+					option = 4;
+					playerMoving[3] = true;
+					//player.inputMove(timePress,4);
+				}
+				if(event.key.keysym.sym == SDLK_DOWN) {
+					option = 1;
+					playerMoving[0]=true;
+					//player.inputMove(timePress, 1);
+				}
+				if(event.key.keysym.sym == SDLK_UP) {
+					option = 2;
+					playerMoving[1]=true;
+					//player.inputMove(timePress, 2);
 				}
 				break;
 			}
 		
+		}
+		if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
+			player.inputMove(dt, option);
 		}
 		SDL_RenderClear(gRenderer);
 		player.draw(gRenderer);
