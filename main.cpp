@@ -26,14 +26,15 @@ const double radToDeg = 180 / M_PI;
 
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
-SDL_Texture* gTexture;
-SDL_Texture* gTexture2;
-Movable player;
-AutoMovable enemy[5];
+//SDL_Texture* gTexture;
+//SDL_Texture* gTexture2;
+//Movable player;
+//AutoMovable enemy[5];
 Mix_Music* gMusic;
-Mix_Music* sfx;
+//Mix_Music* sfx;
 //TTF_Font* gFont;
 //TTF_Font* gFont2;
+GameScreen g = GameScreen();
 
 int center(int large, int small) {
 
@@ -59,7 +60,7 @@ void setup() {
 	if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) { 
    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
     			  << Mix_GetError() << "\n";
-    }
+    	}
     
 //   	TTF_Init();
    	gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, 
@@ -78,19 +79,19 @@ void setup() {
 
 void load() {
 	gMusic = Mix_LoadMUS(musicTitle);
-	sfx = Mix_LoadMUS(effect);
+	//sfx = Mix_LoadMUS(effect);
 	std::cout << "loaded music" << "\n";
 	
-	player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
-	for (int i = 0; i <=4; i++) {
-		enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
-	}
+	//player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
+	//for (int i = 0; i <=4; i++) {
+	//	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
+	//}
 	return;
 }
 
 void cleanup() {
 	Mix_FreeMusic(gMusic);
-	Mix_FreeMusic(sfx);
+	//Mix_FreeMusic(sfx);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 //	TTF_Quit();

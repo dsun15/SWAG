@@ -22,7 +22,7 @@ class Screen {
 public:
 	Screen();
 	~Screen();
-	int input(int key, int dt);
+	int input(SDL_Event * event, int dt);
 	void draw(SDL_Renderer);
 }
 

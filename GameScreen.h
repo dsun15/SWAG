@@ -13,3 +13,15 @@
 #include <string>
 #include "Movable.h"
 #include "AutoMovable.h"
+#include "Screen.h"
+
+#ifndef _GAMESCREEN_H
+#define _GAMESCREEN_H
+
+class GameScreen: public Screen {
+public:
+	GameScreen();
+	~GameScreen();
+}
+
+#endif
