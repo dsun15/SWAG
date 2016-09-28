@@ -24,7 +24,7 @@ public:
 	~Screen();
 	int input(int key, int dt);
 	void draw(SDL_Renderer);
-}
+};
 
 #endif
 
