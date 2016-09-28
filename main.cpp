@@ -38,7 +38,7 @@ Mix_Music* gMusic;
 //TTF_Font* gFont;
 //TTF_Font* gFont2;
 GameScreen g = GameScreen();
-Screen activeScreen = g;
+Screen * activeScreen;
 
 int center(int large, int small) {
 
@@ -90,7 +90,7 @@ void load() {
 	//for (int i = 0; i <=4; i++) {
 	//	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
 	//}
-	activeScreen = g;
+	activeScreen = &g;
 	return;
 }
 
@@ -133,7 +133,7 @@ void run() {
 		
 
 		while(SDL_PollEvent( &event ) != 0) {
-		  activeScreen.input(&event, dt);
+		  activeScreen->input(&event, dt);
 			switch(event.type) {
 			
 			case SDL_QUIT:
@@ -192,7 +192,7 @@ void run() {
 			player.inputMove(dt, option);
 			}*/
 		SDL_RenderClear(gRenderer);
-		activeScreen.draw(gRenderer);
+		activeScreen->draw(gRenderer, dt);
 		//player.draw(gRenderer);
 		/*for (int i=0;i<5;i++) {
 			enemy[i].automove(time);

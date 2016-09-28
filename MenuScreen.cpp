@@ -31,7 +31,7 @@ int MenuScreen::input(SDL_Event * event, int dt){
   return 0;
 }
 
-void MenuScreen::draw(SDL_Renderer * renderer){
+void MenuScreen::draw(SDL_Renderer * renderer, int dt){
   if (renderer != NULL) {
     std::cout << std::string("MenuScreen.draw(() method not implemented\n");
   }

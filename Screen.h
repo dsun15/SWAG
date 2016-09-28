@@ -22,18 +22,20 @@ class Screen {
 public:
 	Screen();
 	~Screen();
-	virtual int input(SDL_Event * event, int dt) {
+	virtual int input(SDL_Event * event, int dt) =0; /*{
 	  if (event != NULL) {
 	    std::cout << std::string("input() method not overridden: ") + "dt = ";
 	    std::cout << dt;
 	    std::cout << "\n";
 	  }
 	  return 0;
-	}
+	  }*/
 
-	virtual void draw(SDL_Renderer * renderer){
+	virtual void draw(SDL_Renderer * renderer, int dt){
 	  if (renderer != NULL) {
-	    std::cout << "draw() method not overridden\n";
+	    std::cout << "draw() method not overridden: dt = ";
+	    std::cout << dt;
+	    std::cout <<"\n";
 	  }
 	};
 };

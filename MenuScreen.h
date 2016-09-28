@@ -37,7 +37,7 @@ public:
 	//Array(?) of surfaces and textures to write menu options
 
 	int input(SDL_Event * event, int dt);
-	void draw(SDL_Renderer * renderer);
+	void draw(SDL_Renderer * renderer, int dt);
 };
 
 #endif

@@ -22,10 +22,10 @@ Movable::Movable(){}
 Movable::Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH){ 
 	this->fileName = fileName;
 	if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || windowW < 0 || windowH < 0) {
-		cout << "something's negative/n";
+		cout << "something's negative\n";
 	}	
 	if (cornerX+width > windowW || cornerY+height > windowH) {
-		cout << "beyond window boundaries/n";
+		cout << "beyond window boundaries\n";
 	}
 	this->windowW = windowW;
 	this->windowH = windowH;

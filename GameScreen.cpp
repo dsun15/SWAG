@@ -13,7 +13,7 @@
 #include <string>
 #include "Movable.h"
 #include "AutoMovable.h"
-//#include "Screen.h"
+#include "Screen.h"
 #include "GameScreen.h"
 
 int width = 800;
@@ -34,6 +34,7 @@ GameScreen::GameScreen() {
         for (int i = 0; i <=4; i++) {
         	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
         }
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 );
 	sfx = Mix_LoadMUS(effect);
         return;
 }
@@ -42,7 +43,7 @@ GameScreen::~GameScreen() {
 	Mix_FreeMusic(sfx);
 }
 
-int input(SDL_Event * event, int dt) {
+int GameScreen::input(SDL_Event * event, int dt) {
 			switch(event->type) {
 			case SDL_KEYUP:
 				if(event->key.keysym.sym == SDLK_RIGHT) {
@@ -78,15 +79,18 @@ int input(SDL_Event * event, int dt) {
 				}
 				break;
 			}
-			if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
-			player.inputMove(dt, option);
-		}
+			/*if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
+			  player.inputMove(dt, option);
+			  }*/
 	
 	return 0;
 }
 
-void draw (SDL_Renderer * renderer) {
+void GameScreen::draw (SDL_Renderer * renderer, int dt) {
 	player.draw(renderer);
+	if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
+	  player.inputMove(dt, option);
+	}
 	for (int i=0;i<5;i++) {
 	  //*****FIX THIS AUTOMOVE SHIT*******
 		enemy[i].automove(2);
