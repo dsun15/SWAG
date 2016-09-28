@@ -13,13 +13,16 @@
 #include <string>
 #include "Movable.h"
 #include "AutoMovable.h"
+#include "Screen.h"
+#include "GameScreen.h"
+#include "MenuScreen.h"
 
 const int width = 800;
 const int height = 600;
 const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
 const char* musicTitle = "sqPP.wav";
-const char* effect = "bump.wav";
+//const char* effect = "bump.wav";
 //const double twoPi = 2 * M_PI;
 const double radToDeg = 180 / M_PI;
 
@@ -35,6 +38,7 @@ Mix_Music* gMusic;
 //TTF_Font* gFont;
 //TTF_Font* gFont2;
 GameScreen g = GameScreen();
+Screen activeScreen = g;
 
 int center(int large, int small) {
 
@@ -86,6 +90,7 @@ void load() {
 	//for (int i = 0; i <=4; i++) {
 	//	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
 	//}
+	activeScreen = g;
 	return;
 }
 
@@ -112,10 +117,10 @@ void run() {
 	//SDL_Surface* shadow = TTF_RenderUTF8_Blended(gFont2, bigtext, black);
 	//SDL_SetSurfaceAlphaMod(shadow, 128);
 	//SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
-	bool play[] = {true,true,true,true,true};
+	/**bool play[] = {true,true,true,true,true};
 	int option;
 	double timePress;
-	bool playerMoving[] = {false,false,false,false};	
+	bool playerMoving[] = {false,false,false,false};*/	
 	while(running) {
 		currentTime = SDL_GetTicks();
 		unsigned int dt = currentTime - lastTime;
@@ -128,7 +133,7 @@ void run() {
 		
 
 		while(SDL_PollEvent( &event ) != 0) {
-
+		  activeScreen.input(&event, dt);
 			switch(event.type) {
 			
 			case SDL_QUIT:
@@ -139,7 +144,7 @@ void run() {
 					running = false;
 				}
 				
-				if(event.key.keysym.sym == SDLK_RIGHT) {
+				/*if(event.key.keysym.sym == SDLK_RIGHT) {
 					//timePress = (currentTime - timePress) / 1000.0;
 					playerMoving[2]=false;				
 				}
@@ -154,10 +159,10 @@ void run() {
 				if(event.key.keysym.sym == SDLK_UP) {
 					//timePress = (currentTime - timePress) / 1000.0;
 					playerMoving[1]=false;
-				}
+					}*/
 				break;
 				
-			case SDL_KEYDOWN:
+				/*case SDL_KEYDOWN:
 				timePress = SDL_GetTicks(); 
 				if(event.key.keysym.sym == SDLK_RIGHT) {
 					option = 3;
@@ -178,17 +183,18 @@ void run() {
 					option = 2;
 					playerMoving[1]=true;
 					//player.inputMove(timePress, 2);
-				}
+					}*/
 				break;
 			}
 		
 		}
-		if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
+		/*if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
 			player.inputMove(dt, option);
-		}
+			}*/
 		SDL_RenderClear(gRenderer);
-		player.draw(gRenderer);
-		for (int i=0;i<5;i++) {
+		activeScreen.draw(gRenderer);
+		//player.draw(gRenderer);
+		/*for (int i=0;i<5;i++) {
 			enemy[i].automove(time);
 			enemy[i].draw(gRenderer);		
 			if (player.checkCollide(&(enemy[i])) && play[i]) {
@@ -198,7 +204,7 @@ void run() {
 			else if (!player.checkCollide(&(enemy[i]))){
 				play[i] = true;
 			}
-		}
+			}*/
 		SDL_RenderPresent(gRenderer);
 		
 	}
@@ -219,8 +225,3 @@ int main() {
 	
 	return 0;
 }
-                                        
-
-
-
-	

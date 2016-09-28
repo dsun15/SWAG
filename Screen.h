@@ -22,8 +22,20 @@ class Screen {
 public:
 	Screen();
 	~Screen();
-	int input(SDL_Event * event, int dt);
-	void draw(SDL_Renderer);
+	virtual int input(SDL_Event * event, int dt) {
+	  if (event != NULL) {
+	    std::cout << std::string("input() method not overridden: ") + "dt = ";
+	    std::cout << dt;
+	    std::cout << "\n";
+	  }
+	  return 0;
+	}
+
+	virtual void draw(SDL_Renderer * renderer){
+	  if (renderer != NULL) {
+	    std::cout << "draw() method not overridden\n";
+	  }
+	};
 };
 
 #endif
