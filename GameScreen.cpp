@@ -93,7 +93,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
 	}
 	for (int i=0;i<5;i++) {
 	  //*****FIX THIS AUTOMOVE SHIT*******
-		enemy[i].automove(2);
+		enemy[i].automove(dt);
 		//*******SHOULDN'T BE 2, SHOULD BE SOME TIME SHIT*********
 		enemy[i].draw(renderer);		
 		if (player.checkCollide(&(enemy[i])) && play[i]) {

@@ -19,18 +19,22 @@
 using namespace std;
 using std::string;
 
+int timeSinceChange = 0;
+
 AutoMovable::AutoMovable(){}
 
 AutoMovable::~AutoMovable(){}
 
 void AutoMovable::automove(int time) {
 	//for time based movement
-	//srand(time(NULL));
-	
-	int speed = time / 2;
-	if (speed == 0) {
-		speed = 1;
-	}
+  if (timeSinceChange >= 2000) {
+    int percent = rand()%100;                                                                  
+    if (percent <=50) {                                                                        
+      AutoMovable::genDir();
+    }
+    timeSinceChange = 0;
+  }
+  int speed = time / 3;
 	switch(this->dir) {
 		case 'N':
 			Movable::move(0,-1*speed);
@@ -48,33 +52,20 @@ void AutoMovable::automove(int time) {
 			AutoMovable::genDir();
 			break;		
 	}
-	this->numMoves++;
 	if (this->rect.x == 0) {
 		this->dir = 'E';
-		this->numMoves = '0';
+		timeSinceChange = '0';
 	} else if (this->rect.y == 0) {
 		this->dir = 'S';
-		this->numMoves = '0';
+		timeSinceChange = '0';
 	} else if (this->rect.x + this->rect.w >= windowW) {
 		this->dir = 'W';
-		this->numMoves = '0';
+		timeSinceChange = '0';
 	} else if (this->rect.y + this->rect.h >= windowH) {
 		this->dir = 'N';
-		this->numMoves = '0';
+		timeSinceChange = '0';
 	}
-	
-	//***PUT IN TERMS OF TIME***
-	if (time == 3 && this->button) {
-		int percent = rand()%100;
-		if (percent <=30) {
-			AutoMovable::genDir();
-			this->numMoves = '0';
-			this->button = false;
-		}
-	} else if (time == 2) {
-		this->button = true;
-	}
-
+	timeSinceChange+=time;
 }
 
 void AutoMovable::genDir() {

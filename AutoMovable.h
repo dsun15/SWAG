@@ -19,8 +19,6 @@ using std::string;
 class AutoMovable: public Movable
 {
 	char dir;
-	int numMoves = 0;
-	bool button = true;
  public:
 	AutoMovable();
 	AutoMovable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH): Movable(fileName,width,height,cornerX,cornerY,windowW,windowH) {
