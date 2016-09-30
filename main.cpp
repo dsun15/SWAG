@@ -31,6 +31,7 @@ SDL_Renderer* gRenderer;
 Mix_Music* gMusic;
 GameScreen g;
 TitleScreen t;
+MenuScreen m;
 Screen * activeScreen;
 
 int center(int large, int small) {
@@ -73,7 +74,8 @@ void setup() {
 	
 	//g = GameScreen();
 	t = TitleScreen(gRenderer);
-   	return;
+   	m = MenuScreen(gRenderer);
+	return;
 }
 
 void load() {
@@ -117,12 +119,30 @@ void run() {
 				if(event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
 					running = false;
 				}
+				if(event.key.keysym.sym == SDLK_p) {
+				  screenswitch = 2; 
+				}
 				break;
 			}
 		}
 			if (screenswitch == 1) {
+			  //new game
 			  activeScreen = &g;
 			  std::cout << "triggered screen switch\n";
+			}
+			if (screenswitch == 2) {
+			  //menu
+			  activeScreen = &m;
+			}
+			if (screenswitch == 3) {
+			  //high score
+			}
+			if (screenswitch == 4) {
+			  //title
+			  activeScreen = &t;
+			}
+			if (screenswitch == 5) {
+			  running = false;
 			}
 			SDL_RenderClear(gRenderer);
 			activeScreen->draw(gRenderer, dt);
