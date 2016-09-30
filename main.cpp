@@ -71,7 +71,7 @@ void setup() {
 	   std::cout << "Something broke insetup2: " << SDL_GetError();
 	}
 	
-	g = GameScreen();
+	//g = GameScreen();
 	t = TitleScreen(gRenderer);
    	return;
 }
@@ -99,14 +99,15 @@ void run() {
 	unsigned int lastTime = 0;
 	unsigned int currentTime;
 	double time = 0.0;
+	int screenswitch = 0;
 	while(running) {
 		currentTime = SDL_GetTicks();
 		unsigned int dt = currentTime - lastTime;
 		time += (double) dt / 1000.00;
 		lastTime = currentTime;
 		
-		while(SDL_PollEvent( &event ) != 0) {
-		  int screenswitch = activeScreen->input(&event, dt);
+		while(SDL_PollEvent(&event) != 0) {
+		        screenswitch = activeScreen->input(&event, dt);
 			switch(event.type) {
 			
 			case SDL_QUIT:
@@ -118,17 +119,17 @@ void run() {
 				}
 				break;
 			}
+		}
 			if (screenswitch == 1) {
 			  activeScreen = &g;
+			  std::cout << "triggered screen switch\n";
 			}
 			SDL_RenderClear(gRenderer);
 			activeScreen->draw(gRenderer, dt);
 			SDL_RenderPresent(gRenderer);
-		
+			screenswitch = 0;
 		}
-	
 	return;
-	}
 }
 
 int main() {

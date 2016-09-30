@@ -22,7 +22,7 @@ class TitleScreen: public Screen {
   TTF_Font* font;
   const char * title = "SWAG DEMO";
   const char * subtitle = "Press Space to continue";
-  SDL_Color textcolor = {0,0,0,255};
+  SDL_Color textcolor = {255,255,255,255};
   SDL_Surface * textsurface;
   SDL_Surface * textsurface2;
   SDL_Texture * texture;

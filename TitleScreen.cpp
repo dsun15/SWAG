@@ -24,13 +24,13 @@ TitleScreen::TitleScreen(SDL_Renderer * renderer){
   this->textsurface = TTF_RenderUTF8_Blended(this->font,this->title,this->textcolor);
   this->textsurface2 = TTF_RenderUTF8_Blended(this->font,this->subtitle,this->textcolor);
   this->texture = SDL_CreateTextureFromSurface(renderer,textsurface);
-  this->texture = SDL_CreateTextureFromSurface(renderer, textsurface2);
-  this->textrect = {50,50,600,50};
-  this->textrect2 = {50,200,600,50};
+  this->texture2 = SDL_CreateTextureFromSurface(renderer, textsurface2);
+  this->textrect = {50,50,400,50};
+  this->textrect2 = {50,300,300,50};
 }
 
 TitleScreen::~TitleScreen(){
-  TTF_CloseFont(font);
+  //TTF_CloseFont(this->font);
   TTF_Quit();
 }
 
