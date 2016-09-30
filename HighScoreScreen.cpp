@@ -27,9 +27,10 @@ vector<SDL_Texture*> scoretex;
   SDL_Color textcolor = {0,0,0,255};
   SDL_Surface * titlesurface;
   SDL_Texture *titletex;
-  SDL_Rect titlerect;
+  SDL_Rect titleRect;
   TTF_Font *TitleFont;
   TTF_Font *ScoresFont;
+const char* ScoreTitle = "SWAG SCORES";
 
 HighScoreScreen::HighScoreScreen(){}
 
@@ -43,11 +44,11 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
   }
   
   TTF_Init();
-  this->TitleFont = TTF_OpenFont("8bit.ttf", 72);
-  this->ScoresFont = TTF_OpenFont("8bit.ttf", 24);
-  this->titlesurface = TTF_RenderUTF8_Blended(this->TitleFont, this->title, this->textcolor);
-  this->titletex = SDL_CreateTextureFromSurface(renderer, titlesurface);
-  this->titlerect = {100, 0, 600, 75};
+  TitleFont = TTF_OpenFont("8bit.ttf", 72);
+  ScoresFont = TTF_OpenFont("8bit.ttf", 24);
+  titlesurface = TTF_RenderUTF8_Blended(TitleFont, ScoreTitle, textcolor);
+  titletex = SDL_CreateTextureFromSurface(renderer, titlesurface);
+  titleRect = {100, 0, 600, 75};
   for(int x = 0; x < 5; x++){
     scoresurfaces.push_back(TTF_RenderUTF8_Blended(ScoresFont, scores[x], textcolor));
     scoretex[x] = SDL_CreateTextureFromSurface(renderer, scoresurfaces[x]);
@@ -77,7 +78,7 @@ switch (event->type) {
 }
 
 void HighScoreScreen::draw(SDL_Renderer * renderer, int dt){
-  SDL_RenderCopy(renderer,titletex,NULL,&(titlerect));
+  SDL_RenderCopy(renderer,titletex,NULL,&(titleRect));
   for(int x = 0; x < 5; x++){
 
     SDL_RenderCopy(renderer,scoretex[x],NULL,&(scorerect[x]));
