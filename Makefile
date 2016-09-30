@@ -1,4 +1,4 @@
-OBJS = main.cpp Movable.o AutoMovable.o GameScreen.o MenuScreen.o TitleScreen.o Screen.o
+OBJS = main.cpp Movable.o AutoMovable.o GameScreen.o MenuScreen.o TitleScreen.o Screen.o HighScoreScreen.o
 CC = g++
 
 CCFLAGS = -std=c++11 -Wall -Wextra -Wpedantic -O2
@@ -23,6 +23,8 @@ MenuScreen.o: MenuScreen.cpp
 	$(CC) -c MenuScreen.cpp $(CCFLAGS) 
 TitleScreen.o: TitleScreen.cpp
 	$(CC) -c TitleScreen.cpp $(CCFLAGS) 
+HighScoreScreen.o: HighScoreScreen.cpp
+	$(CC) -c HighScoreScreen.cpp $(CCFLAGS) 
 
 clean : 
 	rm main *.o *~

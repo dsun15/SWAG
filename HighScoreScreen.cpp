@@ -19,8 +19,7 @@
 
 using namespace std;
 
-
-  vector<char*> scores;
+  vector<const char *> scores;
   vector<SDL_Surface*> scoresurfaces;
 vector<SDL_Texture*> scoretex;
   vector<SDL_Rect> scorerect;
@@ -31,7 +30,7 @@ vector<SDL_Texture*> scoretex;
   TTF_Font *TitleFont;
   TTF_Font *ScoresFont;
 const char* ScoreTitle = "SWAG SCORES";
-
+const char*  name = "SMP: 9000";
 HighScoreScreen::HighScoreScreen(){}
 
 HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
@@ -39,7 +38,7 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
   /**Load in the high scores here. */
   for(int x = 0; x < 5; x++){
 
-    scores.push_back("SMP: 9000");
+    scores.push_back(name);
 
   }
   

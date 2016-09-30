@@ -17,6 +17,7 @@
 #include "GameScreen.h"
 #include "MenuScreen.h"
 #include "TitleScreen.h"
+#include "HighScoreScreen.h"
 
 const int width = 800;
 const int height = 600;
@@ -32,6 +33,7 @@ Mix_Music* gMusic;
 GameScreen g;
 TitleScreen t;
 MenuScreen m;
+HighScoreScreen h;
 Screen * activeScreen;
 
 int center(int large, int small) {
@@ -75,6 +77,7 @@ void setup() {
 	//g = GameScreen();
 	t = TitleScreen(gRenderer);
    	m = MenuScreen(gRenderer);
+	h = HighScoreScreen(gRenderer);
 	return;
 }
 
@@ -127,6 +130,7 @@ void run() {
 		}
 			if (screenswitch == 1) {
 			  //new game
+			  g = GameScreen();
 			  activeScreen = &g;
 			  std::cout << "triggered screen switch\n";
 			}
@@ -136,6 +140,7 @@ void run() {
 			}
 			if (screenswitch == 3) {
 			  //high score
+			  activeScreen = &h;
 			}
 			if (screenswitch == 4) {
 			  //title
