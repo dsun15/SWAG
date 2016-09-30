@@ -11,6 +11,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Screen.h"
 #include "Movable.h"
 #include "AutoMovable.h"
@@ -18,24 +19,16 @@
 #ifndef _HIGHSCORE_SCREEN_H
 #define _HIGHSCORE_SCREEN_H
 
+using namespace std;
+
 class HighScoreScreen: public Screen {
 
+  
 public:
 	HighScoreScreen();
+	HighScoreScreen(SDL_Renderer *);
 	~HighScoreScreen();
-	//int input(SDL_Event *event, int dt);
-	//void draw(SDL_Renderer *render);
-
-	//Font for writing menu options
-	//should be a pointer
-	TTF_Font *  gFont;
-	//Array of char* holding all of the menu text
-	const char* menuText;
-	//Color for Menu text
-	SDL_Color textColor;
-	//Color for selected text; change color to indicate selection(?)
-	//Array(?) of surfaces and textures to write menu options
-
+	
 	int input(SDL_Event * event, int dt);
 	void draw(SDL_Renderer * renderer, int dt);
 };
