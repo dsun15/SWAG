@@ -16,28 +16,21 @@
 #include "Screen.h"
 #include "GameScreen.h"
 #include "MenuScreen.h"
+#include "TitleScreen.h"
 
 const int width = 800;
 const int height = 600;
 const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
 const char* musicTitle = "sqPP.wav";
-//const char* effect = "bump.wav";
-//const double twoPi = 2 * M_PI;
 const double radToDeg = 180 / M_PI;
 
 
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
-//SDL_Texture* gTexture;
-//SDL_Texture* gTexture2;
-//Movable player;
-//AutoMovable enemy[5];
 Mix_Music* gMusic;
-//Mix_Music* sfx;
-//TTF_Font* gFont;
-//TTF_Font* gFont2;
-GameScreen g = GameScreen();
+GameScreen g;
+TitleScreen t;
 Screen * activeScreen;
 
 int center(int large, int small) {
@@ -78,19 +71,15 @@ void setup() {
 	   std::cout << "Something broke insetup2: " << SDL_GetError();
 	}
 	
+	g = GameScreen();
+	t = TitleScreen(gRenderer);
    	return;
 }
 
 void load() {
 	gMusic = Mix_LoadMUS(musicTitle);
-	//sfx = Mix_LoadMUS(effect);
 	std::cout << "loaded music" << "\n";
-	
-	//player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
-	//for (int i = 0; i <=4; i++) {
-	//	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
-	//}
-	activeScreen = &g;
+	activeScreen = &t;
 	return;
 }
 
@@ -110,30 +99,14 @@ void run() {
 	unsigned int lastTime = 0;
 	unsigned int currentTime;
 	double time = 0.0;
-	//SDL_Color blue = {0,0,255,255};
-	//SDL_Surface* text = TTF_RenderUTF8_Blended(gFont, bigtext, blue);
-	//SDL_Texture* textex =  SDL_CreateTextureFromSurface(gRenderer, text);
-	//SDL_Color black ={0,0,0,255};
-	//SDL_Surface* shadow = TTF_RenderUTF8_Blended(gFont2, bigtext, black);
-	//SDL_SetSurfaceAlphaMod(shadow, 128);
-	//SDL_Texture* shadowex =  SDL_CreateTextureFromSurface(gRenderer, shadow);
-	/**bool play[] = {true,true,true,true,true};
-	int option;
-	double timePress;
-	bool playerMoving[] = {false,false,false,false};*/	
 	while(running) {
 		currentTime = SDL_GetTicks();
 		unsigned int dt = currentTime - lastTime;
 		time += (double) dt / 1000.00;
 		lastTime = currentTime;
 		
-		if( time > 4) {
-			time -= 2;
-		}
-		
-
 		while(SDL_PollEvent( &event ) != 0) {
-		  activeScreen->input(&event, dt);
+		  int screenswitch = activeScreen->input(&event, dt);
 			switch(event.type) {
 			
 			case SDL_QUIT:
@@ -143,73 +116,19 @@ void run() {
 				if(event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
 					running = false;
 				}
-				
-				/*if(event.key.keysym.sym == SDLK_RIGHT) {
-					//timePress = (currentTime - timePress) / 1000.0;
-					playerMoving[2]=false;				
-				}
-				if(event.key.keysym.sym == SDLK_LEFT) {
-					//timePress = (currentTime - timePress) / 1000.0;
-					playerMoving[3]=false;
-				}
-				if(event.key.keysym.sym == SDLK_DOWN) {
-					//timePress = (currentTime - timePress) / 1000.0;
-					playerMoving[0]=false;
-				}
-				if(event.key.keysym.sym == SDLK_UP) {
-					//timePress = (currentTime - timePress) / 1000.0;
-					playerMoving[1]=false;
-					}*/
-				break;
-				
-				/*case SDL_KEYDOWN:
-				timePress = SDL_GetTicks(); 
-				if(event.key.keysym.sym == SDLK_RIGHT) {
-					option = 3;
-					playerMoving[2] = true;
-					//player.inputMove(timePress, 3);
-				}
-				if(event.key.keysym.sym == SDLK_LEFT) {
-					option = 4;
-					playerMoving[3] = true;
-					//player.inputMove(timePress,4);
-				}
-				if(event.key.keysym.sym == SDLK_DOWN) {
-					option = 1;
-					playerMoving[0]=true;
-					//player.inputMove(timePress, 1);
-				}
-				if(event.key.keysym.sym == SDLK_UP) {
-					option = 2;
-					playerMoving[1]=true;
-					//player.inputMove(timePress, 2);
-					}*/
 				break;
 			}
+			if (screenswitch == 1) {
+			  activeScreen = &g;
+			}
+			SDL_RenderClear(gRenderer);
+			activeScreen->draw(gRenderer, dt);
+			SDL_RenderPresent(gRenderer);
 		
 		}
-		/*if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
-			player.inputMove(dt, option);
-			}*/
-		SDL_RenderClear(gRenderer);
-		activeScreen->draw(gRenderer, dt);
-		//player.draw(gRenderer);
-		/*for (int i=0;i<5;i++) {
-			enemy[i].automove(time);
-			enemy[i].draw(gRenderer);		
-			if (player.checkCollide(&(enemy[i])) && play[i]) {
-				Mix_PlayMusic(sfx,0);
-				play[i] = false;
-			}
-			else if (!player.checkCollide(&(enemy[i]))){
-				play[i] = true;
-			}
-			}*/
-		SDL_RenderPresent(gRenderer);
-		
-	}
 	
 	return;
+	}
 }
 
 int main() {

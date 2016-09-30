@@ -1,4 +1,4 @@
-OBJS = main.cpp Movable.cpp AutoMovable.cpp GameScreen.cpp MenuScreen.cpp Screen.cpp
+OBJS = main.cpp Movable.cpp AutoMovable.cpp GameScreen.cpp MenuScreen.cpp TitleScreen.cpp Screen.cpp
 CC = g++
 
 COMPILER_FLAGS = -std=c++11 -Wall -Wextra -Wpedantic
