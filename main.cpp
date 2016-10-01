@@ -73,11 +73,10 @@ void setup() {
    	if(gRenderer == NULL) {
 	   std::cout << "Something broke insetup2: " << SDL_GetError();
 	}
-	
-	//g = GameScreen();
+
 	t = TitleScreen(gRenderer);
    	m = MenuScreen(gRenderer);
-	h = HighScoreScreen(gRenderer);
+       	h = HighScoreScreen(gRenderer);
 	return;
 }
 
@@ -93,7 +92,7 @@ void cleanup() {
 	//Mix_FreeMusic(sfx);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
-//	TTF_Quit();
+       	TTF_Quit();
 	Mix_Quit();
 	SDL_Quit();
 }

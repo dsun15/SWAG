@@ -57,7 +57,7 @@ MenuScreen::MenuScreen(SDL_Renderer * renderer) {
   indicator = Movable(point, 50,50,50,50,800,600);
 }
 MenuScreen::~MenuScreen(){
-  TTF_Quit();
+  //TTF_Quit();
 }
 
 //return ints for to determine which screen to switch to

@@ -31,7 +31,7 @@ TitleScreen::TitleScreen(SDL_Renderer * renderer){
 
 TitleScreen::~TitleScreen(){
   //TTF_CloseFont(this->font);
-  TTF_Quit();
+  //  TTF_Quit();
 }
 
 int TitleScreen::input(SDL_Event * event, int dt){

@@ -18,48 +18,62 @@
 #include "Screen.h"
 
 using namespace std;
-
-  vector<const char *> scores;
-  vector<SDL_Surface*> scoresurfaces;
-vector<SDL_Texture*> scoretex;
-  vector<SDL_Rect> scorerect;
-  SDL_Color textcolor = {0,0,0,255};
-  SDL_Surface * titlesurface;
-  SDL_Texture *titletex;
-  SDL_Rect titleRect;
-  TTF_Font *TitleFont;
-  TTF_Font *ScoresFont;
+string name = "SMP: 9000";
 const char* ScoreTitle = "SWAG SCORES";
-const char*  name = "SMP: 9000";
+
+/*vector<string> scores(5,name);
+vector<SDL_Surface *> scoresurfaces;
+vector<SDL_Texture *> scoretex;
+vector<SDL_Rect> scorerect;*/
+string scores[5];
+SDL_Surface * scoresurfaces[5];
+SDL_Texture * scoretex[5];
+SDL_Rect scorerect[5];
+
+SDL_Color textcolor = {255,255,255,255};
+SDL_Surface * titlesurface;
+SDL_Texture * titletex;
+SDL_Rect titleRect;
+TTF_Font * TitleFont;
+TTF_Font * ScoresFont;
+//const char* ScoreTitle = "SWAG SCORES";
+//string name = "SMP: 9000";
+
 HighScoreScreen::HighScoreScreen(){}
 
 HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
-  
   /**Load in the high scores here. */
   for(int x = 0; x < 5; x++){
-
-    scores.push_back(name);
-
+    //scores.at(x)=name;
+    //scores.push_back(name);
+    scores[x] = name;
+    //cout << scores.at(x);
   }
-  
+  //cout << scores.size();
   TTF_Init();
   TitleFont = TTF_OpenFont("8bit.ttf", 72);
   ScoresFont = TTF_OpenFont("8bit.ttf", 24);
   titlesurface = TTF_RenderUTF8_Blended(TitleFont, ScoreTitle, textcolor);
   titletex = SDL_CreateTextureFromSurface(renderer, titlesurface);
-  titleRect = {100, 0, 600, 75};
+  titleRect = {100, 25, 300, 50};
   for(int x = 0; x < 5; x++){
-    scoresurfaces.push_back(TTF_RenderUTF8_Blended(ScoresFont, scores[x], textcolor));
+    //cout << scores[x];
+    const char * tempstr = scores[x].c_str();
+    SDL_Surface * temp =  TTF_RenderUTF8_Blended(ScoresFont,tempstr,textcolor);
+    scoresurfaces[x] = temp;
+    //scoresurfaces.push_back(temp);
+    //scoresurfaces.push_back(TTF_RenderUTF8_Blended(ScoresFont, scores[x], textcolor));
+    cout << "pushed";
     scoretex[x] = SDL_CreateTextureFromSurface(renderer, scoresurfaces[x]);
-    scorerect[x] = {150, (75+75*x), 500, 75};
+    cout << "textured";
+    scorerect[x] = {150, (100+75*x), 300, 50};
+    cout << "rected\n";
   }
 
 }
 
 HighScoreScreen::~HighScoreScreen(){
-
-  TTF_Quit();
-
+  //TTF_Quit();
 }
 
 //return ints for to determine which screen to switch to

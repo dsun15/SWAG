@@ -40,7 +40,7 @@ GameScreen::GameScreen() {
 }
 
 GameScreen::~GameScreen() {
-	Mix_FreeMusic(sfx);
+  //Mix_FreeMusic(sfx);
 }
 
 int GameScreen::input(SDL_Event * event, int dt) {
