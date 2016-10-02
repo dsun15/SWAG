@@ -17,6 +17,11 @@
 #include "TitleScreen.h"
 #include "Screen.h"
 
+Mix_Music* titleMusic;
+Mix_Chunk* sfxConfirm;
+const char* musicTitleName = "title.ogg";
+const char* effectName = "confirmClick.ogg";
+
 TitleScreen::TitleScreen() {}
 TitleScreen::TitleScreen(SDL_Renderer * renderer){
   TTF_Init();
@@ -27,6 +32,10 @@ TitleScreen::TitleScreen(SDL_Renderer * renderer){
   this->texture2 = SDL_CreateTextureFromSurface(renderer, textsurface2);
   this->textrect = {50,50,400,50};
   this->textrect2 = {50,300,300,50};
+  Mix_SetMusicCMD("ogg123");
+  titleMusic = Mix_LoadMUS(musicTitleName);
+  Mix_PlayMusic(titleMusic, -1);
+  sfxConfirm = Mix_LoadWAV(effectName);
 }
 
 TitleScreen::~TitleScreen(){
@@ -38,6 +47,7 @@ int TitleScreen::input(SDL_Event * event, int dt){
   switch (event->type) {
   case SDL_KEYUP:
     if(event->key.keysym.sym == SDLK_SPACE) {
+	Mix_PlayChannel(-1,sfxConfirm,1);
 	return 1;
     }
     break;

@@ -23,15 +23,15 @@ const int width = 800;
 const int height = 600;
 const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
-const char* gameMusic = "levelOne.ogg";
-const char* titleMusicTitle = "title.ogg";
+//const char* gameMusic = "levelOne.ogg";
+//const char* titleMusicTitle = "title.ogg";
 const double radToDeg = 180 / M_PI;
 
 
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
-Mix_Music* titleMusic;
-Mix_Music* game;
+//Mix_Music* titleMusic;
+//Mix_Music* game;
 GameScreen g;
 TitleScreen t;
 MenuScreen m;
@@ -84,8 +84,8 @@ void setup() {
 }
 
 void load() {
-	titleMusic = Mix_LoadMUS(titleMusicTitle);
-	game = Mix_LoadMUS(gameMusic);
+//	titleMusic = Mix_LoadMUS(titleMusicTitle);
+//	game = Mix_LoadMUS(gameMusic);
 	std::cout << "loaded music" << "\n";
 	activeScreen = &t;
 	return;
