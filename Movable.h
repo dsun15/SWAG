@@ -24,10 +24,14 @@ class Movable {
 	protected: int windowH; //y axis
 	protected: SDL_Rect rect;
 	protected: SDL_Surface* img; 
+ protected: int timeSinceSpriteChange;
+ protected: SDL_Rect spriteSheetRect;
+ protected: int sheetWidth;
+ protected: int sheetHeight;
 public:
 	Movable(); 
 	
-	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH);
+	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight);
 
 	Movable(const Movable&);
 
@@ -39,7 +43,9 @@ public:
 
 	bool checkCollide(Movable *m);
 	
-	void draw(SDL_Renderer * renderer);
+	void draw(SDL_Renderer * renderer, int dt);
+	
+	void spriteUpdate(int dt);
 
 private:
 

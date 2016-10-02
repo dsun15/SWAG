@@ -19,7 +19,7 @@ using std::string;
 
 Movable::Movable(){}
 
-Movable::Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH){ 
+Movable::Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight){ 
 	this->fileName = fileName;
 	if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || windowW < 0 || windowH < 0) {
 		cout << "something's negative\n";
@@ -31,7 +31,9 @@ Movable::Movable(const char * fileName, int width, int height, int cornerX, int 
 	this->windowH = windowH;
 	this->rect = {cornerX, cornerY, width, height};
 	this->img = IMG_Load(fileName);
-	
+	this->spriteSheetRect = {0,0,50,50};
+	this->sheetWidth = sheetWidth;
+	this->sheetHeight = sheetHeight;
 }	
 
 Movable::Movable(const Movable & m) {
@@ -93,7 +95,19 @@ bool Movable::checkCollide(Movable * m) {
 	return SDL_HasIntersection(r1, r2);
 }
 
-void Movable::draw(SDL_Renderer * renderer) {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
-	SDL_RenderCopy(renderer, texture, NULL, &(this->rect));
+void Movable::draw(SDL_Renderer * renderer, int dt) {
+  spriteUpdate(dt);
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
+  SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
+}
+
+void Movable::spriteUpdate(int dt) {
+  if (this->timeSinceSpriteChange >= 80) {
+    this->spriteSheetRect.x+=50;
+    if (this->spriteSheetRect.x >=sheetWidth) {
+      this->spriteSheetRect.x = 0;
+    }
+    this->timeSinceSpriteChange = 0;
+  }
+  this->timeSinceSpriteChange+=dt;
 }

@@ -31,9 +31,10 @@ const char* musicName = "levelOne.ogg";
 const char* effect = "bump.ogg";
 
 GameScreen::GameScreen() {
-	player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
+  player =  Movable("player1.png",50,50,0,0,width,height, 600, 50);
+  Mix_HaltChannel(1);
         for (int i = 0; i <=4; i++) {
-        	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
+	  enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100*i),(200 + 100*i), width, height, 300, 50);
         }
 	if(!Mix_PausedMusic()){
 	  Mix_SetMusicCMD("ogg123");
@@ -98,7 +99,7 @@ int GameScreen::input(SDL_Event * event, int dt) {
 }
 
 void GameScreen::draw (SDL_Renderer * renderer, int dt) {
-	player.draw(renderer);
+  player.draw(renderer,dt);
 	if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
 	  player.inputMove(dt, option);
 	}
@@ -106,7 +107,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
 	  //*****FIX THIS AUTOMOVE SHIT*******
 		enemy[i].automove(dt);
 		//*******SHOULDN'T BE 2, SHOULD BE SOME TIME SHIT*********
-		enemy[i].draw(renderer);		
+		enemy[i].draw(renderer,dt);		
 		if (player.checkCollide(&(enemy[i])) && play[i]) {
 		  Mix_PlayChannel(-1, sfx,1);
 			play[i] = false;
