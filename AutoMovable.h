@@ -21,7 +21,7 @@ class AutoMovable: public Movable
 	char dir;
  public:
 	AutoMovable();
-	AutoMovable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH): Movable(fileName,width,height,cornerX,cornerY,windowW,windowH) {
+ AutoMovable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH,int sheetW, int sheetH): Movable(fileName,width,height,cornerX,cornerY,windowW,windowH,sheetW,sheetH) {
 		srand(time(NULL));
 	};
 	~AutoMovable();

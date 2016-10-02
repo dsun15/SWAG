@@ -58,7 +58,7 @@ MenuScreen::MenuScreen(SDL_Renderer * renderer) {
   t2 = SDL_CreateTextureFromSurface(renderer,s2);
   t3 = SDL_CreateTextureFromSurface(renderer,s3);
   t4 = SDL_CreateTextureFromSurface(renderer,s4);
-  indicator = Movable(point, 50,50,50,50,800,600);
+  indicator = Movable(point, 50,50,50,50,800,600,50,50);
 	Mix_SetMusicCMD("ogg123");
 	move = Mix_LoadMUS(moveName);
 	confirm = Mix_LoadMUS(comfirmName);  	
@@ -114,7 +114,7 @@ void MenuScreen::draw(SDL_Renderer * renderer, int dt){
   SDL_RenderCopy(renderer,t2,NULL,&rect2);
   SDL_RenderCopy(renderer,t3,NULL,&rect3);
   SDL_RenderCopy(renderer,t4,NULL,&rect4);
-  indicator.draw(renderer);
+  indicator.draw(renderer,dt);
 }
 
 

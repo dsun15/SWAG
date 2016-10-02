@@ -103,9 +103,9 @@ void Movable::draw(SDL_Renderer * renderer, int dt) {
 
 void Movable::spriteUpdate(int dt) {
   if (this->timeSinceSpriteChange >= 80) {
-    this->rect.x+=50;
-    if (this->rect.x >=width) {
-      this->rect.x = 0;
+    this->spriteSheetRect.x+=50;
+    if (this->spriteSheetRect.x >=sheetWidth) {
+      this->spriteSheetRect.x = 0;
     }
     this->timeSinceSpriteChange = 0;
   }
