@@ -24,7 +24,7 @@ Movable player;
 AutoMovable enemy[5];
 bool play[] = {true,true,true,true,true};
 bool playerMoving[] = {false,false,false,false};
-Mix_Music* sfx;
+Mix_Chunk* sfx;
 int option;
 Mix_Music* music;
 const char* musicName = "levelOne.ogg";
@@ -37,14 +37,15 @@ GameScreen::GameScreen() {
         }
 	Mix_SetMusicCMD("ogg123");
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 );
-	sfx = Mix_LoadMUS(effect);
+	sfx = Mix_LoadWAV(effect);
 	music = Mix_LoadMUS(musicName);
 	Mix_PlayMusic(music,-1);
         return;
 }
 
 GameScreen::~GameScreen() {
-  //Mix_FreeMusic(sfx);
+  //Mix_FreeMusic(music);
+  Mix_HaltMusic();
 }
 
 int GameScreen::input(SDL_Event * event, int dt) {
@@ -101,7 +102,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
 		//*******SHOULDN'T BE 2, SHOULD BE SOME TIME SHIT*********
 		enemy[i].draw(renderer);		
 		if (player.checkCollide(&(enemy[i])) && play[i]) {
-			Mix_PlayMusic(sfx,0);
+		  Mix_PlayChannel(-1, sfx,1);
 			play[i] = false;
 		}
 		else if (!player.checkCollide(&(enemy[i]))){
