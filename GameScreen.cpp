@@ -31,6 +31,7 @@ const char* musicName = "levelOne.ogg";
 const char* effect = "bump.ogg";
 
 GameScreen::GameScreen() {
+  Mix_HaltChannel(1);
 	player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
         for (int i = 0; i <=4; i++) {
         	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
