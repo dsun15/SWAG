@@ -35,17 +35,25 @@ GameScreen::GameScreen() {
         for (int i = 0; i <=4; i++) {
         	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
         }
-	Mix_SetMusicCMD("ogg123");
+	if(!Mix_PausedMusic()){
+	  Mix_SetMusicCMD("ogg123");
+	  music = Mix_LoadMUS(musicName);
+	  Mix_PlayMusic(music, -1);
+	}
+	else{
+	  Mix_ResumeMusic();
+	}
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 );
 	sfx = Mix_LoadWAV(effect);
-	music = Mix_LoadMUS(musicName);
-	Mix_PlayMusic(music,-1);
+	//music = Mix_LoadMUS(musicName);
+	//Mix_PlayMusic(music,-1);
         return;
 }
 
 GameScreen::~GameScreen() {
   //Mix_FreeMusic(music);
-  Mix_HaltMusic();
+  if(Mix_PlayingMusic())
+    Mix_PauseMusic();
 }
 
 int GameScreen::input(SDL_Event * event, int dt) {
