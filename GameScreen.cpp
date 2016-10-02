@@ -26,16 +26,20 @@ bool play[] = {true,true,true,true,true};
 bool playerMoving[] = {false,false,false,false};
 Mix_Music* sfx;
 int option;
-//Mix_Music* gMusic;
-const char* effect = "bump.wav";
+Mix_Music* music;
+const char* musicName = "levelOne.ogg";
+const char* effect = "bump.ogg";
 
 GameScreen::GameScreen() {
 	player =  Movable("PlayerSprite.xcf",50,50,0,0,width,height);
         for (int i = 0; i <=4; i++) {
         	enemy[i]  = AutoMovable("EnemySprite.xcf",50,50,(200 + 100*i),(200 + 100*i), width, height);
         }
+	Mix_SetMusicCMD("ogg123");
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 );
 	sfx = Mix_LoadMUS(effect);
+	music = Mix_LoadMUS(musicName);
+	Mix_PlayMusic(music,-1);
         return;
 }
 

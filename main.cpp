@@ -23,13 +23,15 @@ const int width = 800;
 const int height = 600;
 const char* title = "Game Engine Demo";
 const char* bigtext = "replace this text later";
-const char* musicTitle = "sqPP.wav";
+const char* gameMusic = "levelOne.ogg";
+const char* titleMusicTitle = "title.ogg";
 const double radToDeg = 180 / M_PI;
 
 
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
-Mix_Music* gMusic;
+Mix_Music* titleMusic;
+Mix_Music* game;
 GameScreen g;
 TitleScreen t;
 MenuScreen m;
@@ -57,6 +59,7 @@ void setup() {
 		std::cerr << "oops. Failed to init: " << SDL_GetError() << "\n";
 	}
 	
+	Mix_SetMusicCMD("ogg123");
 	if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) { 
    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
     			  << Mix_GetError() << "\n";
@@ -81,14 +84,15 @@ void setup() {
 }
 
 void load() {
-	gMusic = Mix_LoadMUS(musicTitle);
+	titleMusic = Mix_LoadMUS(titleMusicTitle);
+	game = Mix_LoadMUS(gameMusic);
 	std::cout << "loaded music" << "\n";
 	activeScreen = &t;
 	return;
 }
 
 void cleanup() {
-	Mix_FreeMusic(gMusic);
+	//Mix_FreeMusic(gMusic);
 	//Mix_FreeMusic(sfx);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
@@ -128,6 +132,7 @@ void run() {
 			}
 		}
 			if (screenswitch == 1) {
+				Mix_PlayMusic(game,-1);		
 			  //new game
 			  g = GameScreen();
 			  activeScreen = &g;

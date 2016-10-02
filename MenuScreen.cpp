@@ -15,7 +15,6 @@
 #include "Movable.h"
 #include "AutoMovable.h"
 #include "Screen.h"
-
 int counter = 1;
 TTF_Font * font;
 Movable indicator;
@@ -39,6 +38,11 @@ SDL_Rect rect2 = {150,250,300,50};
 SDL_Rect rect3 = {150,350,300,50};
 SDL_Rect rect4 = {150,450,300,50};
 
+Mix_Music* move;
+Mix_Music* confirm;
+const char* moveName = "moveClick.ogg";
+const char* comfirmName = "confirmClick.ogg";
+
 MenuScreen::MenuScreen(){}
 MenuScreen::MenuScreen(SDL_Renderer * renderer) {
   TTF_Init();
@@ -55,8 +59,13 @@ MenuScreen::MenuScreen(SDL_Renderer * renderer) {
   t3 = SDL_CreateTextureFromSurface(renderer,s3);
   t4 = SDL_CreateTextureFromSurface(renderer,s4);
   indicator = Movable(point, 50,50,50,50,800,600);
+	Mix_SetMusicCMD("ogg123");
+	move = Mix_LoadMUS(moveName);
+	confirm = Mix_LoadMUS(comfirmName);  	
 }
 MenuScreen::~MenuScreen(){
+//	Mix_FreeMusic(move);
+//	Mix_FreeMusic(confirm);
   //TTF_Quit();
 }
 
@@ -66,15 +75,18 @@ int MenuScreen::input(SDL_Event * event, int dt){
   switch(event->type) {
   case SDL_KEYUP:
     if(event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym==SDLK_SPACE){
-      if (counter ==1) {
+      if (counter ==1) {	
+	Mix_PlayMusic(confirm,0);
 	return 1;
       }
       if (counter == 2){}
       if (counter == 3){}
       if (counter == 4){
+	Mix_PlayMusic(confirm,0);
 	return 3;
       }
       if (counter == 5){
+	Mix_PlayMusic(confirm,0);
 	return 5;
       }
     }
@@ -83,12 +95,14 @@ int MenuScreen::input(SDL_Event * event, int dt){
 	indicator.move(0,-100);
 	counter--;
       }
+	Mix_PlayMusic(move,0);
     }
     if(event->key.keysym.sym ==SDLK_DOWN){
       if (counter<5) {
 	indicator.move(0,100);
 	counter++;
       }
+	Mix_PlayMusic(move,0);
     }
   }
   return 0;
