@@ -33,6 +33,7 @@ const char* effect = "bump.ogg";
 GameScreen::GameScreen() {
   player =  Movable("player1.png",50,50,0,0,width,height, 600, 50);
   Mix_HaltChannel(1);
+  Mix_Resume(1);
         for (int i = 0; i <=4; i++) {
 	  enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100*i),(200 + 100*i), width, height, 300, 50);
         }
