@@ -152,6 +152,7 @@ void run() {
 			  activeScreen = &t;
 			}
 			if (screenswitch == 5) {
+			  Mix_HaltMusic();
 			  running = false;
 			}
 			SDL_RenderClear(gRenderer);

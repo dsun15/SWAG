@@ -38,8 +38,8 @@ SDL_Rect rect2 = {150,250,300,50};
 SDL_Rect rect3 = {150,350,300,50};
 SDL_Rect rect4 = {150,450,300,50};
 
-Mix_Music* move;
-Mix_Music* confirm;
+Mix_Chunk* move;
+Mix_Chunk* confirm;
 const char* moveName = "moveClick.ogg";
 const char* comfirmName = "confirmClick.ogg";
 
@@ -60,8 +60,8 @@ MenuScreen::MenuScreen(SDL_Renderer * renderer) {
   t4 = SDL_CreateTextureFromSurface(renderer,s4);
   indicator = Movable(point, 50,50,50,50,800,600,50,50);
 	Mix_SetMusicCMD("ogg123");
-	move = Mix_LoadMUS(moveName);
-	confirm = Mix_LoadMUS(comfirmName);  	
+	move = Mix_LoadWAV(moveName);
+	confirm = Mix_LoadWAV(comfirmName);  	
 }
 MenuScreen::~MenuScreen(){
 //	Mix_FreeMusic(move);
@@ -73,20 +73,20 @@ MenuScreen::~MenuScreen(){
 
 int MenuScreen::input(SDL_Event * event, int dt){
   switch(event->type) {
-  case SDL_KEYUP:
+  case SDL_KEYDOWN:
     if(event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym==SDLK_SPACE){
       if (counter ==1) {	
-	Mix_PlayMusic(confirm,0);
+	Mix_PlayChannel(-1, confirm,0);
 	return 1;
       }
       if (counter == 2){}
       if (counter == 3){}
       if (counter == 4){
-	Mix_PlayMusic(confirm,0);
+	Mix_PlayChannel(-1, confirm,0);
 	return 3;
       }
       if (counter == 5){
-	Mix_PlayMusic(confirm,0);
+	Mix_PlayChannel(-1, confirm,0);
 	return 5;
       }
     }
@@ -95,14 +95,14 @@ int MenuScreen::input(SDL_Event * event, int dt){
 	indicator.move(0,-100);
 	counter--;
       }
-	Mix_PlayMusic(move,0);
+      Mix_PlayChannel(-1, move,0);
     }
     if(event->key.keysym.sym ==SDLK_DOWN){
       if (counter<5) {
 	indicator.move(0,100);
 	counter++;
       }
-	Mix_PlayMusic(move,0);
+      Mix_PlayChannel(-1, move,0);
     }
   }
   return 0;
