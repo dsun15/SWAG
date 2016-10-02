@@ -119,11 +119,13 @@ void run() {
 			switch(event.type) {
 			
 			case SDL_QUIT:
+			  Mix_HaltMusic();
 				running = false;
 				break;
 			case SDL_KEYUP:
 				if(event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
-					running = false;
+				  Mix_HaltMusic();
+				  running = false;
 				}
 				if(event.key.keysym.sym == SDLK_p) {
 				  screenswitch = 2; 
@@ -132,7 +134,6 @@ void run() {
 			}
 		}
 			if (screenswitch == 1) {
-				Mix_PlayMusic(game,-1);		
 			  //new game
 			  g = GameScreen();
 			  activeScreen = &g;
