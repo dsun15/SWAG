@@ -12,6 +12,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
 #include "Screen.h"
 #include "Movable.h"
 #include "AutoMovable.h"
@@ -24,11 +26,18 @@ using namespace std;
 class HighScoreScreen: public Screen {
 
   
+protected:
+	string names[5];
+	int scores[5];
+	string filename;
+
 public:
 	HighScoreScreen();
 	HighScoreScreen(SDL_Renderer *);
 	~HighScoreScreen();
 	
+
+
 	int input(SDL_Event * event, int dt);
 	void draw(SDL_Renderer * renderer, int dt);
 };
