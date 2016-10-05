@@ -37,16 +37,16 @@ void AutoMovable::automove(int time) {
   int speed = time / 3;
 	switch(this->dir) {
 		case 'N':
-			Movable::move(0,-1*speed);
+		  AutoMovable::move(0,-1*speed);
 			break;
 		case 'E':
-			Movable::move(speed,0);
+		  AutoMovable::move(speed,0);
 			break;
 		case 'S':
-			Movable::move(0,speed);
+		  AutoMovable::move(0,speed);
 			break;
 		case 'W':
-			Movable::move(-1*speed,0);
+		  AutoMovable::move(-1*speed,0);
 			break;
 		default:
 			AutoMovable::genDir();
@@ -67,6 +67,8 @@ void AutoMovable::automove(int time) {
 	}
 	timeSinceChange+=time;
 }
+
+void AutoMovable::move(int x, int y){};
 
 void AutoMovable::genDir() {
 	int temp;

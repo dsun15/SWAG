@@ -27,7 +27,7 @@ class AutoMovable: public Movable
 	~AutoMovable();
 	void automove(int time);
 	void genDir();
-
+	void move(int x, int y);
  private:
 };
 

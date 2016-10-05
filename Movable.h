@@ -18,16 +18,23 @@ using std::string;
 #define _MOVABLE_H
 
 class Movable {
-
 	const char * fileName;
-	protected: int windowW; //x axis
-	protected: int windowH; //y axis
-	protected: SDL_Rect rect;
-	protected: SDL_Surface* img; 
- protected: int timeSinceSpriteChange;
- protected: SDL_Rect spriteSheetRect;
- protected: int sheetWidth;
- protected: int sheetHeight;
+
+protected:
+	int MAX_HORIZ = 5;
+	int MAX_VERT = 3;
+	int gravity = 5;
+	int windowW; //x axis
+	int windowH; //y axis
+	int velX=0;
+	int velY=0;
+	SDL_Rect rect;
+	SDL_Surface* img; 
+	int timeSinceSpriteChange;
+ 	SDL_Rect spriteSheetRect;
+ 	int sheetWidth;
+ 	int sheetHeight;
+	bool isMoving = false;
 public:
 	Movable(); 
 	
@@ -37,16 +44,20 @@ public:
 
 	~Movable();
 
-	void inputMove(int dt, int direction); 
+	void accelerate(int dt, int accX); 
+
+	void move(int dt);
 
 	void move(int x, int y);
 
 	bool checkCollide(Movable *m);
-	
+
+	bool checkCollide(SDL_Rect *);
+		
 	void draw(SDL_Renderer * renderer, int dt);
 	
 	void spriteUpdate(int dt);
-
+	void setMove(bool);
 private:
 
 };	

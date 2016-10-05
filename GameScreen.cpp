@@ -21,7 +21,7 @@ int height = 600;
 SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
 Movable player;
-AutoMovable enemy[5];
+//AutoMovable enemy[5];
 bool play[] = {true,true,true,true,true};
 bool playerMoving[] = {false,false,false,false};
 Mix_Chunk* sfx;
@@ -32,10 +32,11 @@ const char* effect = "bump.ogg";
 
 GameScreen::GameScreen() {
   player =  Movable("player1.png",50,50,0,0,width,height, 600, 50);
+  player.accelerate(1,0);
   Mix_HaltChannel(1);
   Mix_Resume(1);
         for (int i = 0; i <=4; i++) {
-	  enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100*i),(200 + 100*i), width, height, 300, 50);
+	  //enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100*i),(200 + 100*i), width, height, 300, 50);
         }
 	if(!Mix_PausedMusic()){
 	  Mix_SetMusicCMD("ogg123");
@@ -60,35 +61,41 @@ int GameScreen::input(SDL_Event * event, int dt) {
 			switch(event->type) {
 			case SDL_KEYUP:
 				if(event->key.keysym.sym == SDLK_RIGHT) {
-					playerMoving[2]=false;				
+//					playerMoving[2]=false;				
+				  player.setMove(false);
 				}
 				if(event->key.keysym.sym == SDLK_LEFT) {
-					playerMoving[3]=false;
+//					playerMoving[3]=false;
+				  player.setMove(false);
 				}
 				if(event->key.keysym.sym == SDLK_DOWN) {
-					playerMoving[0]=false;
+//					playerMoving[0]=false;
 				}
 				if(event->key.keysym.sym == SDLK_UP) {
-					playerMoving[1]=false;
+//					playerMoving[1]=false;
 				}
 				break;
 				
 			case SDL_KEYDOWN:
 				if(event->key.keysym.sym == SDLK_RIGHT) {
 					option = 3;
-					playerMoving[2] = true;
+					player.accelerate(dt, 2);
+					player.setMove(true);
+//					playerMoving[2] = true;
 				}
 				if(event->key.keysym.sym == SDLK_LEFT) {
 					option = 4;
-					playerMoving[3] = true;
+//					playerMoving[3] = true;
+					player.accelerate(dt, -2);
+					player.setMove(true);
 				}
 				if(event->key.keysym.sym == SDLK_DOWN) {
 					option = 1;
-					playerMoving[0]=true;
+//					playerMoving[0]=true;
 				}
 				if(event->key.keysym.sym == SDLK_UP) {
 					option = 2;
-					playerMoving[1]=true;
+//					playerMoving[1]=true;
 				}
 				break;
 			}
@@ -101,13 +108,14 @@ int GameScreen::input(SDL_Event * event, int dt) {
 
 void GameScreen::draw (SDL_Renderer * renderer, int dt) {
   player.draw(renderer,dt);
-	if (playerMoving[0] || playerMoving[1] || playerMoving[2] || playerMoving[3]) {
-	  player.inputMove(dt, option);
+	/*if (playerMoving[3]) {
+	  player.accelerate(dt, -2);
 	}
-	for (int i=0;i<5;i++) {
-	  //*****FIX THIS AUTOMOVE SHIT*******
+	if (playerMoving[2]) {
+		player.accelerate(dt, 2);
+	}
+		for (int i=0;i<5;i++) {
 		enemy[i].automove(dt);
-		//*******SHOULDN'T BE 2, SHOULD BE SOME TIME SHIT*********
 		enemy[i].draw(renderer,dt);		
 		if (player.checkCollide(&(enemy[i])) && play[i]) {
 		  Mix_PlayChannel(-1, sfx,1);
@@ -117,5 +125,5 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
 			play[i] = true;
 
 		}
-	}
+		}*/
 }

@@ -11,6 +11,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <string>
+#include <stdlib.h>
 #include "Movable.h"
 
 //using namespace Movable;
@@ -48,28 +49,58 @@ Movable::~Movable() {
 	
 }
 
-void Movable::inputMove(int dt, int direction) {
-	switch (direction) {
-		//down
-		case 1:
-			move(0,dt);	
-			break;
-		//up
-		case 2:
-			move(0,-1*dt);
-			break;
-		//right
-		case 3:
-			move(dt, 0);
-			break;
-		//left
-		case 4:
-			move(-1*dt, 0);
-			break;
+void Movable::accelerate(int dt, int accX) {
+	this->velX = this->velX + accX*dt;
+	this->velY = this->velY + this->gravity*dt;
+	if (abs(this->velX) > MAX_HORIZ) {
+		if (this->velX >0) {
+			this->velX = MAX_HORIZ;
+		} else {
+			this->velX = -1*MAX_HORIZ;
+		}
+	}
+	if (abs(this->velY) > MAX_VERT) {
+		if (this->velY > 0) {
+			this->velY = MAX_VERT;
+		} else {
+			this->velY = -1*MAX_VERT;
+		}
 	}
 }
+
+
 		
 
+void Movable::move(int dt) {
+	//setting
+	this->rect.x += this->velX * dt;
+	this->rect.y += this->velY * dt;
+	if (!this->isMoving) {
+	  if(this->velX>0) {
+	    Movable::accelerate(dt,-1);
+	      }
+	  if (this->velY < 0) {
+	    Movable::accelerate(dt,1);
+	  }
+	}
+	//checking for boundary collisions
+	if (this->rect.x < 0) {
+		this->rect.x = 0;
+		this->velX = 0;
+	}
+	if (this->rect.y < 0) {
+		this->rect.y = 0;
+		this->velY = 0;
+	}
+	if (this->rect.x + this->rect.w > windowW) {
+		this->rect.x = windowW - this->rect.w;
+		this->velX = 0;
+	}
+	if (this->rect.y + this->rect.h > windowH) {
+		this->rect.y = windowH - this->rect.h;
+		this->velY = 0;
+	}
+}
 void Movable::move(int x, int y) {
 	//setting
 	this->rect.x += x;
@@ -95,7 +126,11 @@ bool Movable::checkCollide(Movable * m) {
 	return SDL_HasIntersection(r1, r2);
 }
 
+bool Movable::checkCollide(SDL_Rect * rect) {
+	}
+
 void Movable::draw(SDL_Renderer * renderer, int dt) {
+  Movable::move(dt);
   spriteUpdate(dt);
   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
   SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
@@ -110,4 +145,8 @@ void Movable::spriteUpdate(int dt) {
     this->timeSinceSpriteChange = 0;
   }
   this->timeSinceSpriteChange+=dt;
+}
+
+void Movable::setMove(bool b) {
+  this->isMoving = b;
 }
