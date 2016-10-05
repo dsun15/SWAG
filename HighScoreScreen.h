@@ -27,7 +27,7 @@ class HighScoreScreen: public Screen {
 
   
 protected:
-	string names[5];
+	string names[5] = {"1st", "2nd", "3rd", "4th", "5th"};
 	int scores[5];
 	string filename;
 

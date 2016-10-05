@@ -24,10 +24,6 @@ using namespace std;
 string name = "SMP: 9000";
 const char* ScoreTitle = "SWAG SCORES";
 
-/*vector<string> scores(5,name);
-vector<SDL_Surface *> scoresurfaces;
-vector<SDL_Texture *> scoretex;
-vector<SDL_Rect> scorerect;*/
 SDL_Surface * scoresurfaces[5];
 SDL_Texture * scoretex[5];
 SDL_Rect scorerect[5];
@@ -52,8 +48,6 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
     /**Load in the high scores here. */
     for(int x = 0; x < 5; x++){
       if(getline(scores_file, temp)){
-	names[x] = temp;
-	getline(scores_file, temp);
 	scores[x] = stoi(temp);
       }
     }
