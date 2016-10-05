@@ -51,18 +51,18 @@ Movable::~Movable() {
 
 void Movable::accelerate(int dt, int accX) {
 	this->velX = this->velX + accX*dt;
-	this->velY = this->velY + this->gravity*dt;
+	this->velY = this->velY + this->gravity*(dt/3);
 	if (abs(this->velX) > MAX_HORIZ) {
 		if (this->velX >0) {
 			this->velX = MAX_HORIZ;
-		} else {
+		} else if (this->velX<0) {
 			this->velX = -1*MAX_HORIZ;
 		}
 	}
-	if (abs(this->velY) > MAX_VERT) {
+	if (velY > MAX_VERT) {
 		if (this->velY > 0) {
 			this->velY = MAX_VERT;
-		} else {
+		} else if (this->velY < 0) {
 			this->velY = -1*MAX_VERT;
 		}
 	}
@@ -78,11 +78,13 @@ void Movable::move(int dt) {
 	if (!this->isMoving) {
 	  if(this->velX>0) {
 	    Movable::accelerate(dt,-1);
-	      }
-	  if (this->velY < 0) {
+	  }
+	  if (this->velX < 0) {
 	    Movable::accelerate(dt,1);
 	  }
 	}
+	Movable::accelerate(dt,0);
+       
 	//checking for boundary collisions
 	if (this->rect.x < 0) {
 		this->rect.x = 0;
@@ -99,6 +101,7 @@ void Movable::move(int dt) {
 	if (this->rect.y + this->rect.h > windowH) {
 		this->rect.y = windowH - this->rect.h;
 		this->velY = 0;
+		this->inAir = false;
 	}
 }
 void Movable::move(int x, int y) {
@@ -117,6 +120,7 @@ void Movable::move(int x, int y) {
 	}
 	if (this->rect.y + this->rect.h > windowH) {
 		this->rect.y = windowH - this->rect.h;
+		this->inAir = false;
 	}
 }
 
@@ -127,7 +131,9 @@ bool Movable::checkCollide(Movable * m) {
 }
 
 bool Movable::checkCollide(SDL_Rect * rect) {
-	}
+  const SDL_Rect * temp = &(this->rect);
+  return SDL_HasIntersection(temp, rect);
+}
 
 void Movable::draw(SDL_Renderer * renderer, int dt) {
   Movable::move(dt);
@@ -149,4 +155,19 @@ void Movable::spriteUpdate(int dt) {
 
 void Movable::setMove(bool b) {
   this->isMoving = b;
+}
+
+void Movable::setVelX(int n) {
+  this->velX = n;
+}
+
+void Movable::setVelY(int n) {
+  this->velY = n;
+}
+
+void Movable::jump() {
+  if (!this->inAir) {
+    this->inAir = true;
+    Movable::setVelY(-4);;
+  }
 }

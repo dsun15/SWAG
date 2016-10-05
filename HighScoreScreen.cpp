@@ -75,11 +75,8 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
     scoresurfaces[x] = temp;
     //scoresurfaces.push_back(temp);
     //scoresurfaces.push_back(TTF_RenderUTF8_Blended(ScoresFont, scores[x], textcolor));
-    cout << "pushed";
     scoretex[x] = SDL_CreateTextureFromSurface(renderer, scoresurfaces[x]);
-    cout << "textured";
     scorerect[x] = {150, (100+75*x), 300, 50};
-    cout << "rected\n";
   }
 
 }

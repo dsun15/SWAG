@@ -95,6 +95,7 @@ int GameScreen::input(SDL_Event * event, int dt) {
 				}
 				if(event->key.keysym.sym == SDLK_UP) {
 					option = 2;
+					player.jump();
 //					playerMoving[1]=true;
 				}
 				break;

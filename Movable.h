@@ -21,9 +21,9 @@ class Movable {
 	const char * fileName;
 
 protected:
-	int MAX_HORIZ = 5;
+	int MAX_HORIZ = 3;
 	int MAX_VERT = 3;
-	int gravity = 5;
+	int gravity = 1;
 	int windowW; //x axis
 	int windowH; //y axis
 	int velX=0;
@@ -34,6 +34,7 @@ protected:
  	SDL_Rect spriteSheetRect;
  	int sheetWidth;
  	int sheetHeight;
+	bool inAir = false;
 	bool isMoving = false;
 public:
 	Movable(); 
@@ -58,6 +59,9 @@ public:
 	
 	void spriteUpdate(int dt);
 	void setMove(bool);
+	void setVelX(int n);
+	void setVelY(int n);
+	void jump();
 private:
 
 };	
