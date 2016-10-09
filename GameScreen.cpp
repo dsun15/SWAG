@@ -28,10 +28,12 @@ bool youWin = false;
 bool onScreen[] = {true, true, true, true};
 bool play[] = {true,true,true,true,true};
 Mix_Chunk* sfx;
+Mix_Chunk* sfxJump;
 int option;
 Mix_Music* music;
 const char* musicName = "levelOne.ogg";
 const char* effect = "bump.ogg";
+const char* jumpEffect = "jump.ogg";
 const char * win = "You win";
 const char * lose = "You lose";
 SDL_Texture * wintext;
@@ -46,7 +48,7 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
   Mix_HaltChannel(1);
   Mix_Resume(1);
         for (int i = 0; i <=3; i++) {
-	        enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100i),(550), width, height, 300, 50);
+	        enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100*i),(550), width, height, 300, 50);
         }
 	if(!Mix_PausedMusic()){
 	  Mix_SetMusicCMD("ogg123");
@@ -58,6 +60,7 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
 	}
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 );
 	sfx = Mix_LoadWAV(effect);
+    sfxJump = Mix_LoadWAV(jumpEffect);
     gameOver = false;
     youWin = false;
     for (int i = 0; i < 4; i++) {
@@ -118,6 +121,7 @@ int GameScreen::input(SDL_Event * event, int dt) {
 					option = 1;
 				}
 				if(event->key.keysym.sym == SDLK_SPACE) {
+                    Mix_PlayChannel(-1, sfxJump, 1);
 					option = 2;
 					player.jump();
 				}
@@ -136,6 +140,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
 		for (int i=0;i<4;i++) {
             //check collisions
             if (player.checkCollide(&(enemy[i])) && onScreen[i]) {
+                Mix_PlayChannel(-1, sfx, 1);
                 //jump on enemy for a kill
                 SDL_Rect * temp = player.getRect();
                 SDL_Rect * enemyTemp = enemy[i].getRect();
