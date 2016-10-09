@@ -191,6 +191,6 @@ void Movable::jump() {
   }
 }
 
-SDL_Rect * getRect() {
+SDL_Rect * Movable::getRect() {
   return &(this->rect);
 }
