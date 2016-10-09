@@ -32,7 +32,7 @@ SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
 //Mix_Music* titleMusic;
 //Mix_Music* game;
-GameScreen g;
+GameScreen  g;
 TitleScreen t;
 MenuScreen m;
 HighScoreScreen h;
@@ -80,6 +80,7 @@ void setup() {
 	t = TitleScreen(gRenderer);
    	m = MenuScreen(gRenderer);
        	h = HighScoreScreen(gRenderer);
+    g = GameScreen();
 	return;
 }
 

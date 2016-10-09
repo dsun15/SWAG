@@ -50,7 +50,12 @@ GameScreen::GameScreen() {
 	}
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 );
 	sfx = Mix_LoadWAV(effect);
-        return;
+    gameOver = false;
+    for (int i = 0; i < 4; i++) {
+        onScreen[i] = true;
+    }
+    return;
+    
 }
 
 GameScreen::~GameScreen() {
