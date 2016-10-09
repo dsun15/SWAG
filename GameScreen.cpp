@@ -37,11 +37,18 @@ const char* effect = "bump.ogg";
 const char* jumpEffect = "jump.ogg";
 const char * win = "You win";
 const char * lose = "You lose";
+const char * cont = "Press Enter To Continue";
 SDL_Texture * wintext;
 SDL_Texture * losetext;
+SDL_Texture * continuetext;
+SDL_Texture * scoretext;
 SDL_Rect winrect = {400,50,300,50};
 SDL_Rect loserect = {400,50,300,50};
+SDL_Rect continuerect = {100,125,600,50};
+SDL_Rect gamescorerect = {50,50,75,50};
 int wlswitch; //1 = win, 2 = lose
+int score;
+TTF_Font * gamefont;
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer * renderer) {
@@ -70,13 +77,16 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
     }
     door = Movable("door.png",50,50,750,550, width, height, 50, 50, false);
     TTF_Init();
-    TTF_Font * font = TTF_OpenFont("8bit.ttf",72);
+    gamefont = TTF_OpenFont("8bit.ttf",72);
     SDL_Color white = {255,255,255,255};
-    SDL_Surface * ws = TTF_RenderUTF8_Blended(font, win, white);
-    SDL_Surface * ls = TTF_RenderUTF8_Blended(font, lose, white);
+    SDL_Surface * ws = TTF_RenderUTF8_Blended(gamefont, win, white);
+    SDL_Surface * ls = TTF_RenderUTF8_Blended(gamefont, lose, white);
+    SDL_Surface * cm = TTF_RenderUTF8_Blended(gamefont, cont, white);
     wintext = SDL_CreateTextureFromSurface(renderer,ws);
     losetext = SDL_CreateTextureFromSurface(renderer,ls);
+    continuetext = SDL_CreateTextureFromSurface(renderer, cm);
     wlswitch = 0;
+    score = 0;
     return;
     
 }
@@ -89,9 +99,11 @@ GameScreen::~GameScreen() {
 
 int GameScreen::input(SDL_Event * event, int dt) {
 	    if (gameOver) {
-                return 3;
-            }
-
+                player.setVelX(0);
+                if (event->key.keysym.sym == SDLK_RETURN) {
+                   return 3;
+                }
+        } else {
             switch(event->type) {
 			case SDL_KEYUP:
 				if(event->key.keysym.sym == SDLK_RIGHT) {
@@ -127,23 +139,33 @@ int GameScreen::input(SDL_Event * event, int dt) {
 				}
 				break;
 			}
+        }
 	return 0;
 }
 
 void GameScreen::draw (SDL_Renderer * renderer, int dt) {
   player.draw(renderer,dt);
   door.draw(renderer,dt);
+  string temp = std::to_string(score);
+  const char * temp2 = temp.c_str();
+  SDL_Color white = {255,255,255,255};
+  SDL_Surface * ss = TTF_RenderUTF8_Blended(gamefont, temp2, white);
+  scoretext = SDL_CreateTextureFromSurface(renderer,ss);
+  SDL_RenderCopy(renderer,scoretext,NULL,&gamescorerect);
   if (wlswitch == 1) {
     SDL_RenderCopy(renderer, wintext, NULL, &winrect);
+    SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     //usleep(2500000);
   }
   if (wlswitch == 2) {
     SDL_RenderCopy(renderer, losetext,NULL,&loserect);
+    SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     //    usleep(2500000);
   }
         if (player.checkCollide(&door)) {
-	  wlswitch = 1;
+	    wlswitch = 1;
             youWin = true;
+            gameOver = true;
         } 
 		for (int i=0;i<4;i++) {
             //check collisions
@@ -154,6 +176,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
                 SDL_Rect * enemyTemp = enemy[i].getRect();
                 if((temp->y < enemyTemp->y) && (abs(temp->x - enemyTemp->x) <= enemyTemp->w)) {
                     onScreen[i] = false;  
+                    score = score + 100;
                 //you die 
                 } else {
 		  wlswitch = 2;
