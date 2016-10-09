@@ -11,6 +11,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "Movable.h"
 #include "AutoMovable.h"
 #include "Screen.h"
@@ -38,6 +39,7 @@ SDL_Texture * wintext;
 SDL_Texture * losetext;
 SDL_Rect winrect = {400,50,300,50};
 SDL_Rect loserect = {400,50,300,50};
+int wlswitch; //1 = win, 2 = lose
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer * renderer) {
@@ -46,7 +48,7 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
   Mix_HaltChannel(1);
   Mix_Resume(1);
         for (int i = 0; i <=3; i++) {
-	        enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100i),(550), width, height, 300, 50);
+	        enemy[i]  = AutoMovable("enemy1.png",50,50,(200 + 100*i),(550), width, height, 300, 50);
         }
 	if(!Mix_PausedMusic()){
 	  Mix_SetMusicCMD("ogg123");
@@ -63,7 +65,7 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
     for (int i = 0; i < 4; i++) {
         onScreen[i] = true;
     }
-    door = Movable("player1.png",50,50,750,550, width, height, 50, 50, false);
+    door = Movable("door.png",50,50,750,550, width, height, 50, 50, false);
     TTF_Init();
     TTF_Font * font = TTF_OpenFont("8bit.ttf",72);
     SDL_Color white = {255,255,255,255};
@@ -71,6 +73,7 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
     SDL_Surface * ls = TTF_RenderUTF8_Blended(font, lose, white);
     wintext = SDL_CreateTextureFromSurface(renderer,ws);
     losetext = SDL_CreateTextureFromSurface(renderer,ls);
+    wlswitch = 0;
     return;
     
 }
@@ -82,13 +85,10 @@ GameScreen::~GameScreen() {
 }
 
 int GameScreen::input(SDL_Event * event, int dt) {
-			if (gameOver) {
+	    if (gameOver) {
                 return 3;
             }
-            if (youWin) {
-        
-                return 3;
-            }
+
             switch(event->type) {
 			case SDL_KEYUP:
 				if(event->key.keysym.sym == SDLK_RIGHT) {
@@ -129,8 +129,16 @@ int GameScreen::input(SDL_Event * event, int dt) {
 void GameScreen::draw (SDL_Renderer * renderer, int dt) {
   player.draw(renderer,dt);
   door.draw(renderer,dt);
-        
+  if (wlswitch == 1) {
+    SDL_RenderCopy(renderer, wintext, NULL, &winrect);
+    //usleep(2500000);
+  }
+  if (wlswitch == 2) {
+    SDL_RenderCopy(renderer, losetext,NULL,&loserect);
+    //    usleep(2500000);
+  }
         if (player.checkCollide(&door)) {
+	  wlswitch = 1;
             youWin = true;
         } 
 		for (int i=0;i<4;i++) {
@@ -143,6 +151,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
                     onScreen[i] = false;  
                 //you die 
                 } else {
+		  wlswitch = 2;
                     gameOver = true;
                 }
 
