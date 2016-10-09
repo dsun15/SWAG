@@ -21,6 +21,7 @@
 class GameScreen: public Screen {
 public:
 	GameScreen();
+	GameScreen(SDL_Renderer * renderer);
 	~GameScreen();
        	int input(SDL_Event * event, int dt);
 	void draw(SDL_Renderer * renderer, int dt);

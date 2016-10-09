@@ -80,7 +80,7 @@ void setup() {
 	t = TitleScreen(gRenderer);
    	m = MenuScreen(gRenderer);
        	h = HighScoreScreen(gRenderer);
-    g = GameScreen();
+    g = GameScreen(gRenderer);
 	return;
 }
 
@@ -136,7 +136,7 @@ void run() {
 		}
 			if (screenswitch == 1) {
 			  //new game
-			  g = GameScreen();
+			  g = GameScreen(gRenderer);
 			  activeScreen = &g;
 			  std::cout << "triggered screen switch\n";
 			}
