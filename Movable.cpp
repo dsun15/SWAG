@@ -70,7 +70,7 @@ Movable::~Movable() {
 
 void Movable::accelerate(int dt, int accX) {
 	this->velX = this->velX + accX*dt;
-	this->velY = this->velY + this->gravity*(dt/3);
+	this->velY = this->velY + this->gravity*(dt/2);
 	if (abs(this->velX) > MAX_HORIZ) {
 		if (this->velX >0) {
 			this->velX = MAX_HORIZ;
@@ -92,6 +92,7 @@ void Movable::accelerate(int dt, int accX) {
 
 void Movable::move(int dt) {
 	//setting
+    dt = dt/2;
 	this->rect.x += this->velX * dt;
 	this->rect.y += this->velY * dt;
 	if (!this->isMoving) {
@@ -187,7 +188,7 @@ void Movable::setVelY(int n) {
 void Movable::jump() {
   if (!this->inAir) {
     this->inAir = true;
-    Movable::setVelY(-4);;
+    Movable::setVelY(-8);
   }
 }
 

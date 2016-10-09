@@ -91,7 +91,7 @@ int GameScreen::input(SDL_Event * event, int dt) {
 				if(event->key.keysym.sym == SDLK_DOWN) {
 					option = 1;
 				}
-				if(event->key.keysym.sym == SDLK_UP) {
+				if(event->key.keysym.sym == SDLK_SPACE) {
 					option = 2;
 					player.jump();
 				}
@@ -109,7 +109,7 @@ void GameScreen::draw (SDL_Renderer * renderer, int dt) {
                 //jump on enemy for a kill
                 SDL_Rect * temp = player.getRect();
                 SDL_Rect * enemyTemp = enemy[i].getRect();
-                if(((temp->y + temp->h) == enemyTemp->y) && (abs(temp->x - enemyTemp->x) <= enemyTemp->w)) {
+                if((temp->y < enemyTemp->y) && (abs(temp->x - enemyTemp->x) <= enemyTemp->w)) {
                     onScreen[i] = false;  
                 //you die 
                 } else {
