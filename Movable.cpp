@@ -171,3 +171,7 @@ void Movable::jump() {
     Movable::setVelY(-4);;
   }
 }
+
+SDL_Rect * getRect() {
+  return &(this->rect);
+}

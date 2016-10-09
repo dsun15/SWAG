@@ -62,6 +62,7 @@ public:
 	void setVelX(int n);
 	void setVelY(int n);
 	void jump();
+	SDL_Rect * getRect();
 private:
 
 };	
