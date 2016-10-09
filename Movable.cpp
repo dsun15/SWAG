@@ -35,7 +35,26 @@ Movable::Movable(const char * fileName, int width, int height, int cornerX, int 
 	this->spriteSheetRect = {0,0,50,50};
 	this->sheetWidth = sheetWidth;
 	this->sheetHeight = sheetHeight;
-}	
+}
+
+Movable::Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight, bool hasGravity){ 
+	this->fileName = fileName;
+	if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || windowW < 0 || windowH < 0) {
+		cout << "something's negative\n";
+	}	
+	if (cornerX+width > windowW || cornerY+height > windowH) {
+		cout << "beyond window boundaries\n";
+	}
+	this->windowW = windowW;
+	this->windowH = windowH;
+	this->rect = {cornerX, cornerY, width, height};
+	this->img = IMG_Load(fileName);
+	this->spriteSheetRect = {0,0,50,50};
+	this->sheetWidth = sheetWidth;
+	this->sheetHeight = sheetHeight;
+	if(!hasGravity)
+	  this->gravity = 0;
+}
 
 Movable::Movable(const Movable & m) {
 	this->fileName = m.fileName;

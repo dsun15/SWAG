@@ -41,6 +41,9 @@ public:
 	
 	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight);
 
+	//somewhat sloppy to keep both, but don't need to change as many files this way
+	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight, bool hasGravity);
+
 	Movable(const Movable&);
 
 	~Movable();
