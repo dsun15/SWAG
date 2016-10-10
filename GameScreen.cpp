@@ -10,6 +10,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <unistd.h>
 #include "Movable.h"
@@ -100,9 +101,14 @@ GameScreen::~GameScreen() {
 int GameScreen::input(SDL_Event * event, int dt) {
 	    if (gameOver) {
                 player.setVelX(0);
+                std::ofstream inFile;
+                inFile.open("scores.txt");
+                inFile << score << "\n";
+                inFile.close();
                 if (event->key.keysym.sym == SDLK_RETURN) {
                    return 3;
                 }
+                
         } else {
             switch(event->type) {
 			case SDL_KEYUP:
