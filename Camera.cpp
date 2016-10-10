@@ -5,7 +5,8 @@
 *
 */
 
-#include "Movable.h";
+#include "Movable.h"
+#include "Camera.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -32,6 +33,11 @@ void Camera::center(int x, int y){
     if (this->rect.x < 0 ) {
         this->rect.x = 0;
     }
-    if (this->rect.x > this->window
+    if (this->rect.x > this->levelWidth)
+      this->rect.x = this->levelWidth - this->rect.w;
+    if (this->rect.y < 0)
+      this->rect.y = 0;
+    if (this->rect.y > this->levelHeight)
+      this->rect.y = this->levelHeight - this->rect.h;
     this->rect.y = (y - (this->rect.h / 2));
 }

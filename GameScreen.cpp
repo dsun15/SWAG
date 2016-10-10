@@ -9,6 +9,7 @@
 #include "AutoMovable.h"
 #include "Movable.h"
 #include "Screen.h"
+#include "Camera.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -18,7 +19,7 @@
 #include <string>
 #include <unistd.h>
 
-int width = 800;
+int width = 1000;
 int height = 600;
 SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
@@ -51,16 +52,17 @@ int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
 bool scorewritten = false;
+Camera camera;
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
+  camera = Camera(1000, 600, 0, 0, 800, 600);
     player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
     player.accelerate(1, 0);
     Mix_HaltChannel(1);
     Mix_Resume(1);
     for (int i = 0; i <= 3; i++) {
-        enemy[i] = AutoMovable("enemy1.png", 50, 50, (200 + 100 * i), (550), width,
-            height, 300, 50);
+      //enemy[i] = AutoMovable("enemy1.png", 50, 50, (200 + 100 * i), (550), width,height, 300, 50);
     }
     if (!Mix_PausedMusic()) {
         Mix_SetMusicCMD("ogg123");
@@ -77,7 +79,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     for (int i = 0; i < 4; i++) {
         onScreen[i] = true;
     }
-    door = Movable("door.png", 50, 50, 750, 550, width, height, 50, 50, false);
+    door = Movable("door.png", 50, 50, 950, 550, width, height, 50, 50, false);
     TTF_Init();
     gamefont = TTF_OpenFont("8bit.ttf", 72);
     SDL_Color white = { 255, 255, 255, 255 };
@@ -154,7 +156,10 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
-    player.draw(renderer, dt);
+  SDL_Rect playerLoc = *player.getRect();
+  camera.center(playerLoc.x + (playerLoc.w / 2), playerLoc.y + (playerLoc.h / 2));
+  player.draw(renderer, dt);
+  if(door.checkCollide(camera.getRect()))
     door.draw(renderer, dt);
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();
@@ -195,7 +200,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
 
         // render enemeies
-        if (onScreen[i]) {
+        if (onScreen[i] && enemy[i].checkCollide(camera.getRect())) {
             enemy[i].automove(dt);
             enemy[i].draw(renderer, dt);
         }

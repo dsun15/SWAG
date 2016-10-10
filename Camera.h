@@ -5,7 +5,7 @@
 *
 */
 
-#include "Movable.h";
+#include "Movable.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -17,7 +17,7 @@ using std::string;
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-class Camera {
+class Camera: public Movable {
 
 public:
     Camera();
