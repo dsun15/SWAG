@@ -68,7 +68,10 @@ void AutoMovable::automove(int time) {
 	timeSinceChange+=time;
 }
 
-void AutoMovable::move(int x, int y){};
+void AutoMovable::move(int x, int y){
+  x++;
+  y++;
+};
 
 void AutoMovable::genDir() {
 	int temp;

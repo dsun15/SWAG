@@ -53,12 +53,14 @@ int TitleScreen::input(SDL_Event * event, int dt){
     }
     break;
   }
+  dt++;
   return 0;
 }
 
 void TitleScreen::draw(SDL_Renderer * renderer, int dt){
   SDL_RenderCopy(renderer,texture,NULL,&(this->textrect));
   SDL_RenderCopy(renderer,texture2,NULL,&(this->textrect2));
+  dt++;
 }
 
 

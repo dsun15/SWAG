@@ -13,7 +13,6 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <iostream>
 #include <fstream>
 #include "HighScoreScreen.h"
 #include "Movable.h"
@@ -41,11 +40,31 @@ HighScoreScreen::HighScoreScreen(){}
 
 HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
   filename = "scores.txt";
-  ifstream scores_file(filename);
+  ifstream scores_file0(filename);
   string temp;
   
-  
-
+  int ra[5] = {0,0,0,0,0};
+  while (getline(scores_file0,temp)) {
+    int check = stoi(temp);
+    for (int i = 4;i>=0;i--) {
+      if (check > ra[i]) {
+	int tempint = ra[i];
+	ra[i] = check;
+	if (i!=4) {
+	  ra[i+1] = tempint;
+       	}
+      }
+    }
+  }
+  scores_file0.close();
+  std::ofstream tempfile;
+  tempfile.open("scores.txt");
+  for (int i = 0; i<5; i++) {
+    tempfile << ra[i] << std::endl;
+  }
+  tempfile.close();
+	  
+  ifstream scores_file(filename);
   if(scores_file.is_open()){
     /**Load in the high scores here. */
     for(int x = 0; x < 5; x++){
@@ -84,7 +103,7 @@ HighScoreScreen::~HighScoreScreen(){
 //return ints for to determine which screen to switch to
 
 int HighScoreScreen::input(SDL_Event * event, int dt){
-
+  dt++;
 switch (event->type) {
   case SDL_KEYUP:
     if(event->key.keysym.sym == SDLK_SPACE) {
@@ -96,6 +115,7 @@ switch (event->type) {
 }
 
 void HighScoreScreen::draw(SDL_Renderer * renderer, int dt){
+  dt++;
   SDL_RenderCopy(renderer,titletex,NULL,&(titleRect));
   for(int x = 0; x < 5; x++){
 

@@ -72,6 +72,7 @@ MenuScreen::~MenuScreen(){
 //return ints for to determine which screen to switch to
 
 int MenuScreen::input(SDL_Event * event, int dt){
+  dt++;
   switch(event->type) {
   case SDL_KEYDOWN:
     if(event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym==SDLK_SPACE){
