@@ -43,6 +43,8 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer * renderer){
   filename = "scores.txt";
   ifstream scores_file(filename);
   string temp;
+  
+  
 
   if(scores_file.is_open()){
     /**Load in the high scores here. */

@@ -146,6 +146,7 @@ void run() {
 			}
 			if (screenswitch == 3) {
 			  //high score
+			  h = HighScoreScreen(gRenderer);
 			  activeScreen = &h;
 			}
 			if (screenswitch == 4) {

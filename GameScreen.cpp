@@ -50,6 +50,7 @@ SDL_Rect gamescorerect = {50,50,75,50};
 int wlswitch; //1 = win, 2 = lose
 int score;
 TTF_Font * gamefont;
+bool scorewritten = false;
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer * renderer) {
@@ -88,6 +89,7 @@ GameScreen::GameScreen(SDL_Renderer * renderer) {
     continuetext = SDL_CreateTextureFromSurface(renderer, cm);
     wlswitch = 0;
     score = 0;
+    scorewritten = false;
     return;
     
 }
@@ -102,9 +104,12 @@ int GameScreen::input(SDL_Event * event, int dt) {
 	    if (gameOver) {
                 player.setVelX(0);
                 std::ofstream inFile;
-                inFile.open("scores.txt");
-                inFile << score << "\n";
-                inFile.close();
+                inFile.open("scores.txt", std::ios_base::app);
+                if (!scorewritten) {
+		  inFile << score << "\n";
+		  scorewritten = true;
+		}
+		  //                inFile.close();
                 if (event->key.keysym.sym == SDLK_RETURN) {
                    return 3;
                 }
