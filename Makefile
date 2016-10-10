@@ -1,4 +1,4 @@
-OBJS = main.cpp Movable.o AutoMovable.o GameScreen.o MenuScreen.o TitleScreen.o Screen.o HighScoreScreen.o
+OBJS = main.cpp Movable.o AutoMovable.o GameScreen.o MenuScreen.o TitleScreen.o Screen.o HighScoreScreen.o Camera.cpp
 CC = g++
 
 CCFLAGS = -std=c++11 -Wall -Wextra -Wpedantic -O2
@@ -11,6 +11,9 @@ OBJ_NAME = main
 all : $(OBJS)
 	$(CC) $(OBJS) $(CCFLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
+
+Camera.o: Camera.cpp
+	$(CC) -c Camera.cpp $(CCFLAGS)
 Movable.o: Movable.cpp
 	$(CC) -c Movable.cpp $(CCFLAGS) 
 AutoMovable.o: AutoMovable.cpp
