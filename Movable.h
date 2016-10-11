@@ -6,9 +6,9 @@
 */
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <string>
 
@@ -18,56 +18,57 @@ using std::string;
 #define _MOVABLE_H
 
 class Movable {
-	const char * fileName;
+    const char* fileName;
 
 protected:
-	int MAX_HORIZ = 3;
-	int MAX_VERT = 3;
-	int gravity = 1;
-	int windowW; //x axis
-	int windowH; //y axis
-	int velX=0;
-	int velY=0;
-	SDL_Rect rect;
-	SDL_Surface* img; 
-	int timeSinceSpriteChange;
- 	SDL_Rect spriteSheetRect;
- 	int sheetWidth;
- 	int sheetHeight;
-	bool inAir = false;
-	bool isMoving = false;
+    int MAX_HORIZ = 3;
+    int MAX_VERT = 3;
+    int gravity = 1;
+    int levelWidth; //x axis
+    int levelHeight; //y axis
+    int velX = 0;
+    int velY = 0;
+    SDL_Rect rect;
+    SDL_Surface* img;
+    int timeSinceSpriteChange;
+    SDL_Rect spriteSheetRect;
+    int sheetWidth;
+    int sheetHeight;
+    bool inAir = false;
+    bool isMoving = false;
+
 public:
-	Movable(); 
-	
-	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight);
+    Movable();
 
-	//somewhat sloppy to keep both, but don't need to change as many files this way
-	Movable(const char * fileName, int width, int height, int cornerX, int cornerY, int windowW, int windowH, int sheetWidth, int sheetHeight, bool hasGravity);
+    Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight);
 
-	Movable(const Movable&);
+    //somewhat sloppy to keep both, but don't need to change as many files this way
+    Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity);
 
-	~Movable();
+    Movable(const Movable&);
 
-	void accelerate(int dt, int accX); 
+    ~Movable();
 
-	void move(int dt);
+    void accelerate(int dt, int accX);
 
-	void move(int x, int y);
+    void move(int dt);
 
-	bool checkCollide(Movable *m);
+    void move(int x, int y);
 
-	bool checkCollide(SDL_Rect *);
-		
-	void draw(SDL_Renderer * renderer, int dt);
-	
-	void spriteUpdate(int dt);
-	void setMove(bool);
-	void setVelX(int n);
-	void setVelY(int n);
-	void jump();
-	SDL_Rect * getRect();
+    bool checkCollide(Movable* m);
+
+    bool checkCollide(SDL_Rect*);
+
+    void draw(SDL_Renderer* renderer, int dt);
+
+    void spriteUpdate(int dt);
+    void setMove(bool);
+    void setVelX(int n);
+    void setVelY(int n);
+    void jump();
+    SDL_Rect* getRect();
+
 private:
-
-};	
+};
 
 #endif
