@@ -36,6 +36,9 @@ protected:
     int sheetHeight;
     bool inAir = false;
     bool isMoving = false;
+    //true laction
+    int truex;
+    int truey;
 
 public:
     Movable();
@@ -55,11 +58,13 @@ public:
 
     void move(int x, int y);
 
+    void translate(int x, int y);
+
     bool checkCollide(Movable* m);
 
     bool checkCollide(SDL_Rect*);
 
-    void draw(SDL_Renderer* renderer, int dt);
+    void draw(SDL_Renderer* renderer, int dt, int transx, int transy);
 
     void spriteUpdate(int dt);
     void setMove(bool);

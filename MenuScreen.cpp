@@ -117,5 +117,5 @@ void MenuScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_RenderCopy(renderer, t2, NULL, &rect2);
     SDL_RenderCopy(renderer, t3, NULL, &rect3);
     SDL_RenderCopy(renderer, t4, NULL, &rect4);
-    indicator.draw(renderer, dt);
+    indicator.draw(renderer, dt, 0, 0);
 }

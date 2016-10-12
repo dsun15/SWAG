@@ -35,6 +35,8 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->spriteSheetRect = { 0, 0, 50, 50 };
     this->sheetWidth = sheetWidth;
     this->sheetHeight = sheetHeight;
+    this->truex = cornerX;
+    this->truey = cornerY;
 }
 
 Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity) {
@@ -54,6 +56,8 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->sheetHeight = sheetHeight;
     if (!hasGravity)
         this->gravity = 0;
+    this->truex = cornerX;
+    this->truey = cornerY;
 }
 
 Movable::Movable(const Movable& m) {
@@ -62,6 +66,8 @@ Movable::Movable(const Movable& m) {
     this->levelHeight = m.levelHeight;
     this->rect = m.rect;
     this->img = IMG_Load(fileName);
+    this->truex = m.truex;
+    this->truey = m.truey;
 }
 
 Movable::~Movable() {
@@ -87,6 +93,10 @@ void Movable::accelerate(int dt, int accX) {
 }
 
 void Movable::move(int dt) {
+
+    this->rect.x = this->truex;
+    this->rect.y = this->truey;
+  
     //setting
     dt = dt / 2;
     this->rect.x += this->velX * dt;
@@ -121,8 +131,15 @@ void Movable::move(int dt) {
         this->velY = 0;
         this->inAir = false;
     }
+
+    this->truex = this->rect.x;
+    this->truey = this->rect.y;
 }
 void Movable::move(int x, int y) {
+
+    this->rect.x = this->truex;
+    this->rect.y = this->truey;
+  
     //setting
     this->rect.x += x;
     this->rect.y += y;
@@ -135,8 +152,31 @@ void Movable::move(int x, int y) {
     }
     if (this->rect.x + this->rect.w > levelWidth
 ) {
-        this->rect.x = levelWidth
- - this->rect.w;
+        this->rect.x = levelWidth - this->rect.w;
+    }
+    if (this->rect.y + this->rect.h > levelHeight) {
+        this->rect.y = levelHeight - this->rect.h;
+        this->inAir = false;
+    }
+
+    this->truex = this->rect.x;
+    this->truey = this->rect.y;
+}
+
+void Movable::translate(int x, int y) {
+    //setting
+    this->rect.x += x;
+    this->rect.y += y;
+    //checking for boundary collisions
+    if (this->rect.x < 0) {
+        this->rect.x = 0;
+    }
+    if (this->rect.y < 0) {
+        this->rect.y = 0;
+    }
+    if (this->rect.x + this->rect.w > levelWidth
+) {
+        this->rect.x = levelWidth - this->rect.w;
     }
     if (this->rect.y + this->rect.h > levelHeight) {
         this->rect.y = levelHeight - this->rect.h;
@@ -155,9 +195,10 @@ bool Movable::checkCollide(SDL_Rect* rect) {
     return SDL_HasIntersection(temp, rect);
 }
 
-void Movable::draw(SDL_Renderer* renderer, int dt) {
+void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
     Movable::move(dt);
     spriteUpdate(dt);
+    Movable::translate(transx, transy);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
 }

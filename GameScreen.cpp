@@ -157,10 +157,14 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   SDL_Rect playerLoc = *player.getRect();
+  SDL_Rect cameraLoc = *camera.getRect();
+  //this works
   camera.center(playerLoc.x + (playerLoc.w / 2), playerLoc.y + (playerLoc.h / 2));
-  player.draw(renderer, dt);
-  if(door.checkCollide(camera.getRect()))
-    door.draw(renderer, dt);
+  std::cout << cameraLoc.x << cameraLoc.y << "\n";
+  player.draw(renderer, dt, -cameraLoc.x, 0);
+  if(door.checkCollide(camera.getRect())){
+    door.draw(renderer, dt, -cameraLoc.x, 0);
+  }
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
@@ -201,8 +205,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
         // render enemeies
         if (onScreen[i] && enemy[i].checkCollide(camera.getRect())) {
-            enemy[i].automove(dt);
-            enemy[i].draw(renderer, dt);
+	  enemy[i].automove(dt);
+	  enemy[i].draw(renderer, dt, -cameraLoc.x, 0);
         }
     }
 }
