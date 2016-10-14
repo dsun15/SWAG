@@ -72,6 +72,8 @@ public:
     void setVelY(int n);
     void jump();
     SDL_Rect* getRect();
+    int getReallyRectX();
+    int getReallyRectY();
 
 private:
 };

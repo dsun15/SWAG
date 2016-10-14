@@ -167,6 +167,7 @@ void Movable::translate(int x, int y) {
     //setting
     this->rect.x += x;
     this->rect.y += y;
+
     //checking for boundary collisions
     if (this->rect.x < 0) {
         this->rect.x = 0;
@@ -182,6 +183,7 @@ void Movable::translate(int x, int y) {
         this->rect.y = levelHeight - this->rect.h;
         this->inAir = false;
     }
+
 }
 
 bool Movable::checkCollide(Movable* m) {
@@ -235,4 +237,12 @@ void Movable::jump() {
 
 SDL_Rect* Movable::getRect() {
     return &(this->rect);
+}
+
+int Movable::getReallyRectX(){
+  return this->truex;
+}
+
+int Movable::getReallyRectY(){
+  return this->truey;
 }

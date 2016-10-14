@@ -159,7 +159,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   SDL_Rect playerLoc = *player.getRect();
   SDL_Rect cameraLoc = *camera.getRect();
   //this works
-  camera.center(playerLoc.x + (playerLoc.w / 2), playerLoc.y + (playerLoc.h / 2));
+  camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
   std::cout << cameraLoc.x << cameraLoc.y << "\n";
   player.draw(renderer, dt, -cameraLoc.x, 0);
   if(door.checkCollide(camera.getRect())){
