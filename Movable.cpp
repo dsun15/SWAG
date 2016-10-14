@@ -50,6 +50,7 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->levelWidth = levelWidth;
     this->levelHeight = levelHeight;
     this->rect = { cornerX, cornerY, width, height };
+    this->truerect = {cornerX, cornerY, width, height};
     this->img = IMG_Load(fileName);
     this->spriteSheetRect = { 0, 0, 50, 50 };
     this->sheetWidth = sheetWidth;
@@ -187,14 +188,16 @@ void Movable::translate(int x, int y) {
 }
 
 bool Movable::checkCollide(Movable* m) {
-    const SDL_Rect* r1 = &(this->rect);
-    const SDL_Rect* r2 = &(m->rect);
-    return SDL_HasIntersection(r1, r2);
+  const SDL_Rect temp = {this->truex, this->truey, this->rect.w, this->rect.h}; 
+  //const SDL_Rect* r1 = &(this->rect);
+  const SDL_Rect* r2 = m->getTrueRect();;
+    return SDL_HasIntersection(&temp, r2);
 }
 
 bool Movable::checkCollide(SDL_Rect* rect) {
-    const SDL_Rect* temp = &(this->rect);
-    return SDL_HasIntersection(temp, rect);
+  //const SDL_Rect* temp = &(this->rect);
+  const SDL_Rect temp = {this->truex, this->truey, this->rect.w, this->rect.h};  
+  return SDL_HasIntersection(&temp, rect);
 }
 
 void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
@@ -245,4 +248,10 @@ int Movable::getReallyRectX(){
 
 int Movable::getReallyRectY(){
   return this->truey;
+}
+
+SDL_Rect * Movable::getTrueRect() {
+  this->truerect.x = this->truex;
+  this->truerect.y = this->truey;
+  return &(this->truerect);
 }

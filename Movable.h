@@ -39,6 +39,7 @@ protected:
     //true laction
     int truex;
     int truey;
+    SDL_Rect truerect;
 
 public:
     Movable();
@@ -74,7 +75,7 @@ public:
     SDL_Rect* getRect();
     int getReallyRectX();
     int getReallyRectY();
-
+    SDL_Rect * getTrueRect();
 private:
 };
 
