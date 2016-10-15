@@ -225,11 +225,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
 	}*/
-
+  ground[0] = Movable("RedBrick800x120.xcf",300,300,0,300,3800,600,800,120);
     for (int i = 0; i < 11; i++) {
       ground[i].draw(renderer, dt, -cameraLoc.x, 0);
 	}
-
+    
 
     player.draw(renderer, dt, -cameraLoc.x, 0);
     
