@@ -32,14 +32,15 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->levelHeight = levelHeight;
     this->rect = { cornerX, cornerY, width, height };
     this->img = IMG_Load(fileName);
-    this->spriteSheetRect = { 0, 0, 50, 50 };
+    //this->spriteSheetRect = { 0, 0, 50, 50 };
+    this->spriteSheetRect = {0,0,width,height};
     this->sheetWidth = sheetWidth;
     this->sheetHeight = sheetHeight;
     this->truex = cornerX;
     this->truey = cornerY;
 }
 
-Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity) {
+Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity, bool anim) {
     this->fileName = fileName;
     if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || levelWidth < 0 || levelHeight < 0) {
         cout << "something's negative\n";
@@ -52,13 +53,15 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->rect = { cornerX, cornerY, width, height };
     this->truerect = {cornerX, cornerY, width, height};
     this->img = IMG_Load(fileName);
-    this->spriteSheetRect = { 0, 0, 50, 50 };
+    this->spriteSheetRect = {0,0,width,height};
+    // this->spriteSheetRect = { 0, 0, 50, 50 };
     this->sheetWidth = sheetWidth;
     this->sheetHeight = sheetHeight;
     if (!hasGravity)
         this->gravity = 0;
     this->truex = cornerX;
     this->truey = cornerY;
+    this->animate = anim;
 }
 
 Movable::Movable(const Movable& m) {
@@ -170,7 +173,7 @@ void Movable::translate(int x, int y) {
     this->rect.y += y;
 
     //checking for boundary collisions
-    if (this->rect.x < 0) {
+    /*    if (this->rect.x < 0) {
         this->rect.x = 0;
     }
     if (this->rect.y < 0) {
@@ -183,7 +186,7 @@ void Movable::translate(int x, int y) {
     if (this->rect.y + this->rect.h > levelHeight) {
         this->rect.y = levelHeight - this->rect.h;
         this->inAir = false;
-    }
+	}*/
 
 }
 
@@ -202,7 +205,9 @@ bool Movable::checkCollide(SDL_Rect* rect) {
 
 void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
     Movable::move(dt);
+    if (animate) {
     spriteUpdate(dt);
+    }
     Movable::translate(transx, transy);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
@@ -210,7 +215,7 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
 
 void Movable::spriteUpdate(int dt) {
     if (this->timeSinceSpriteChange >= 80) {
-        this->spriteSheetRect.x += 50;
+        this->spriteSheetRect.x += this->spriteSheetRect.w;
         if (this->spriteSheetRect.x >= sheetWidth) {
             this->spriteSheetRect.x = 0;
         }

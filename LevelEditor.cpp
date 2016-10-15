@@ -46,16 +46,16 @@ LevelEditor::LevelEditor(string fileName) {
 
         switch (code) {
             case 'G': 
-                temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false);
+	      temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 100, 100, false,false);
                 this->ground.push_back(temp);       
             case 'P':
-                temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true);
+	      temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true,false);
                 this->pit.push_back(temp);
             case 'E':
-                temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true);
+	      temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true,false);
                 this->enemies.push_back(temp);
             case 'D':
-                temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false);
+	      temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false,false);
                 this->door = temp;
         }
  

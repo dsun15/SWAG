@@ -68,7 +68,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     height = level.levelHeight;
     
     //Player, Camera
-    camera = Camera(1000, 600, 0, 0, 800, 600);
+    camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
     player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
     player.accelerate(1, 0);
 
