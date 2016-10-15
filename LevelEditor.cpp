@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "LevelEditor.h"
 
 using namespace std;
-class LevelEditor {
 
 LevelEditor::LevelEditor(){}
 
@@ -22,6 +22,7 @@ LevelEditor::LevelEditor(string fileName) {
 
     
 	char code;
+    string init;
     const char * imageName;
     int x;
     int y;
@@ -40,7 +41,8 @@ LevelEditor::LevelEditor(string fileName) {
         inFile >> y;    
         inFile >> width;
         inFile >> height;
-        inFile >> imageName;
+        inFile >> init;
+        imageName = init.c_str();
 
         switch (code) {
             case 'G': 
@@ -51,7 +53,7 @@ LevelEditor::LevelEditor(string fileName) {
                 this->pit.push_back(temp);
             case 'E':
                 temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true);
-                this->enemy.push_back(temp);
+                this->enemies.push_back(temp);
             case 'D':
                 temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false);
                 this->door = temp;
@@ -60,5 +62,4 @@ LevelEditor::LevelEditor(string fileName) {
 	}
 
 	inFile.close();
-
 }

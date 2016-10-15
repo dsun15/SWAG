@@ -10,6 +10,7 @@
 #include "Movable.h"
 #include "Screen.h"
 #include "Camera.h"
+#include "LevelEditor.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -18,6 +19,7 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include <list>
 
 int width = 1000;
 int height = 600;
@@ -28,7 +30,6 @@ Movable player;
 AutoMovable enemy[4];
 bool gameOver = false;
 bool youWin = false;
-bool onScreen[] = { true, true, true, true };
 bool play[] = { true, true, true, true, true };
 Mix_Chunk* sfx;
 Mix_Chunk* sfxJump;
@@ -54,16 +55,32 @@ TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
 
+LevelEditor level;
+std::list<Movable> ground;
+std::list<Movable> enemies;
+std::list<Movable> pit;
+
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
-  camera = Camera(1000, 600, 0, 0, 800, 600);
+    //Level Stuff
+    level = LevelEditor("level1.txt");
+    width = level.levelWidth;
+    height = level.levelHeight;
+    
+    //Player, Camera
+    camera = Camera(1000, 600, 0, 0, 800, 600);
     player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
     player.accelerate(1, 0);
+
+    //Objects from level file
+    ground = level.ground;
+    enemies = level.enemies;
+    pit = level.pit;
+    door = level.door;
+
+    //Audio Stuff
     Mix_HaltChannel(1);
     Mix_Resume(1);
-    for (int i = 0; i <= 3; i++) {
-      //enemy[i] = AutoMovable("enemy1.png", 50, 50, (200 + 100 * i), (550), width,height, 300, 50);
-    }
     if (!Mix_PausedMusic()) {
         Mix_SetMusicCMD("ogg123");
         music = Mix_LoadMUS(musicName);
@@ -74,12 +91,11 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
     sfx = Mix_LoadWAV(effect);
     sfxJump = Mix_LoadWAV(jumpEffect);
+   
     gameOver = false;
     youWin = false;
-    for (int i = 0; i < 4; i++) {
-        onScreen[i] = true;
-    }
-    door = Movable("door.png", 50, 50, 950, 550, width, height, 50, 50, false);
+
+    //Text Stuff
     TTF_Init();
     gamefont = TTF_OpenFont("8bit.ttf", 72);
     SDL_Color white = { 255, 255, 255, 255 };
@@ -160,11 +176,23 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   SDL_Rect cameraLoc = *camera.getRect();
   //this works
   camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
-  std::cout << cameraLoc.x << cameraLoc.y << "\n";
   player.draw(renderer, dt, -cameraLoc.x, 0);
   if(door.checkCollide(camera.getRect())){
     door.draw(renderer, dt, -cameraLoc.x, 0);
   }
+    ground.front().draw(renderer, dt, -cameraLoc.x,0);
+    for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+        (*it).draw(renderer, dt, -cameraLoc.x, 0);
+        std::cout << (*it).getTrueRect()->x << " " << (*it).getTrueRect()->y << std::endl;
+    }
+    for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+        (*it).draw(renderer, dt, -cameraLoc.x, 0);
+    }
+    for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
+        (*it).draw(renderer, dt, -cameraLoc.x, 0);
+    }
+
+
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
@@ -186,7 +214,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         youWin = true;
         gameOver = true;
     }
-    for (int i = 0; i < 4; i++) {
+   /* for (int i = 0; i < 4; i++) {
         // check collisions
         if (player.checkCollide(&(enemy[i])) && onScreen[i]) {
             Mix_PlayChannel(-1, sfx, 1);
@@ -208,5 +236,5 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	  enemy[i].automove(dt);
 	  enemy[i].draw(renderer, dt, -cameraLoc.x, 0);
         }
-    }
+    }*/
 }
