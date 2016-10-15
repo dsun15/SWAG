@@ -36,6 +36,7 @@ protected:
     int sheetHeight;
     bool inAir = false;
     bool isMoving = false;
+    bool alive = true;
     //true laction
     int truex;
     int truey;

@@ -176,7 +176,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   SDL_Rect cameraLoc = *camera.getRect();
   //this works
   camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
-  player.draw(renderer, dt, -cameraLoc.x, 0);
+
   if(door.checkCollide(camera.getRect())){
     door.draw(renderer, dt, -cameraLoc.x, 0);
   }
@@ -185,14 +185,28 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
         std::cout << (*it).getTrueRect()->x << " " << (*it).getTrueRect()->y << std::endl;
     }
-    for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
-        (*it).draw(renderer, dt, -cameraLoc.x, 0);
+   
+     for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+        SDL_Rect* temp = player.getRect();
+        SDL_Rect* enemyTemp = (*it).getRect();
+        if (player.checkCollide(enemyTemp)) {
+            gameOver = true;
+            if ((temp->y < enemyTemp->y) && (abs(temp->x - enemyTemp->x) <= enemyTemp->w)) {
+                enemies.erase(it);
+                gameOver = false;
+            }
+        } else { 
+            (*it).draw(renderer, dt, -cameraLoc.x, 0);
+        }
     }
+    
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
     }
 
 
+    player.draw(renderer, dt, -cameraLoc.x, 0);
+    
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
