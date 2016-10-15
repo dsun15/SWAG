@@ -182,7 +182,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   }
     ground.front().draw(renderer, dt, -cameraLoc.x,0);
     for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
-        (*it).draw(renderer, dt, -cameraLoc.x, 0);
+        Movable temp = *it;
+        (temp).draw(renderer, dt, -cameraLoc.x, 0);
         std::cout << (*it).getTrueRect()->x << " " << (*it).getTrueRect()->y << std::endl;
     }
    
