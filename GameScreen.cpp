@@ -55,10 +55,13 @@ TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
 
-LevelEditor level;
-std::list<Movable> ground;
+LevelEditor level = LevelEditor("level1.txt");
+/*std::list<Movable> ground;
 std::list<Movable> enemies;
-std::list<Movable> pit;
+std::list<Movable> pit;*/
+Movable ground[11];
+//Movable enemies[level.enemies.size()];
+//Movable pit[level.pit.size()];
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
@@ -73,9 +76,27 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     player.accelerate(1, 0);
 
     //Objects from level file
-    ground = level.ground;
+    /* ground = level.ground;
     enemies = level.enemies;
-    pit = level.pit;
+    pit = level.pit;*/
+    int count = 0;
+    while (level.ground.size() != 0) {
+      ground[count] = level.ground.front();
+      level.ground.pop_front();
+      count++;
+    }
+    count = 0;
+    /*while (level.enemies.size() != 0) {
+      enemies[count] = level.enemies.pop_front();
+      count++;
+	}
+    count = 0;
+    while (level.pit.size() != 0) {
+      pit[count] = level.pit.pop_front();
+      count++;
+      }*/
+
+
     door = level.door;
 
     //Audio Stuff
@@ -180,11 +201,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   if(door.checkCollide(camera.getRect())){
     door.draw(renderer, dt, -cameraLoc.x, 0);
   }
-    ground.front().draw(renderer, dt, -cameraLoc.x,0);
-    for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
-        Movable temp = *it;
-        (temp).draw(renderer, dt, -cameraLoc.x, 0);
-        std::cout << (*it).getTrueRect()->x << " " << (*it).getTrueRect()->y << std::endl;
+  //ground.front().draw(renderer, dt, -cameraLoc.x,0);
+    /*for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+      Movable temp = *it;
+        temp.draw(renderer, dt, -cameraLoc.x, 0);
+        std::cout << temp.getTrueRect()->x << " " << (*it).getTrueRect()->y << std::endl;
     }
    
      for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
@@ -203,7 +224,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
-    }
+	}*/
+
+    for (int i = 0; i < 11; i++) {
+      ground[i].draw(renderer, dt, -cameraLoc.x, 0);
+	}
 
 
     player.draw(renderer, dt, -cameraLoc.x, 0);
