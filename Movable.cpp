@@ -95,8 +95,8 @@ void Movable::accelerate(int dt, int accX) {
 
 void Movable::move(int dt) {
 
-    this->rect.x = this->truex;
-    this->rect.y = this->truey;
+  //  this->rect.x = this->truex;
+    //this->rect.y = this->truey;
   
     //setting
     dt = dt / 2;
@@ -133,8 +133,8 @@ void Movable::move(int dt) {
         this->inAir = false;
     }
 
-    this->truex = this->rect.x;
-    this->truey = this->rect.y;
+   // this->truex = this->rect.x;
+   // this->truey = this->rect.y;
 }
 void Movable::move(int x, int y) {
 

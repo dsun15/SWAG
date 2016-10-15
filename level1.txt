@@ -1,0 +1,5 @@
+LevelWidth LevelHeight 
+G 2 3 
+P 9 3
+E 4 4
+D 3 3
