@@ -23,10 +23,7 @@ public:
 
     LevelEditor();
     ~LevelEditor();
-    
-
-
-
+    LevelEditor(string s);
 };
 
 #endif
