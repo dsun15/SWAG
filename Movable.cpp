@@ -70,9 +70,13 @@ Movable::Movable(const Movable& m) {
     this->levelWidth = m.levelWidth;
     this->levelHeight = m.levelHeight;
     this->rect = m.rect;
-    this->img = IMG_Load(fileName);
+    this->img = IMG_Load(m.fileName);
     this->truex = m.truex;
     this->truey = m.truey;
+    this->sheetWidth = m.sheetWidth;
+    this->sheetHeight = m.sheetHeight;
+    this->animate = m.animate;
+    this->truerect = m.truerect;
 }
 
 Movable::~Movable() {

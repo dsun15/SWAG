@@ -1,5 +1,5 @@
 3800 600
-G 0 300 50 50 Texture1.png
+G 0 300 300 300 Texture1.png
 G 300 400 75 200 Texture2.png
 G 375 500 75 100 Texture3.png
 G 500 300 300 25 Texture4.png

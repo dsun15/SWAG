@@ -67,7 +67,7 @@ Movable * ground[11];
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Level Stuff
-    //level = LevelEditor("level1.txt");
+    level = LevelEditor("level1.txt");
     width = level.levelWidth;
     height = level.levelHeight;
     
@@ -239,7 +239,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	}*/
     ground[0] = &hardcode;
     for (int i = 0; i < 11; i++) {
-      std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << std::endl;
+      std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << " " << ground[i]->getRect()->w << " " << ground[i]->getRect()->h << std::endl;
       if (ground[i]->checkCollide(&cameraLoc)) {
 	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
 	}
