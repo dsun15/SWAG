@@ -65,19 +65,20 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->animate = anim;
 }
 
-Movable::Movable(const Movable& m) {
+/*Movable::Movable(const Movable& m) {
     this->fileName = m.fileName;
     this->levelWidth = m.levelWidth;
     this->levelHeight = m.levelHeight;
     this->rect = m.rect;
-    this->img = IMG_Load(m.fileName);
+    this->img = IMG_Load(this->fileName);
     this->truex = m.truex;
     this->truey = m.truey;
     this->sheetWidth = m.sheetWidth;
     this->sheetHeight = m.sheetHeight;
     this->animate = m.animate;
     this->truerect = m.truerect;
-}
+    this->gravity = m.gravity;
+    }*/
 
 Movable::~Movable() {
 }

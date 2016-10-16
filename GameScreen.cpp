@@ -54,7 +54,17 @@ int score;
 TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
-Movable hardcode =Movable("Texture1.png",300,300,0,300,3800,600,300,300);
+Movable g1 =Movable("Texture1.png",300,300,0,300,3800,600,300,300,false,false);
+Movable g2 =Movable("Texture2.png",75,200,300,400,3800,600,75,200,false,false);
+Movable g3 =Movable("Texture3.png",75,100,375,500,3800,600,75,100,false,false);
+Movable g4 =Movable("Texture4.png",300,25,500,300,3800,600,300,25,false,false);
+Movable g5 =Movable("Texture4.png",300,25,1000,300,3800,600,300,25,false,false);
+Movable g6 =Movable("Texture6.png",400,300,1500,300,3800,600,400,300,false,false);
+Movable g7 =Movable("Texture7.png",400,100,1900,500,3800,600,400,100,false,false);
+Movable g8 =Movable("Texture8.png",150,200,2300,400,3800,600,150,200,false,false);
+Movable g9 =Movable("Texture9.png",350,300,2450,300,3800,600,350,300,false,false);
+Movable g10 =Movable("Texture10.png",700,100,2800,500,3800,600,700,100,false,false);
+Movable g11 =Movable("Texture11.png",300,200,3500,400,3800,600,300,200,false,false);
 
 LevelEditor level = LevelEditor("level1.txt");
 /*std::list<Movable> ground;
@@ -237,7 +247,18 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
 	}*/
-    ground[0] = &hardcode;
+    /*ground[0] = &g1;
+    ground[1] = &g2;
+    ground[2] =&g3;
+    ground[3] =&g4;
+    ground[4] =&g5;
+    ground[5] =&g6;
+    ground[6] =&g7;
+    ground[7] =&g8;
+    ground[8] =&g9;
+    ground[9] =&g10;
+    ground[10] =&g11;*/
+
     for (int i = 0; i < 11; i++) {
       std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << " " << ground[i]->getRect()->w << " " << ground[i]->getRect()->h << std::endl;
       if (ground[i]->checkCollide(&cameraLoc)) {

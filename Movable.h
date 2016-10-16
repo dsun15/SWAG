@@ -50,7 +50,7 @@ public:
     //somewhat sloppy to keep both, but don't need to change as many files this way
     Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity, bool anim);
 
-    Movable(const Movable&);
+    //Movable(const Movable&);
 
     ~Movable();
 
