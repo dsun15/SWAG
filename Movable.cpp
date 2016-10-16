@@ -97,7 +97,6 @@ void Movable::accelerate(int dt, int accX) {
 }
 
 void Movable::move(int dt) {
-
     this->rect.x = this->truex;
     this->rect.y = this->truey;
   
@@ -106,12 +105,13 @@ void Movable::move(int dt) {
     this->rect.x += this->velX * dt;
     this->rect.y += this->velY * dt;
     if (!this->isMoving) {
-        if (this->velX > 0) {
+      /*if (this->velX > 0) {
             Movable::accelerate(dt, -1);
         }
         if (this->velX < 0) {
             Movable::accelerate(dt, 1);
-        }
+	    }*/
+      this->velX = 0;
     }
     Movable::accelerate(dt, 0);
 
@@ -124,10 +124,8 @@ void Movable::move(int dt) {
         this->rect.y = 0;
         this->velY = 0;
     }
-    if (this->rect.x + this->rect.w > levelWidth
-) {
-        this->rect.x = levelWidth
- - this->rect.w;
+    if (this->rect.x + this->rect.w > levelWidth) {
+        this->rect.x = levelWidth - this->rect.w;
         this->velX = 0;
     }
     if (this->rect.y + this->rect.h > levelHeight) {
@@ -139,8 +137,8 @@ void Movable::move(int dt) {
     this->truex = this->rect.x;
     this->truey = this->rect.y;
 }
-void Movable::move(int x, int y) {
 
+void Movable::move(int x, int y) {
     this->rect.x = this->truex;
     this->rect.y = this->truey;
   
@@ -171,23 +169,6 @@ void Movable::translate(int x, int y) {
     //setting
     this->rect.x += x;
     this->rect.y += y;
-
-    //checking for boundary collisions
-    /*    if (this->rect.x < 0) {
-        this->rect.x = 0;
-    }
-    if (this->rect.y < 0) {
-        this->rect.y = 0;
-    }
-    if (this->rect.x + this->rect.w > levelWidth
-) {
-        this->rect.x = levelWidth - this->rect.w;
-    }
-    if (this->rect.y + this->rect.h > levelHeight) {
-        this->rect.y = levelHeight - this->rect.h;
-        this->inAir = false;
-	}*/
-
 }
 
 bool Movable::checkCollide(Movable* m) {
@@ -206,7 +187,7 @@ bool Movable::checkCollide(SDL_Rect* rect) {
 void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
     Movable::move(dt);
     if (animate) {
-    spriteUpdate(dt);
+      spriteUpdate(dt);
     }
     Movable::translate(transx, transy);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);

@@ -54,12 +54,13 @@ int score;
 TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
+Movable hardcode =Movable("Texture1.png",300,300,0,300,3800,600,800,120);
 
 LevelEditor level = LevelEditor("level1.txt");
 /*std::list<Movable> ground;
 std::list<Movable> enemies;
 std::list<Movable> pit;*/
-Movable ground[11];
+Movable * ground[11];
 //Movable enemies[level.enemies.size()];
 //Movable pit[level.pit.size()];
 
@@ -80,9 +81,15 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     enemies = level.enemies;
     pit = level.pit;*/
     int count = 0;
-    while (level.ground.size() != 0) {
-      ground[count] = level.ground.front();
+    /*while (level.ground.size() != 0) {
+      ground[count] = &(level.ground.front());
       level.ground.pop_front();
+      count++;
+      }*/
+    for (std::list<Movable>::iterator it = level.ground.begin(); it != level.ground.end(); ++it) {    
+      Movable m = *it;
+      ground[count] = &m;
+      std::cout << ground[count]->getTrueRect()->x << " " << ground[count]->getTrueRect()->y<<std::endl;
       count++;
     }
     count = 0;
@@ -181,7 +188,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_DOWN) {
                 option = 1;
             }
-            if (event->key.keysym.sym == SDLK_SPACE) {
+            if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 1);
                 option = 2;
                 player.jump();
@@ -225,9 +232,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
 	}*/
-  ground[0] = Movable("RedBrick800x120.xcf",300,300,0,300,3800,600,800,120);
+    ground[0] = &hardcode;
     for (int i = 0; i < 11; i++) {
-      ground[i].draw(renderer, dt, -cameraLoc.x, 0);
+      std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << std::endl;
+      if (ground[i]->checkCollide(&cameraLoc)) {
+	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
+	}
 	}
     
 
