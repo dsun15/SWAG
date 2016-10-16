@@ -38,6 +38,7 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->sheetHeight = sheetHeight;
     this->truex = cornerX;
     this->truey = cornerY;
+    this->animate = true;
 }
 
 Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity, bool anim) {
@@ -240,4 +241,8 @@ SDL_Rect * Movable::getTrueRect() {
   this->truerect.x = this->truex;
   this->truerect.y = this->truey;
   return &(this->truerect);
+}
+
+void Movable::setAir(bool b) {
+  this->inAir = b;
 }

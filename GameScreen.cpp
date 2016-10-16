@@ -54,7 +54,7 @@ int score;
 TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
-Movable hardcode =Movable("Texture1.png",300,300,0,300,3800,600,800,120);
+Movable hardcode =Movable("Texture1.png",300,300,0,300,3800,600,300,300);
 
 LevelEditor level = LevelEditor("level1.txt");
 /*std::list<Movable> ground;
@@ -67,7 +67,7 @@ Movable * ground[11];
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Level Stuff
-    level = LevelEditor("level1.txt");
+    //level = LevelEditor("level1.txt");
     width = level.levelWidth;
     height = level.levelHeight;
     
@@ -87,9 +87,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
       count++;
       }*/
     for (std::list<Movable>::iterator it = level.ground.begin(); it != level.ground.end(); ++it) {    
-      Movable m = *it;
-      ground[count] = &m;
-      std::cout << ground[count]->getTrueRect()->x << " " << ground[count]->getTrueRect()->y<<std::endl;
+      /*Movable m;
+	m = *it;*/
+      ground[count] = &(*it);
+      std::cout << ground[count]->getReallyRectX() << " " << ground[count]->getReallyRectY()<<std::endl;
       count++;
     }
     count = 0;
@@ -136,6 +137,11 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     wlswitch = 0;
     score = 0;
     scorewritten = false;
+
+    for (int i = 0; i <11; i++) {
+      std::cout << ground[i] << std::endl;
+      std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY()<<std::endl;
+    }
     return;
 }
 
@@ -154,7 +160,6 @@ int GameScreen::input(SDL_Event* event, int dt) {
             inFile << score << "\n";
             scorewritten = true;
         }
-        //                inFile.close();
         if (event->key.keysym.sym == SDLK_RETURN) {
             return 3;
         }
@@ -238,7 +243,14 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
       if (ground[i]->checkCollide(&cameraLoc)) {
 	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
 	}
-	}
+      if (player.checkCollide(ground[i])) {
+	if (playerLoc.x+playerLoc.w > ground[i]->getRect()->x && playerLoc.x< ground[i]->getRect()->x+ground[i]->getRect()->w && playerLoc.y <= ground[i]->getRect()->y) {
+	  player.setVelY(0);
+	    player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;
+	    player.setAir(false);
+	  }
+      }
+    }
     
 
     player.draw(renderer, dt, -cameraLoc.x, 0);

@@ -46,7 +46,7 @@ LevelEditor::LevelEditor(string fileName) {
 
         switch (code) {
             case 'G': 
-	      temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 100, 100, false,false);
+	      temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false,false);
                 this->ground.push_back(temp); 
                 break;      
             case 'P':
@@ -65,5 +65,5 @@ LevelEditor::LevelEditor(string fileName) {
  
 	}
 
-	inFile.close();
+	//inFile.close();
 }
