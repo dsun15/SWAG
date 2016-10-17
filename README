@@ -1,0 +1,17 @@
+This program requires that you have vorbis-tools installed.
+Since we play .ogg music, the build defers to ogg123.
+As long as you can use ogg123 from the command line, the music
+should be able to play correctly.
+
+This built and ran fine on Linux, but there were sound issues for Mac.
+
+Move with arrow keys. Jump with spacebar. Pause and access menu with P.
+Press spacebar at the high score screen to continue with a new game.
+Get to the door at the end of the level to win.
+
+This code is a buggy mess.
+Collision detection with platforms doesn't work. You get magnetized
+to the top of a platform and you can't jump until you leave the block.
+For sanity's sake, and to make it possible to win, I disabled dying
+to pitfalls, and I didn't put in horizontal collision for platforms.
+If I did, the game would be unplayable.
