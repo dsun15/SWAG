@@ -226,7 +226,7 @@ void Movable::setVelY(int n) {
 void Movable::jump() {
     if (!this->inAir) {
         this->inAir = true;
-        Movable::setVelY(-8);
+        Movable::setVelY(-10);
     }
 }
 
@@ -250,4 +250,17 @@ SDL_Rect * Movable::getTrueRect() {
 
 void Movable::setAir(bool b) {
   this->inAir = b;
+}
+bool Movable::getAir() {
+  return this->inAir;
+}
+void Movable::setRect(int x, int y, int w, int h) {
+  SDL_Rect newrect= {x,y,w,h};
+  this->truerect = newrect;
+  this->rect = newrect;
+  /*
+  this->rect.x = x;
+  this->rect.y = y;
+  this->rect.w = w;
+  this->rect.h = h;*/
 }

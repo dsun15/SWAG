@@ -100,7 +100,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
       /*Movable m;
 	m = *it;*/
       ground[count] = &(*it);
-      std::cout << ground[count]->getReallyRectX() << " " << ground[count]->getReallyRectY()<<std::endl;
+      //std::cout << ground[count]->getReallyRectX() << " " << ground[count]->getReallyRectY()<<std::endl;
       count++;
     }
     count = 0;
@@ -148,10 +148,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     score = 0;
     scorewritten = false;
 
-    for (int i = 0; i <11; i++) {
+    /*for (int i = 0; i <11; i++) {
       std::cout << ground[i] << std::endl;
       std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY()<<std::endl;
-    }
+      }*/
     return;
 }
 
@@ -260,16 +260,21 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     ground[10] =&g11;*/
 
     for (int i = 0; i < 11; i++) {
-      std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << " " << ground[i]->getRect()->w << " " << ground[i]->getRect()->h << std::endl;
+      //std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << " " << ground[i]->getRect()->w << " " << ground[i]->getRect()->h << std::endl;
       if (ground[i]->checkCollide(&cameraLoc)) {
 	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
 	}
       if (player.checkCollide(ground[i])) {
-	if (playerLoc.x+playerLoc.w > ground[i]->getRect()->x && playerLoc.x< ground[i]->getRect()->x+ground[i]->getRect()->w && playerLoc.y <= ground[i]->getRect()->y) {
+	if (playerLoc.y <= ground[i]->getRect()->y) {
+	  player.setRect(playerLoc.x, (ground[i]->getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
 	  player.setVelY(0);
-	    player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;
-	    player.setAir(false);
-	  }
+	  //player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;
+	  player.setAir(false);
+	}
+	if(playerLoc.x < ground[i]->getRect()->x) {
+	  //player.setVelX(0);
+	  player.setRect(ground[i]->getRect()->x - playerLoc.w, playerLoc.y, playerLoc.w, playerLoc.h);
+	}	  
       }
     }
     

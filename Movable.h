@@ -78,6 +78,8 @@ public:
     int getReallyRectY();
     SDL_Rect * getTrueRect();
     void setAir(bool);
+    bool getAir();
+    void setRect(int x, int y, int w, int h);
 private:
 };
 
