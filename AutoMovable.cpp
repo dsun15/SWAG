@@ -71,7 +71,7 @@ void AutoMovable::automove(int time) {
 void AutoMovable::move(int x, int y) {
     x++;
     y++;
-};
+}
 
 void AutoMovable::genDir() {
     int temp;

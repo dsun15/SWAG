@@ -265,7 +265,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
 	}
       if (player.checkCollide(ground[i])) {
-	if (playerLoc.y <= ground[i]->getRect()->y) {
+	if (playerLoc.y <= ground[i]->getRect()->y && !player.getAir()) {
 	  player.setRect(playerLoc.x, (ground[i]->getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
 	  player.setVelY(0);
 	  //player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;

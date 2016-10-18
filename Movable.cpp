@@ -198,6 +198,7 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
     Movable::translate(transx, transy);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
+    Movable::setAir(false);
 }
 
 void Movable::spriteUpdate(int dt) {
@@ -264,3 +265,4 @@ void Movable::setRect(int x, int y, int w, int h) {
   this->rect.w = w;
   this->rect.h = h;*/
 }
+
