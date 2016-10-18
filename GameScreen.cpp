@@ -54,25 +54,11 @@ int score;
 TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
-Movable g1 =Movable("Texture1.png",300,300,0,300,3800,600,300,300,false,false);
-Movable g2 =Movable("Texture2.png",75,200,300,400,3800,600,75,200,false,false);
-Movable g3 =Movable("Texture3.png",75,100,375,500,3800,600,75,100,false,false);
-Movable g4 =Movable("Texture4.png",300,25,500,300,3800,600,300,25,false,false);
-Movable g5 =Movable("Texture4.png",300,25,1000,300,3800,600,300,25,false,false);
-Movable g6 =Movable("Texture6.png",400,300,1500,300,3800,600,400,300,false,false);
-Movable g7 =Movable("Texture7.png",400,100,1900,500,3800,600,400,100,false,false);
-Movable g8 =Movable("Texture8.png",150,200,2300,400,3800,600,150,200,false,false);
-Movable g9 =Movable("Texture9.png",350,300,2450,300,3800,600,350,300,false,false);
-Movable g10 =Movable("Texture10.png",700,100,2800,500,3800,600,700,100,false,false);
-Movable g11 =Movable("Texture11.png",300,200,3500,400,3800,600,300,200,false,false);
 
 LevelEditor level = LevelEditor("level1.txt");
-/*std::list<Movable> ground;
+std::list<Movable> ground;
 std::list<Movable> enemies;
-std::list<Movable> pit;*/
-Movable * ground[11];
-//Movable enemies[level.enemies.size()];
-//Movable pit[level.pit.size()];
+std::list<Movable> pit;
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
@@ -87,33 +73,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     player.accelerate(1, 0);
 
     //Objects from level file
-    /* ground = level.ground;
+    ground = level.ground;
     enemies = level.enemies;
-    pit = level.pit;*/
-    int count = 0;
-    /*while (level.ground.size() != 0) {
-      ground[count] = &(level.ground.front());
-      level.ground.pop_front();
-      count++;
-      }*/
-    for (std::list<Movable>::iterator it = level.ground.begin(); it != level.ground.end(); ++it) {    
-      /*Movable m;
-	m = *it;*/
-      ground[count] = &(*it);
-      //std::cout << ground[count]->getReallyRectX() << " " << ground[count]->getReallyRectY()<<std::endl;
-      count++;
-    }
-    count = 0;
-    /*while (level.enemies.size() != 0) {
-      enemies[count] = level.enemies.pop_front();
-      count++;
-	}
-    count = 0;
-    while (level.pit.size() != 0) {
-      pit[count] = level.pit.pop_front();
-      count++;
-      }*/
-
+    pit = level.pit;
 
     door = level.door;
 
@@ -148,10 +110,6 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     score = 0;
     scorewritten = false;
 
-    /*for (int i = 0; i <11; i++) {
-      std::cout << ground[i] << std::endl;
-      std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY()<<std::endl;
-      }*/
     return;
 }
 
@@ -223,7 +181,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   if(door.checkCollide(camera.getRect())){
     door.draw(renderer, dt, -cameraLoc.x, 0);
   }
-  //ground.front().draw(renderer, dt, -cameraLoc.x,0);
+
     /*for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
       Movable temp = *it;
         temp.draw(renderer, dt, -cameraLoc.x, 0);
@@ -247,37 +205,26 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
 	}*/
-    /*ground[0] = &g1;
-    ground[1] = &g2;
-    ground[2] =&g3;
-    ground[3] =&g4;
-    ground[4] =&g5;
-    ground[5] =&g6;
-    ground[6] =&g7;
-    ground[7] =&g8;
-    ground[8] =&g9;
-    ground[9] =&g10;
-    ground[10] =&g11;*/
 
-    for (int i = 0; i < 11; i++) {
-      //std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << " " << ground[i]->getRect()->w << " " << ground[i]->getRect()->h << std::endl;
-      if (ground[i]->checkCollide(&cameraLoc)) {
-	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
+    //for (int i = 0; i < 11; i++)
+  for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+    Movable temp = *it;
+      if (temp.checkCollide(&cameraLoc)) {
+	temp.draw(renderer, dt, -cameraLoc.x, 0);
 	}
-      if (player.checkCollide(ground[i])) {
-	if (playerLoc.y <= ground[i]->getRect()->y && !player.getAir()) {
-	  player.setRect(playerLoc.x, (ground[i]->getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
+      if (player.checkCollide(&temp)) {
+	if (playerLoc.y <= temp.getRect()->y && !player.getAir()) {
+	  player.setRect(playerLoc.x, (temp.getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
 	  player.setVelY(0);
 	  //player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;
 	  player.setAir(false);
 	}
-	if(playerLoc.x < ground[i]->getRect()->x) {
+	if(playerLoc.x < temp.getRect()->x) {
 	  //player.setVelX(0);
-	  player.setRect(ground[i]->getRect()->x - playerLoc.w, playerLoc.y, playerLoc.w, playerLoc.h);
+	  player.setRect(temp.getRect()->x - playerLoc.w, playerLoc.y, playerLoc.w, playerLoc.h);
 	}	  
       }
     }
-    
 
     player.draw(renderer, dt, -cameraLoc.x, 0);
     

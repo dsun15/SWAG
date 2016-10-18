@@ -1,13 +1,13 @@
 3800 600
 G 0 300 300 300 Texture1.png
-G 300 400 75 200 Texture2.png
-G 375 500 75 100 Texture3.png
+G 300 400 75 200 Texture1.png
+G 375 500 75 100 Texture1.png
 G 500 300 300 25 Texture4.png
 G 1000 300 300 25 Texture4.png
-G 1500 300 400 300 Texture6.png
-G 1900 500 400 100 Texture7.png
-G 2300 400 150 200 Texture8.png
-G 2450 300 350 300 Texture9.png
-G 2800 500 700 100 Texture10.png
-G 3500 400 300 200 Texture11.png
+G 1500 300 400 300 Texture1.png
+G 1900 500 400 100 Texture1.png
+G 2300 400 150 200 Texture1.png
+G 2450 300 350 300 Texture1.png
+G 2800 500 700 100 Texture1.png
+G 3500 400 300 200 Texture1.png
 D 3650 350 50 50 door.png
