@@ -221,7 +221,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
 
   if(door.checkCollide(camera.getRect())){
-    door.draw(renderer, dt, -cameraLoc.x, 0);
+    door.draw(renderer, dt, -cameraLoc.x, 0, true);
   }
   //ground.front().draw(renderer, dt, -cameraLoc.x,0);
     /*for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
@@ -259,27 +259,36 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     ground[9] =&g10;
     ground[10] =&g11;*/
 
+  bool playerOnGround = false;
+
     for (int i = 0; i < 11; i++) {
-      //std::cout << ground[i]->getReallyRectX() << " " << ground[i]->getReallyRectY() << " " << ground[i]->getRect()->w << " " << ground[i]->getRect()->h << std::endl;
+
+      
       if (ground[i]->checkCollide(&cameraLoc)) {
-	ground[i]->draw(renderer, dt, -cameraLoc.x, 0);
+	ground[i]->draw(renderer, dt, -cameraLoc.x, 0, true);
 	}
       if (player.checkCollide(ground[i])) {
 	if (playerLoc.y <= ground[i]->getRect()->y && !player.getAir()) {
-	  player.setRect(playerLoc.x, (ground[i]->getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
 	  player.setVelY(0);
-	  //player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;
-	  player.setAir(false);
+	  player.setGravity(0);
+	  playerOnGround = true;
+	  player.move(0, ground[i]->getRect()->y - playerLoc.y - playerLoc.h -1 );
 	}
-	if(playerLoc.x < ground[i]->getRect()->x) {
-	  //player.setVelX(0);
-	  player.setRect(ground[i]->getRect()->x - playerLoc.w, playerLoc.y, playerLoc.w, playerLoc.h);
-	}	  
+	else if(playerLoc.x < ground[i]->getRect()->x) {
+	  player.setVelX(0);
+	  player.move(ground[i]->getRect()->x - playerLoc.x - playerLoc.w, 0);
+	}
+	else if(playerLoc.x > ground[i]->getRect()->x){
+
+	  player.setVelX(0);
+	  player.move((ground[i]->getRect()->x + ground[i]->getRect()->w) - playerLoc.x, 0);
+
+	}
       }
     }
     
 
-    player.draw(renderer, dt, -cameraLoc.x, 0);
+    player.draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
     
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();
