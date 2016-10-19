@@ -122,7 +122,7 @@ void Movable::move(int dt) {
     //checking for boundary collisions
     if (this->rect.x < this->leftBound) {
         this->rect.x = this->leftBound;
-        this->velX = 0;
+//        this->velX = 0;
     }
     if (this->rect.y < this->upperBound) {
         this->rect.y = this->upperBound;
@@ -130,7 +130,7 @@ void Movable::move(int dt) {
     }
     if (this->rect.x + this->rect.w > this->rightBound) {
         this->rect.x = this->rightBound - this->rect.w;
-        this->velX = 0;
+//        this->velX = 0;
     }
     if (this->rect.y + this->rect.h > this->lowerBound) {
         this->rect.y = this->lowerBound - this->rect.h;
