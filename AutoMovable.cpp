@@ -73,6 +73,24 @@ void AutoMovable::move(int x, int y) {
     y++;
 }
 
+void AutoMovable::moveBetween(int minCoor, int maxCoor, int dt) {
+    if (!(this->isMoving)) {
+        Movable::accelerate(dt,1);
+        Movable::setMove(true);
+    }
+    if (this->isMoving) {
+        if ((this->truex + Movable::getRect()->w) >= maxCoor) {
+            Movable::setVelX(0);
+            Movable::accelerate(dt, -1);
+            Movable::move(dt/4);
+        } else if ((this->truex) <= minCoor) {
+            Movable::setVelX(0);
+            Movable::accelerate(dt, 1);
+            Movable::move(dt/4);
+        }
+    }
+}
+        
 void AutoMovable::genDir() {
     int temp;
     temp = rand() % 4;

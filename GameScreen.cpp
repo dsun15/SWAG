@@ -27,7 +27,7 @@ SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
 Movable door;
 Movable player;
-AutoMovable enemy[4];
+AutoMovable enemy;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -76,6 +76,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     ground = level.ground;
     enemies = level.enemies;
     pit = level.pit;
+
+    //test enemy
+    enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
 
     door = level.door;
 
@@ -227,7 +230,9 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     player.draw(renderer, dt, -cameraLoc.x, 0);
-    
+    enemy.moveBetween(1900, 2300, dt);
+    enemy.draw(renderer, dt, -cameraLoc.x, 0);    
+
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();
     SDL_Color white = { 255, 255, 255, 255 };

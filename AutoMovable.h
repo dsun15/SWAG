@@ -24,9 +24,16 @@ public:
     AutoMovable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetW, int sheetH)
         : Movable(fileName, width, height, cornerX, cornerY, levelWidth, levelHeight, sheetW, sheetH) {
         srand(time(NULL));
+        this->MAX_HORIZ = 1;
+    };
+    AutoMovable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetW, int sheetH, bool hasGravity, bool anim)
+        : Movable(fileName, width, height, cornerX, cornerY, levelWidth, levelHeight, sheetW, sheetH, hasGravity, anim) {
+        srand(time(NULL));
+        this->MAX_HORIZ = 1;
     };
     ~AutoMovable();
     void automove(int time);
+    void moveBetween(int minCoor, int maxCoor, int dt);
     void genDir();
     void move(int x, int y);
 
