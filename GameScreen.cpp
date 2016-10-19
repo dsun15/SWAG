@@ -280,7 +280,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         youWin = true;
         gameOver = true;
     }
-    /* for (int i = 0; i < 4; i++) {
+    if (playerLoc.x > height) {
+      wlswitch = 2;
+      gameOver = true;
+    }
+   /* for (int i = 0; i < 4; i++) {
         // check collisions
         if (player.checkCollide(&(enemy[i])) && onScreen[i]) {
             Mix_PlayChannel(-1, sfx, 1);
