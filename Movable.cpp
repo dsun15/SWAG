@@ -273,13 +273,17 @@ void Movable::setGravity(int x){
 }
 void Movable::setLeftBound(int x) {
   this->leftBound = x;
+  std::cout << "set left bound " << x << std::endl;
 }
 void Movable::setRightBound(int x) {
   this->rightBound = x;
+  std::cout << "set right bound " << x << std::endl;
 }
 void Movable::setUpperBound(int x) {
   this->upperBound = x;
+  std::cout << "set upper bound " << x << std::endl;
 }
 void Movable::setLowerBound(int x) {
   this->lowerBound = x;
+  std::cout << "set lower bound " << x << std::endl;
 }
