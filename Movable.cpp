@@ -195,7 +195,7 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool 
     Movable::translate(transx, transy);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
-    Movable::setAir(false);
+ //   Movable::setAir(false);
     if(hasGrav && !onGround){
       this->gravity = 1;
     }

@@ -218,29 +218,30 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             temp.draw(renderer, dt, -cameraLoc.x, 0, true);
         }
         if (player.checkCollide(&temp)) {
-            if (playerLoc.y < temp.getTrueRect()->y && !player.getAir()) {
-	      //player.setVelY(0);
-	      //player.setGravity(0);
+            if (playerLoc.y < temp.getTrueRect()->y) {
+                //player.setVelY(0);
+                //player.setGravity(0);
                 playerOnGround = true;
+
                 //player.move(0, temp.getTrueRect()->y - playerLoc.y - playerLoc.h - 1);
-		player.setLowerBound(temp.getTrueRect()->y + 1);
-	    } else if (playerLoc.y>= temp.getTrueRect()->y && playerLoc.x < temp.getTrueRect()->x) {
-	      //player.setVelX(0);
-		player.setRightBound(temp.getTrueRect()->x);
+                player.setLowerBound(temp.getTrueRect()->y + 1);
+            } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x < temp.getTrueRect()->x) {
+                //player.setVelX(0);
+                player.setRightBound(temp.getTrueRect()->x);
                 //player.move(temp.getTrueRect()->x - playerLoc.x - playerLoc.w, 0);
-            } else if (playerLoc.y>= temp.getTrueRect()->y &&playerLoc.x > temp.getTrueRect()->x) {
-	      //player.setVelX(0);
-		player.setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
+            } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x > temp.getTrueRect()->x) {
+                //player.setVelX(0);
+                player.setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
                 //player.move((temp.getTrueRect()->x + temp.getTrueRect()->w) - playerLoc.x, 0);
             }
-	    anyCollide = true;
+            anyCollide = true;
         }
     }
     if (!anyCollide) {
       player.setUpperBound(0);
       player.setLeftBound(0);
       player.setRightBound(width);
-      player.setLowerBound(height+100);
+      player.setLowerBound(height);
     }
     enemy.moveBetween(1900, 2300, dt);
     enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
@@ -268,10 +269,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         gameOver = true;
     }
     if (playerLoc.y > height) {
-      wlswitch = 2;
-      gameOver = true;
+        wlswitch = 2;
+        gameOver = true;
     }
-   /* for (int i = 0; i < 4; i++) {
+    /* for (int i = 0; i < 4; i++) {
         // check collisions
         if (player.checkCollide(&(enemy[i])) && onScreen[i]) {
             Mix_PlayChannel(-1, sfx, 1);
