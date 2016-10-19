@@ -43,6 +43,11 @@ protected:
     SDL_Rect truerect;
     bool animate;
     bool hasGrav = true;
+    int leftBound;
+    int rightBound;
+    int upperBound;
+    int lowerBound;
+
 public:
     Movable();
 
@@ -82,7 +87,10 @@ public:
     void jump();
     void setRect(int x, int y, int w, int h);
     void setGravity(int x);
-    
+    void setLeftBound(int x);
+    void setRightBound(int x);
+    void setUpperBound(int x);
+    void setLowerBound(int x);
 private:
 };
 

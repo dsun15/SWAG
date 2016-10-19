@@ -39,6 +39,11 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->truex = cornerX;
     this->truey = cornerY;
     this->animate = true;
+    this->leftBound = 0;
+    this->rightBound = levelWidth;
+    this->upperBound = 0;
+    this->lowerBound = levelHeight;
+    this->inAir = true;
 }
 
 Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity, bool anim) {
@@ -64,29 +69,21 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->truex = cornerX;
     this->truey = cornerY;
     this->animate = anim;
+    this->leftBound = 0;
+    this->rightBound = levelWidth;
+    this->upperBound = 0;
+    this->lowerBound = levelHeight;
+    this->inAir = true;
 }
-
-/*Movable::Movable(const Movable& m) {
-    this->fileName = m.fileName;
-    this->levelWidth = m.levelWidth;
-    this->levelHeight = m.levelHeight;
-    this->rect = m.rect;
-    this->img = IMG_Load(this->fileName);
-    this->truex = m.truex;
-    this->truey = m.truey;
-    this->sheetWidth = m.sheetWidth;
-    this->sheetHeight = m.sheetHeight;
-    this->animate = m.animate;
-    this->truerect = m.truerect;
-    this->gravity = m.gravity;
-    }*/
 
 Movable::~Movable() {
 }
 
 void Movable::accelerate(int dt, int accX) {
     this->velX = this->velX + accX * dt;
-    this->velY = this->velY + this->gravity * (dt / 2);
+    //    if (this->inAir) {
+      this->velY = this->velY + this->gravity * (dt / 2);
+      //}
     if (abs(this->velX) > MAX_HORIZ) {
         if (this->velX > 0) {
             this->velX = MAX_HORIZ;
@@ -123,20 +120,20 @@ void Movable::move(int dt) {
     Movable::accelerate(dt, 0);
 
     //checking for boundary collisions
-    if (this->rect.x < 0) {
-        this->rect.x = 0;
+    if (this->rect.x < this->leftBound) {
+        this->rect.x = this->leftBound;
         this->velX = 0;
     }
-    if (this->rect.y < 0) {
-        this->rect.y = 0;
+    if (this->rect.y < this->upperBound) {
+        this->rect.y = this->upperBound;
         this->velY = 0;
     }
-    if (this->rect.x + this->rect.w > levelWidth) {
-        this->rect.x = levelWidth - this->rect.w;
+    if (this->rect.x + this->rect.w > this->rightBound) {
+        this->rect.x = this->rightBound - this->rect.w;
         this->velX = 0;
     }
-    if (this->rect.y + this->rect.h > levelHeight) {
-        this->rect.y = levelHeight - this->rect.h;
+    if (this->rect.y + this->rect.h > this->lowerBound) {
+        this->rect.y = this->lowerBound - this->rect.h;
         this->velY = 0;
         this->inAir = false;
     }
@@ -153,18 +150,17 @@ void Movable::move(int x, int y) {
     this->rect.x += x;
     this->rect.y += y;
     //checking for boundary collisions
-    if (this->rect.x < 0) {
-        this->rect.x = 0;
+    if (this->rect.x < this->leftBound) {
+        this->rect.x = this->leftBound;
     }
-    if (this->rect.y < 0) {
-        this->rect.y = 0;
+    if (this->rect.y < this->upperBound) {
+        this->rect.y = this->upperBound;
     }
-    if (this->rect.x + this->rect.w > levelWidth
-) {
-        this->rect.x = levelWidth - this->rect.w;
+    if (this->rect.x + this->rect.w > this->rightBound) {
+        this->rect.x = this->rightBound - this->rect.w;
     }
-    if (this->rect.y + this->rect.h > levelHeight) {
-        this->rect.y = levelHeight - this->rect.h;
+    if (this->rect.y + this->rect.h > this->lowerBound) {
+        this->rect.y = this->lowerBound - this->rect.h;
         this->inAir = false;
     }
 
@@ -274,4 +270,16 @@ void Movable::setGravity(int x){
 
   this->gravity = x;
 
+}
+void Movable::setLeftBound(int x) {
+  this->leftBound = x;
+}
+void Movable::setRightBound(int x) {
+  this->rightBound = x;
+}
+void Movable::setUpperBound(int x) {
+  this->upperBound = x;
+}
+void Movable::setLowerBound(int x) {
+  this->lowerBound = x;
 }

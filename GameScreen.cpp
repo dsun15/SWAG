@@ -211,49 +211,36 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
 	<<<<<<< HEAD*/
     bool playerOnGround = false;
-    /*
-    for (int i = 0; i < 11; i++) {
-
-      
-      if (ground[i]->checkCollide(&cameraLoc)) {
-	ground[i]->draw(renderer, dt, -cameraLoc.x, 0, true);
-	}
-      if (player.checkCollide(ground[i])) {
-	if (playerLoc.y <= ground[i]->getRect()->y && !player.getAir()) {
-=======
-//for (int i = 0; i < 11; i++)*/
+    bool anyCollide = false;
     for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
         Movable temp = *it;
         if (temp.checkCollide(&cameraLoc)) {
             temp.draw(renderer, dt, -cameraLoc.x, 0, true);
         }
         if (player.checkCollide(&temp)) {
-            if (playerLoc.y <= temp.getRect()->y && !player.getAir()) {
-                /*player.setRect(playerLoc.x, (temp.getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
->>>>>>> 9a78a70688dc4da872d7b9508b2fc084c1ebff69
-	  */
-                player.setVelY(0);
-                player.setGravity(0);
+            if (playerLoc.y < temp.getRect()->y && !player.getAir()) {
+	      //player.setVelY(0);
+	      //player.setGravity(0);
                 playerOnGround = true;
-                player.move(0, temp.getRect()->y - playerLoc.y - playerLoc.h - 1);
-            } else if (playerLoc.x < temp.getRect()->x) {
-                player.setVelX(0);
-                player.move(temp.getRect()->x - playerLoc.x - playerLoc.w, 0);
-            } else if (playerLoc.x > temp.getRect()->x) {
-
-                player.setVelX(0);
-                player.move((temp.getRect()->x + temp.getRect()->w) - playerLoc.x, 0);
+                //player.move(0, temp.getRect()->y - playerLoc.y - playerLoc.h - 1);
+		player.setLowerBound(temp.getRect()->y+1);
+	    } else if (playerLoc.y>= temp.getRect()->y && playerLoc.x < temp.getRect()->x) {
+	      //player.setVelX(0);
+		player.setRightBound(temp.getRect()->x+1);
+                //player.move(temp.getRect()->x - playerLoc.x - playerLoc.w, 0);
+            } else if (playerLoc.y>= temp.getRect()->y &&playerLoc.x > temp.getRect()->x) {
+	      //player.setVelX(0);
+		player.setLeftBound(temp.getRect()->x + temp.getRect()->w-1);
+                //player.move((temp.getRect()->x + temp.getRect()->w) - playerLoc.x, 0);
             }
-            /*
-<<<<<<< HEAD
-=======
-	if(playerLoc.x < temp.getRect()->x) {
-	  //player.setVelX(0);
-	  player.setRect(temp.getRect()->x - playerLoc.w, playerLoc.y, playerLoc.w, playerLoc.h);
-	}	  
->>>>>>> 9a78a70688dc4da872d7b9508b2fc084c1ebff69
-	*/
+	    anyCollide = true;
         }
+    }
+    if (!anyCollide) {
+      player.setUpperBound(0);
+      player.setLeftBound(0);
+      player.setRightBound(width);
+      player.setLowerBound(height);
     }
     enemy.moveBetween(1900, 2300, dt);
     enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
@@ -280,7 +267,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         youWin = true;
         gameOver = true;
     }
-    if (playerLoc.x > height) {
+    if (playerLoc.y > height) {
       wlswitch = 2;
       gameOver = true;
     }
