@@ -218,20 +218,20 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             temp.draw(renderer, dt, -cameraLoc.x, 0, true);
         }
         if (player.checkCollide(&temp)) {
-            if (playerLoc.y < temp.getRect()->y && !player.getAir()) {
+            if (playerLoc.y < temp.getTrueRect()->y && !player.getAir()) {
 	      //player.setVelY(0);
 	      //player.setGravity(0);
                 playerOnGround = true;
-                //player.move(0, temp.getRect()->y - playerLoc.y - playerLoc.h - 1);
-		player.setLowerBound(temp.getRect()->y+1);
-	    } else if (playerLoc.y>= temp.getRect()->y && playerLoc.x < temp.getRect()->x) {
+                //player.move(0, temp.getTrueRect()->y - playerLoc.y - playerLoc.h - 1);
+		player.setLowerBound(temp.getTrueRect()->y + 1);
+	    } else if (playerLoc.y>= temp.getTrueRect()->y && playerLoc.x < temp.getTrueRect()->x) {
 	      //player.setVelX(0);
-		player.setRightBound(temp.getRect()->x+1);
-                //player.move(temp.getRect()->x - playerLoc.x - playerLoc.w, 0);
-            } else if (playerLoc.y>= temp.getRect()->y &&playerLoc.x > temp.getRect()->x) {
+		player.setRightBound(temp.getTrueRect()->x);
+                //player.move(temp.getTrueRect()->x - playerLoc.x - playerLoc.w, 0);
+            } else if (playerLoc.y>= temp.getTrueRect()->y &&playerLoc.x > temp.getTrueRect()->x) {
 	      //player.setVelX(0);
-		player.setLeftBound(temp.getRect()->x + temp.getRect()->w-1);
-                //player.move((temp.getRect()->x + temp.getRect()->w) - playerLoc.x, 0);
+		player.setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
+                //player.move((temp.getTrueRect()->x + temp.getTrueRect()->w) - playerLoc.x, 0);
             }
 	    anyCollide = true;
         }
