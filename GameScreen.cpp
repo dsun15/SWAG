@@ -7,19 +7,19 @@
 
 #include "GameScreen.h"
 #include "AutoMovable.h"
-#include "Movable.h"
-#include "Screen.h"
 #include "Camera.h"
 #include "LevelEditor.h"
+#include "Movable.h"
+#include "Screen.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <string>
 #include <unistd.h>
-#include <list>
 
 int width = 1000;
 int height = 600;
@@ -66,7 +66,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     level = LevelEditor("level1.txt");
     width = level.levelWidth;
     height = level.levelHeight;
-    
+
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
     player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
@@ -95,7 +95,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
     sfx = Mix_LoadWAV(effect);
     sfxJump = Mix_LoadWAV(jumpEffect);
-   
+
     gameOver = false;
     youWin = false;
 
@@ -176,14 +176,14 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
-  SDL_Rect playerLoc = *player.getRect();
-  SDL_Rect cameraLoc = *camera.getRect();
-  //this works
-  camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
+    SDL_Rect playerLoc = *player.getRect();
+    SDL_Rect cameraLoc = *camera.getRect();
+    //this works
+    camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
 
-  if(door.checkCollide(camera.getRect())){
-    door.draw(renderer, dt, -cameraLoc.x, 0, true);
-  }
+    if (door.checkCollide(camera.getRect())) {
+        door.draw(renderer, dt, -cameraLoc.x, 0, true);
+    }
 
     /*for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
       Movable temp = *it;
@@ -210,8 +210,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	}
 
 	<<<<<<< HEAD*/
-  bool playerOnGround = false;
-  /*
+    bool playerOnGround = false;
+    /*
     for (int i = 0; i < 11; i++) {
 
       
@@ -222,32 +222,29 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	if (playerLoc.y <= ground[i]->getRect()->y && !player.getAir()) {
 =======
 //for (int i = 0; i < 11; i++)*/
-  for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
-    Movable temp = *it;
-      if (temp.checkCollide(&cameraLoc)) {
-	temp.draw(renderer, dt, -cameraLoc.x, 0, true);
-	}
-      if (player.checkCollide(&temp)) {
-	if (playerLoc.y <= temp.getRect()->y && !player.getAir()) {
-	  /*player.setRect(playerLoc.x, (temp.getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
+    for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+        Movable temp = *it;
+        if (temp.checkCollide(&cameraLoc)) {
+            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
+        }
+        if (player.checkCollide(&temp)) {
+            if (playerLoc.y <= temp.getRect()->y && !player.getAir()) {
+                /*player.setRect(playerLoc.x, (temp.getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
 >>>>>>> 9a78a70688dc4da872d7b9508b2fc084c1ebff69
 	  */
-	  player.setVelY(0);
-	  player.setGravity(0);
-	  playerOnGround = true;
-	  player.move(0, temp.getRect()->y - playerLoc.y - playerLoc.h -1 );
-	}
-	else if(playerLoc.x < temp.getRect()->x) {
-	  player.setVelX(0);
-	  player.move(temp.getRect()->x - playerLoc.x - playerLoc.w, 0);
-	}
-	else if(playerLoc.x > temp.getRect()->x){
+                player.setVelY(0);
+                player.setGravity(0);
+                playerOnGround = true;
+                player.move(0, temp.getRect()->y - playerLoc.y - playerLoc.h - 1);
+            } else if (playerLoc.x < temp.getRect()->x) {
+                player.setVelX(0);
+                player.move(temp.getRect()->x - playerLoc.x - playerLoc.w, 0);
+            } else if (playerLoc.x > temp.getRect()->x) {
 
-	  player.setVelX(0);
-	  player.move((temp.getRect()->x + temp.getRect()->w) - playerLoc.x, 0);
-
-	}
-	/*
+                player.setVelX(0);
+                player.move((temp.getRect()->x + temp.getRect()->w) - playerLoc.x, 0);
+            }
+            /*
 <<<<<<< HEAD
 =======
 	if(playerLoc.x < temp.getRect()->x) {
@@ -256,10 +253,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	}	  
 >>>>>>> 9a78a70688dc4da872d7b9508b2fc084c1ebff69
 	*/
-      }
+        }
     }
     enemy.moveBetween(1900, 2300, dt);
-    enemy.draw(renderer, dt, -cameraLoc.x, 0);    
+    enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     player.draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
 
     string temp = std::to_string(score);
@@ -283,7 +280,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         youWin = true;
         gameOver = true;
     }
-   /* for (int i = 0; i < 4; i++) {
+    /* for (int i = 0; i < 4; i++) {
         // check collisions
         if (player.checkCollide(&(enemy[i])) && onScreen[i]) {
             Mix_PlayChannel(-1, sfx, 1);
