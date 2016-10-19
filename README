@@ -9,9 +9,5 @@ Move with arrow keys. Jump with spacebar. Pause and access menu with P.
 Press spacebar at the high score screen to continue with a new game.
 Get to the door at the end of the level to win.
 
-This code is a buggy mess.
-Collision detection with platforms doesn't work. You get magnetized
-to the top of a platform and you can't jump until you leave the block.
-For sanity's sake, and to make it possible to win, I disabled dying
-to pitfalls, and I didn't put in horizontal collision for platforms.
-If I did, the game would be unplayable.
+Project is a little less buggy now. Player is jittery when
+colliding with ground objects.
