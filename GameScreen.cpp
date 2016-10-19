@@ -182,7 +182,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
   camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
 
   if(door.checkCollide(camera.getRect())){
-    door.draw(renderer, dt, -cameraLoc.x, 0);
+    door.draw(renderer, dt, -cameraLoc.x, 0, true);
   }
 
     /*for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
@@ -207,31 +207,60 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     
     for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
         (*it).draw(renderer, dt, -cameraLoc.x, 0);
-	}*/
+	}
 
-    //for (int i = 0; i < 11; i++)
+	<<<<<<< HEAD*/
+  bool playerOnGround = false;
+  /*
+    for (int i = 0; i < 11; i++) {
+
+      
+      if (ground[i]->checkCollide(&cameraLoc)) {
+	ground[i]->draw(renderer, dt, -cameraLoc.x, 0, true);
+	}
+      if (player.checkCollide(ground[i])) {
+	if (playerLoc.y <= ground[i]->getRect()->y && !player.getAir()) {
+=======
+//for (int i = 0; i < 11; i++)*/
   for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
     Movable temp = *it;
       if (temp.checkCollide(&cameraLoc)) {
-	temp.draw(renderer, dt, -cameraLoc.x, 0);
+	temp.draw(renderer, dt, -cameraLoc.x, 0, true);
 	}
       if (player.checkCollide(&temp)) {
 	if (playerLoc.y <= temp.getRect()->y && !player.getAir()) {
-	  player.setRect(playerLoc.x, (temp.getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
+	  /*player.setRect(playerLoc.x, (temp.getRect()->y) - playerLoc.h-100, playerLoc.w, playerLoc.h);
+>>>>>>> 9a78a70688dc4da872d7b9508b2fc084c1ebff69
+	  */
 	  player.setVelY(0);
-	  //player.getRect()->y = ground[i]->getRect()->y - playerLoc.h;
-	  player.setAir(false);
+	  player.setGravity(0);
+	  playerOnGround = true;
+	  player.move(0, temp.getRect()->y - playerLoc.y - playerLoc.h -1 );
 	}
+	else if(playerLoc.x < temp.getRect()->x) {
+	  player.setVelX(0);
+	  player.move(temp.getRect()->x - playerLoc.x - playerLoc.w, 0);
+	}
+	else if(playerLoc.x > temp.getRect()->x){
+
+	  player.setVelX(0);
+	  player.move((temp.getRect()->x + temp.getRect()->w) - playerLoc.x, 0);
+
+	}
+	/*
+<<<<<<< HEAD
+=======
 	if(playerLoc.x < temp.getRect()->x) {
 	  //player.setVelX(0);
 	  player.setRect(temp.getRect()->x - playerLoc.w, playerLoc.y, playerLoc.w, playerLoc.h);
 	}	  
+>>>>>>> 9a78a70688dc4da872d7b9508b2fc084c1ebff69
+	*/
       }
     }
-
-    player.draw(renderer, dt, -cameraLoc.x, 0);
     enemy.moveBetween(1900, 2300, dt);
     enemy.draw(renderer, dt, -cameraLoc.x, 0);    
+    player.draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
 
     string temp = std::to_string(score);
     const char* temp2 = temp.c_str();

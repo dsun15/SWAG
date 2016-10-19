@@ -60,6 +60,7 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->sheetHeight = sheetHeight;
     if (!hasGravity)
         this->gravity = 0;
+    this->hasGrav = hasGravity;
     this->truex = cornerX;
     this->truey = cornerY;
     this->animate = anim;
@@ -190,7 +191,7 @@ bool Movable::checkCollide(SDL_Rect* rect) {
   return SDL_HasIntersection(&temp, rect);
 }
 
-void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
+void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool onGround) {
     Movable::move(dt);
     if (animate) {
       spriteUpdate(dt);
@@ -199,6 +200,9 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy) {
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
     Movable::setAir(false);
+    if(hasGrav && !onGround){
+      this->gravity = 1;
+    }
 }
 
 void Movable::spriteUpdate(int dt) {
@@ -266,3 +270,8 @@ void Movable::setRect(int x, int y, int w, int h) {
   this->rect.h = h;*/
 }
 
+void Movable::setGravity(int x){
+
+  this->gravity = x;
+
+}

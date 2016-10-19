@@ -42,6 +42,7 @@ protected:
     int truey;
     SDL_Rect truerect;
     bool animate;
+    bool hasGrav = true;
 public:
     Movable();
 
@@ -66,20 +67,22 @@ public:
 
     bool checkCollide(SDL_Rect*);
 
-    void draw(SDL_Renderer* renderer, int dt, int transx, int transy);
+    void draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool onGround);
 
     void spriteUpdate(int dt);
     void setMove(bool);
     void setVelX(int n);
     void setVelY(int n);
-    void jump();
     SDL_Rect* getRect();
     int getReallyRectX();
     int getReallyRectY();
     SDL_Rect * getTrueRect();
     void setAir(bool);
     bool getAir();
+    void jump();
     void setRect(int x, int y, int w, int h);
+    void setGravity(int x);
+    
 private:
 };
 
