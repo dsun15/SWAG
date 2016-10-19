@@ -176,7 +176,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
-    SDL_Rect playerLoc = *player.getRect();
+    SDL_Rect playerLoc = *player.getTrueRect();
     SDL_Rect cameraLoc = *camera.getRect();
     //this works
     camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
