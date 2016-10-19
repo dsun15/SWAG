@@ -241,7 +241,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
       player.setUpperBound(0);
       player.setLeftBound(0);
       player.setRightBound(width);
-      player.setLowerBound(height);
+      player.setLowerBound(height + 100);
     }
     enemy.moveBetween(1900, 2300, dt);
     enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
