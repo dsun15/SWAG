@@ -212,6 +212,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	<<<<<<< HEAD*/
     bool playerOnGround = false;
     bool anyCollide = false;
+    //collision with platforms
     for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
         Movable temp = *it;
         if (temp.checkCollide(&cameraLoc)) {
@@ -242,6 +243,37 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
       player.setLeftBound(0);
       player.setRightBound(width);
       player.setLowerBound(height + 100);
+    }
+
+    //collision with enemies
+    //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
+    for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+      Movable temp = *it;
+      if (temp.checkCollide(&cameraLoc)) {
+	temp.draw(renderer,dt,-cameraLoc.x,0,true);
+      }
+      if (player.checkCollide(&temp)) {
+	if (playerLoc.y < temp.getTrueRect()->y) {
+	  //enemy disappears
+	  score += 100;
+	} else {
+	  //die
+	  wlswitch = 2;
+	  gameOver = true;
+	  //CHANGE THIS IF YOU'RE IMPLEMENTING LIVES
+	}
+      }
+    }
+    //pits
+    for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
+      Movable temp = *it;
+      if (temp.checkCollide(&cameraLoc)) {
+        temp.draw(renderer,dt,-cameraLoc.x,0,true);
+      }
+      if (player.checkCollide(&temp)) {
+          wlswitch = 2;
+          gameOver = true;
+      }
     }
     enemy.moveBetween(1900, 2300, dt);
     enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
