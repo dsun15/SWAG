@@ -56,10 +56,10 @@ LevelEditor::LevelEditor(string fileName) {
             inFile >> min;
             inFile >> max;
             if(move == 'Y') {
-                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate);
+                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, false, animate);
                 autoTemp.setMoveBounds(min,max);
             } else {
-                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true, animate);
+                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
             }
             this->pit.push_back(autoTemp);
             break;
@@ -68,10 +68,10 @@ LevelEditor::LevelEditor(string fileName) {
             inFile >> min;
             inFile >> max;
             if(move == 'Y') {
-                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate);
+                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, false, animate);
                 autoTemp.setMoveBounds(min,max);
             } else {
-                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, true, animate);
+                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
             }
             this->enemies.push_back(autoTemp);
             break;

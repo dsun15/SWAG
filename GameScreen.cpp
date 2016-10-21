@@ -251,6 +251,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         AutoMovable temp = *it;
         //if no gravity, then it is moving between a bounds
         if (!(temp.getGravity())) {
+            //std::cout << temp.getMinMoveBound() << "     " << temp.getMaxMoveBound() << std::endl;
             temp.moveBetween(temp.getMinMoveBound(), temp.getMaxMoveBound(), dt);
         }
         if (temp.checkCollide(&cameraLoc)) {
