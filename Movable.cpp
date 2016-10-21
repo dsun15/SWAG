@@ -255,6 +255,9 @@ void Movable::setAir(bool b) {
 bool Movable::getAir() {
   return this->inAir;
 }
+bool Movable::getGravity() {
+    return this->hasGrav;
+}
 void Movable::setRect(int x, int y, int w, int h) {
   SDL_Rect newrect= {x,y,w,h};
   this->truerect = newrect;
@@ -287,3 +290,34 @@ void Movable::setLowerBound(int x) {
   this->lowerBound = x;
   //std::cout << "set lower bound " << x << std::endl;
 }
+void Movable::setMoveBounds(int min, int max){
+    this->minMoveBound = min;
+    this->maxMoveBound = max;
+}
+
+int Movable::getMinMoveBound() {
+    return this->minMoveBound;
+}
+
+int Movable::getMaxMoveBound() {
+    return this->maxMoveBound;
+}
+
+void Movable::moveBetween(int dt) {
+     if (!(this->isMoving)) {
+         Movable::accelerate(dt,1);
+         Movable::setMove(true);
+     }
+     if (this->isMoving) {
+         if ((this->truex + Movable::getRect()->w) >= this->maxMoveBound) {
+             Movable::setVelX(0);
+             Movable::accelerate(dt, -1);
+             Movable::move(dt/4);
+         } else if ((this->truex) <= this->minMoveBound) {
+             Movable::setVelX(0);
+             Movable::accelerate(dt, 1);
+             Movable::move(dt/4);
+         }
+     }
+}
+

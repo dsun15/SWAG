@@ -27,7 +27,7 @@ SDL_Texture* gTexture;
 SDL_Texture* gTexture2;
 Movable door;
 Movable player;
-AutoMovable enemy;
+//AutoMovable enemy;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -57,8 +57,8 @@ Camera camera;
 
 LevelEditor level = LevelEditor("level1.txt");
 std::list<Movable> ground;
-std::list<Movable> enemies;
-std::list<Movable> pit;
+std::list<AutoMovable> enemies;
+std::list<AutoMovable> pit;
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
@@ -78,7 +78,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     pit = level.pit;
 
     //test enemy
-    enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
+  //  enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
 
     door = level.door;
 
@@ -239,47 +239,56 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
     }
     if (!anyCollide) {
-      player.setUpperBound(0);
-      player.setLeftBound(0);
-      player.setRightBound(width);
-      player.setLowerBound(height + 100);
+        player.setUpperBound(0);
+        player.setLeftBound(0);
+        player.setRightBound(width);
+        player.setLowerBound(height + 100);
     }
 
     //collision with enemies
     //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
-    for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
-      Movable temp = *it;
-      if (temp.checkCollide(&cameraLoc)) {
-	temp.draw(renderer,dt,-cameraLoc.x,0,true);
-      }
-      if (player.checkCollide(&temp)) {
-	if (playerLoc.y < temp.getTrueRect()->y) {
-	  //enemy kill;
-	  Mix_PlayChannel(-1, sfx, 1);
-	  player.setVelY(-4);
-	  enemies.erase(it);
-	  score += 100;
-	} else {
-	  //die
-	  wlswitch = 2;
-	  gameOver = true;
-	  //CHANGE THIS IF YOU'RE IMPLEMENTING LIVES @ KEVIN
-	}
-      }
+    for (std::list<AutoMovable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+        AutoMovable temp = *it;
+        //if no gravity, then it is moving between a bounds
+        if (!(temp.getGravity())) {
+            temp.moveBetween(temp.getMinMoveBound(), temp.getMaxMoveBound(), dt);
+        }
+        if (temp.checkCollide(&cameraLoc)) {
+            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
+
+        }
+        if (player.checkCollide(&temp)) {
+            if (playerLoc.y < temp.getTrueRect()->y) {
+                //enemy kill;
+                Mix_PlayChannel(-1, sfx, 1);
+                player.setVelY(-4);
+                enemies.erase(it);
+                score += 100;
+            } else {
+                //die
+                wlswitch = 2;
+                gameOver = true;
+                //CHANGE THIS IF YOU'RE IMPLEMENTING LIVES @ KEVIN
+            }
+        }
     }
     //pits
-    for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
-      Movable temp = *it;
-      if (temp.checkCollide(&cameraLoc)) {
-        temp.draw(renderer,dt,-cameraLoc.x,0,true);
-      }
-      if (player.checkCollide(&temp)) {
-          wlswitch = 2;
-          gameOver = true;
-      }
+    for (std::list<AutoMovable>::iterator it = pit.begin(); it != pit.end(); ++it) {
+        AutoMovable temp = *it;
+        if (temp.checkCollide(&cameraLoc)) {
+            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
+            //if no gravity, then it is moving between a bounds
+            if (!(temp.getGravity())) {
+                temp.moveBetween(temp.getMinMoveBound(), temp.getMaxMoveBound(), dt);
+            }
+        }
+        if (player.checkCollide(&temp)) {
+            wlswitch = 2;
+            gameOver = true;
+        }
     }
-    enemy.moveBetween(1900, 2300, dt);
-    enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
+   // enemy.moveBetween(1900, 2300, dt);
+   // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     player.draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
 
     string temp = std::to_string(score);

@@ -47,6 +47,8 @@ protected:
     int rightBound;
     int upperBound;
     int lowerBound;
+    int minMoveBound = 0;
+    int maxMoveBound = 0;
 
 public:
     Movable();
@@ -84,6 +86,7 @@ public:
     SDL_Rect * getTrueRect();
     void setAir(bool);
     bool getAir();
+    bool getGravity();
     void jump();
     void setRect(int x, int y, int w, int h);
     void setGravity(int x);
@@ -91,6 +94,10 @@ public:
     void setRightBound(int x);
     void setUpperBound(int x);
     void setLowerBound(int x);
+    void setMoveBounds(int min, int max);
+    int getMinMoveBound();
+    int getMaxMoveBound();
+    void moveBetween(int dt);
 private:
 };
 

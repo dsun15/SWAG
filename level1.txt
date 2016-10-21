@@ -1,13 +1,14 @@
 3800 600
-G 0 300 300 300 Texture1.png
-G 300 400 75 200 Texture1.png
-G 375 500 75 100 Texture1.png
-G 500 300 300 25 Texture4.png
-G 1000 300 300 25 Texture4.png
-G 1500 300 400 300 Texture1.png
-G 1900 500 400 100 Texture1.png
-G 2300 400 150 200 Texture1.png
-G 2450 300 350 300 Texture1.png
-G 2800 500 700 100 Texture1.png
-G 3500 400 300 200 Texture1.png
-D 3650 350 50 50 door.png
+G 0 0 300 300 300 Texture1.png
+G 0 300 400 75 200 Texture1.png
+G 0 375 500 75 100 Texture1.png
+G 0 500 300 300 25 Texture4.png
+G 0 1000 300 300 25 Texture4.png
+G 0 1500 300 400 300 Texture1.png
+G 0 1900 500 400 100 Texture1.png
+G 0 2300 400 150 200 Texture1.png
+G 0 2450 300 350 300 Texture1.png
+G 0 2800 500 700 100 Texture1.png
+G 0 3500 400 300 200 Texture1.png
+D 0 3650 350 50 50 door.png
+E 1 2000 450 50 50 enemy1.png Y 1900 2300

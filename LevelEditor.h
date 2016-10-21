@@ -6,6 +6,7 @@
 #include <string>
 #include <list>
 #include "Movable.h"
+#include "AutoMovable.h"
 
 using std::string;
 
@@ -16,8 +17,8 @@ class LevelEditor {
 
 public:
     std::list<Movable> ground;
-    std::list<Movable> enemies;
-    std::list<Movable> pit;
+    std::list<AutoMovable> enemies;
+    std::list<AutoMovable> pit;
     Movable door;
     int levelWidth;
     int levelHeight;
