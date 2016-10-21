@@ -254,13 +254,16 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
       }
       if (player.checkCollide(&temp)) {
 	if (playerLoc.y < temp.getTrueRect()->y) {
-	  //enemy disappears
+	  //enemy kill;
+	  Mix_PlayChannel(-1, sfx, 1);
+	  player.setVelY(-4);
+	  enemies.erase(it);
 	  score += 100;
 	} else {
 	  //die
 	  wlswitch = 2;
 	  gameOver = true;
-	  //CHANGE THIS IF YOU'RE IMPLEMENTING LIVES
+	  //CHANGE THIS IF YOU'RE IMPLEMENTING LIVES @ KEVIN
 	}
       }
     }
