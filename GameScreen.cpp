@@ -248,18 +248,18 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //collision with enemies
     //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
     for (std::list<AutoMovable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
-        AutoMovable temp = *it;
         //if no gravity, then it is moving between a bounds
-        if (!(temp.getGravity())) {
+        if (!((*it).getGravity())) {
             //std::cout << temp.getMinMoveBound() << "     " << temp.getMaxMoveBound() << std::endl;
-            temp.moveBetween(temp.getMinMoveBound(), temp.getMaxMoveBound(), dt);
+            (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
+            //temp.setMove(true);
         }
-        if (temp.checkCollide(&cameraLoc)) {
-            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
+        if ((*it).checkCollide(&cameraLoc)) {
+            (*it).draw(renderer, dt, -cameraLoc.x, 0, true);
 
         }
-        if (player.checkCollide(&temp)) {
-            if (playerLoc.y < temp.getTrueRect()->y) {
+        if (player.checkCollide(&*it)) {
+            if (playerLoc.y < (*it).getTrueRect()->y) {
                 //enemy kill;
                 Mix_PlayChannel(-1, sfx, 1);
                 player.setVelY(-4);
@@ -275,15 +275,20 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
     //pits
     for (std::list<AutoMovable>::iterator it = pit.begin(); it != pit.end(); ++it) {
-        AutoMovable temp = *it;
-        if (temp.checkCollide(&cameraLoc)) {
-            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
+        //if no gravity, then it is moving between a bounds
+        if (!((*it).getGravity())) {
+            //std::cout << temp.getMinMoveBound() << "     " << temp.getMaxMoveBound() << std::endl;
+            (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
+            //temp.setMove(true);
+        }
+        if ((*it).checkCollide(&cameraLoc)) {
+            (*it).draw(renderer, dt, -cameraLoc.x, 0, true);
             //if no gravity, then it is moving between a bounds
-            if (!(temp.getGravity())) {
-                temp.moveBetween(temp.getMinMoveBound(), temp.getMaxMoveBound(), dt);
+            if (!((*it).getGravity())) {
+                (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
             }
         }
-        if (player.checkCollide(&temp)) {
+        if (player.checkCollide(&*it)) {
             wlswitch = 2;
             gameOver = true;
         }
