@@ -45,10 +45,12 @@ SDL_Texture* wintext;
 SDL_Texture* losetext;
 SDL_Texture* continuetext;
 SDL_Texture* scoretext;
+SDL_Texture* background;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 100, 125, 600, 50 };
 SDL_Rect gamescorerect = { 50, 50, 75, 50 };
+SDL_Rect backrect = {0,0,800,600};
 int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
@@ -66,6 +68,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     level = LevelEditor("level1.txt");
     width = level.levelWidth;
     height = level.levelHeight;
+    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
+    background = SDL_CreateTextureFromSurface(renderer, bs);
 
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
@@ -176,6 +180,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
+  SDL_RenderCopy(renderer,background,NULL,&backrect);
     SDL_Rect playerLoc = *player.getTrueRect();
     SDL_Rect cameraLoc = *camera.getRect();
     //this works
