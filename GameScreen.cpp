@@ -190,7 +190,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_Rect playerLoc = *player.getTrueRect();
     SDL_Rect cameraLoc = *camera.getRect();
     //this works
-    camera.center(player.getReallyRectX() + (playerLoc.w / 2), player.getReallyRectX() + (playerLoc.h / 2));
+    camera.center(player.getReallyRectX(), 0);
 
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, 0, true);
@@ -277,10 +277,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 enemies.erase(it);
                 score += 100;
             } else {
-                //die
-                wlswitch = 2;
-                gameOver = true;
-                //CHANGE THIS IF YOU'RE IMPLEMENTING LIVES @ KEVIN
+	      GameScreen::reset();
             }
         }
     }
@@ -300,8 +297,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             }
         }
         if (player.checkCollide(&*it)) {
-            wlswitch = 2;
+	  /*wlswitch = 2;
             gameOver = true;
+	  */
+	  GameScreen::reset();
         }
     }
    // enemy.moveBetween(1900, 2300, dt);
@@ -330,8 +329,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         gameOver = true;
     }
     if (playerLoc.y > height) {
-        wlswitch = 2;
+      /*wlswitch = 2;
         gameOver = true;
+      */
+      GameScreen::reset();
     }
     /* for (int i = 0; i < 4; i++) {
         // check collisions
@@ -359,7 +360,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 }
 
 
-void reset(){
+void GameScreen::reset(){
 
   //We will need the level object to replace dead enemies
   level = LevelEditor("level1.txt");
