@@ -56,6 +56,7 @@ int score;
 TTF_Font* gamefont;
 bool scorewritten = false;
 Camera camera;
+int lives;
 
 LevelEditor level = LevelEditor("level1.txt");
 std::list<Movable> ground;
@@ -64,6 +65,10 @@ std::list<AutoMovable> pit;
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
+
+  //set starting lives
+  lives = 5;
+  
     //Level Stuff
     level = LevelEditor("level1.txt");
     width = level.levelWidth;
@@ -114,7 +119,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     losetext = SDL_CreateTextureFromSurface(renderer, ls);
     continuetext = SDL_CreateTextureFromSurface(renderer, cm);
     wlswitch = 0;
-    score = 0;
+    //score = 0;
+    //Commandeering score writing to write lives
     scorewritten = false;
 
     return;
@@ -302,7 +308,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
    // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     player.draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
 
-    string temp = std::to_string(score);
+    string temp = std::to_string(lives); //was score
     const char* temp2 = temp.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ss = TTF_RenderUTF8_Blended(gamefont, temp2, white);
@@ -350,4 +356,33 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	  enemy[i].draw(renderer, dt, -cameraLoc.x, 0);
         }
     }*/
+}
+
+
+void reset(){
+
+  //We will need the level object to replace dead enemies
+  level = LevelEditor("level1.txt");
+
+
+  if(lives > 0){
+    //Move player back to start
+    SDL_Rect playerLoc = *player.getTrueRect();
+    player.move(-playerLoc.x, -playerLoc.y);
+
+    //Reset all enemies
+    enemies = level.enemies;
+
+    lives--;
+  
+
+  }
+  else{
+
+    //You are out of lives: game over
+    wlswitch = 2;
+    gameOver = true;
+
+
+  }
 }
