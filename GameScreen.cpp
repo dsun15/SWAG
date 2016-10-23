@@ -121,7 +121,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     losetext = SDL_CreateTextureFromSurface(renderer, ls);
     continuetext = SDL_CreateTextureFromSurface(renderer, cm);
     wlswitch = 0;
-    //score = 0;
+    score = 0;
     //Commandeering score writing to write lives
     scorewritten = false;
 
@@ -198,31 +198,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         door.draw(renderer, dt, -cameraLoc.x, 0, true);
     }
 
-    /*for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
-      Movable temp = *it;
-        temp.draw(renderer, dt, -cameraLoc.x, 0);
-        std::cout << temp.getTrueRect()->x << " " << (*it).getTrueRect()->y << std::endl;
-    }
-   
-     for (std::list<Movable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
-        SDL_Rect* temp = player.getRect();
-        SDL_Rect* enemyTemp = (*it).getRect();
-        if (player.checkCollide(enemyTemp)) {
-            gameOver = true;
-            if ((temp->y < enemyTemp->y) && (abs(temp->x - enemyTemp->x) <= enemyTemp->w)) {
-                enemies.erase(it);
-                gameOver = false;
-            }
-        } else { 
-            (*it).draw(renderer, dt, -cameraLoc.x, 0);
-        }
-    }
-    
-    for (std::list<Movable>::iterator it = pit.begin(); it != pit.end(); ++it) {
-        (*it).draw(renderer, dt, -cameraLoc.x, 0);
-	}
-
-	<<<<<<< HEAD*/
     bool playerOnGround = false;
     bool anyCollide = false;
     //collision with platforms
@@ -341,37 +316,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
       */
       GameScreen::reset();
     }
-    /* for (int i = 0; i < 4; i++) {
-        // check collisions
-        if (player.checkCollide(&(enemy[i])) && onScreen[i]) {
-            Mix_PlayChannel(-1, sfx, 1);
-            // jump on enemy for a kill
-            SDL_Rect* temp = player.getRect();
-            SDL_Rect* enemyTemp = enemy[i].getRect();
-            if ((temp->y < enemyTemp->y) && (abs(temp->x - enemyTemp->x) <= enemyTemp->w)) {
-                onScreen[i] = false;
-                score = score + 100;
-                // you die
-            } else {
-                wlswitch = 2;
-                gameOver = true;
-            }
-        }
-
-        // render enemeies
-        if (onScreen[i] && enemy[i].checkCollide(camera.getRect())) {
-	  enemy[i].automove(dt);
-	  enemy[i].draw(renderer, dt, -cameraLoc.x, 0);
-        }
-    }*/
 }
 
-
 void GameScreen::reset(){
-
   //We will need the level object to replace dead enemies
   level = LevelEditor("level1.txt");
-
 
   if(lives > 0){
     //Move player back to start
@@ -382,15 +331,9 @@ void GameScreen::reset(){
     enemies = level.enemies;
 
     lives--;
-  
-
-  }
-  else{
-
+  } else {
     //You are out of lives: game over
     wlswitch = 2;
     gameOver = true;
-
-
   }
 }

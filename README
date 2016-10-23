@@ -3,11 +3,39 @@ Since we play .ogg music, the build defers to ogg123.
 As long as you can use ogg123 from the command line, the music
 should be able to play correctly.
 
-This built and ran fine on Linux, but there were sound issues for Mac.
+There may be sound issues depending on your installation.
 
-Move with arrow keys. Jump with spacebar. Pause and access menu with P.
-Press spacebar at the high score screen to continue with a new game.
+Move with arrow keys. Jump with either spacebar or up.. Pause and 
+access menu with P. Press spacebar at the high score screen to continue
+with a new game. Jump on top of the enemies to get rid of them. You
+can't jump on top of the enemies with spiky protective helmets.
+You start with 5 lives. Your current lives is displayed on the
+bottom right corner. Your score is in the top right corner.
 Get to the door at the end of the level to win.
 
-Project is a little less buggy now. Player is jittery when
-colliding with ground objects.
+List of improvements from last time:
+ - Collisions with ground objects work now. You can fall on top of
+   the ground and stay there. You get blocked when moving into a wall.
+ - You no longer jitter up and down on top of the ground.
+ - A lives system is implemented. You start with 5 and lose them by dying.
+   You game over by dying at 0 lives.
+ - You can die by falling into a pit now.
+ - Enemies and enemy movement has been implemented. They move left
+   and right. They disappear if you jump on top of them.
+ - A new enemy type has been implemented. They wear spiky helmets to
+   protect their noggins from you.
+ - The level is longer and more interesting.
+ - Graphical improvements include new ground textures and a spiffy
+   purple background. I think it looks pretty.
+
+Here is what each member accomplished. Anything not mentioned was
+worked on by the whole team.
+Devin: Implemented enemy collision behavior. Corrected collision
+	detection with ground objects. Implemented pitfalls.
+Chris: Implemented enemy behavior. Created important level reader
+	functionalities and improvements.
+Kevin: Implemented the lives system.
+William: Redesigned level 1 to be longer and more interesting. Updated
+	textures. Created background gradient. Created enemy graphics.
+
+That's all for now.
