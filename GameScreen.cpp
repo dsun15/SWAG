@@ -45,11 +45,13 @@ SDL_Texture* wintext;
 SDL_Texture* losetext;
 SDL_Texture* continuetext;
 SDL_Texture* scoretext;
+SDL_Texture* lifetext;
 SDL_Texture* background;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 100, 125, 600, 50 };
 SDL_Rect gamescorerect = { 50, 50, 75, 50 };
+SDL_Rect lifecountrect = { 725, 525, 75, 50 };
 SDL_Rect backrect = {0,0,800,600};
 int wlswitch; // 1 = win, 2 = lose
 int score;
@@ -307,12 +309,17 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
    // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     player.draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
 
-    string temp = std::to_string(lives); //was score
+    string temp = std::to_string(score);
+    string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
+    const char* templife = life.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ss = TTF_RenderUTF8_Blended(gamefont, temp2, white);
+    SDL_Surface* ls = TTF_RenderUTF8_Blended(gamefont, templife, white);
     scoretext = SDL_CreateTextureFromSurface(renderer, ss);
+    lifetext = SDL_CreateTextureFromSurface(renderer, ls);
     SDL_RenderCopy(renderer, scoretext, NULL, &gamescorerect);
+    SDL_RenderCopy(renderer, lifetext, NULL, &lifecountrect);
     if (wlswitch == 1) {
         SDL_RenderCopy(renderer, wintext, NULL, &winrect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
