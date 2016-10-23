@@ -28,14 +28,13 @@ List of improvements from last time:
  - Graphical improvements include new ground textures and a spiffy
    purple background. I think it looks pretty.
 
-Here is what each member accomplished. Anything not mentioned was
-worked on by the whole team.
+Here is what each member accomplished:
 Devin: Implemented enemy collision behavior. Corrected collision
 	detection with ground objects. Implemented pitfalls.
-Chris: Implemented enemy behavior. Created important level reader
-	functionalities and improvements.
+Chris: Implemented enemy movement behavior. Added important level
+	reader functionalities and improvements.
 Kevin: Implemented the lives system.
-William: Redesigned level 1 to be longer and more interesting. Updated
-	textures. Created background gradient. Created enemy graphics.
+William: Redesigned and extended level 1. Updated textures. Created 
+	background gradient. Created additional enemy graphics.
 
 That's all for now.
