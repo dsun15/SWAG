@@ -78,7 +78,7 @@ int MenuScreen::input(SDL_Event* event, int dt) {
         if (event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym == SDLK_SPACE) {
             if (counter == 1) {
                 Mix_PlayChannel(-1, confirm, 0);
-                return 1;
+                return 6;
             }
             if (counter == 2) {
             }

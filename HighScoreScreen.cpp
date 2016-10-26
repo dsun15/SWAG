@@ -106,7 +106,7 @@ int HighScoreScreen::input(SDL_Event* event, int dt) {
     switch (event->type) {
     case SDL_KEYUP:
         if (event->key.keysym.sym == SDLK_SPACE) {
-            return 1;
+            return 6;
         }
         break;
     }
