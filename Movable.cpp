@@ -77,6 +77,10 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
 }
 
 Movable::~Movable() {
+  if (this->fileName != NULL) {
+  std::cout << "destruct movable " << this->fileName <<std::endl;
+  //SDL_FreeSurface(this->img);
+  }
 }
 
 void Movable::accelerate(int dt, int accX) {
@@ -199,6 +203,7 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool 
     if(hasGrav && !onGround){
       this->gravity = 1;
     }
+    SDL_DestroyTexture(texture);
 }
 
 void Movable::spriteUpdate(int dt) {

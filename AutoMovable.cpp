@@ -23,7 +23,9 @@ int timeSinceChange = 0;
 
 AutoMovable::AutoMovable() {}
 
-AutoMovable::~AutoMovable() {}
+AutoMovable::~AutoMovable() {
+  Movable::~Movable();
+}
 
 void AutoMovable::automove(int time) {
     //for time based movement

@@ -82,7 +82,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 //    SDL_FreeSurface(bs);
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
-    player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
+    //player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
+    player = Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 800, 50);
     player.accelerate(1, 0);
 
     //Objects from level file
