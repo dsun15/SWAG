@@ -77,9 +77,9 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
 }
 
 Movable::~Movable() {
-  if (this->fileName != NULL) {
+  if (this->img != NULL) {
   std::cout << "destruct movable " << this->fileName <<std::endl;
-  //SDL_FreeSurface(this->img);
+ // SDL_FreeSurface(this->img);
   }
 }
 
