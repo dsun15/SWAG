@@ -18,9 +18,10 @@ using std::string;
 #define _MOVABLE_H
 
 class Movable {
-    const char* fileName;
+
 
 protected:
+    const char* fileName;
     int MAX_HORIZ = 3;
     int MAX_VERT = 3;
     int gravity = 1;

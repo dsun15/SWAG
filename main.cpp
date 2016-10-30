@@ -31,7 +31,7 @@ SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
 //Mix_Music* titleMusic;
 //Mix_Music* game;
-GameScreen g;
+//GameScreen g;
 TitleScreen t;
 MenuScreen m;
 HighScoreScreen h;
@@ -79,7 +79,7 @@ void setup() {
     t = TitleScreen(gRenderer);
     m = MenuScreen(gRenderer);
     h = HighScoreScreen(gRenderer);
-    g = GameScreen(gRenderer);
+//    g = GameScreen(gRenderer);
     return;
 }
 
@@ -109,6 +109,7 @@ void run() {
     unsigned int currentTime;
     double time = 0.0;
     int screenswitch = 0;
+    GameScreen g = GameScreen(gRenderer);
     while (running) {
         currentTime = SDL_GetTicks();
         unsigned int dt = currentTime - lastTime;
@@ -136,7 +137,7 @@ void run() {
         }
         if (screenswitch == 1) {
             //new game
-            g = GameScreen(gRenderer);
+            //GameScreen g = GameScreen(gRenderer);
             activeScreen = &g;
             std::cout << "triggered screen switch\n";
         }
@@ -156,6 +157,10 @@ void run() {
         if (screenswitch == 5) {
             Mix_HaltMusic();
             running = false;
+        }
+        if (screenswitch == 6) {
+            g.hardReset();
+            activeScreen = &g;
         }
         SDL_RenderClear(gRenderer);
         activeScreen->draw(gRenderer, dt);

@@ -68,9 +68,11 @@ std::list<Movable> ground;
 std::list<AutoMovable> enemies;
 std::list<AutoMovable> pit;
 
+SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
+
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
-
+    std::cout << "YO" << std::endl;
   //set starting lives
   lives = 5;
   
@@ -78,15 +80,14 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     level = LevelEditor("level1.txt");
     width = level.levelWidth;
     height = level.levelHeight;
-    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
+//    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
     background = SDL_CreateTextureFromSurface(renderer, bs);
-
+//    SDL_FreeSurface(bs);
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
-    playables.emplace_back(Movable("player1.png", 50, 50, 0, 50, width, height, 600, 50));
+    playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 50, width, height, 600, 50));
     playables[0].accelerate(1, 0);
-    //playables.emplace_back(Movable("player1.png", 50, 50, 50, 0, width, height, 600, 50));
-    //playables[1].accelerate(1, 0);
+   
 
     //Objects from level file
     ground = level.ground;
@@ -125,6 +126,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     wintext = SDL_CreateTextureFromSurface(renderer, ws);
     losetext = SDL_CreateTextureFromSurface(renderer, ls);
     continuetext = SDL_CreateTextureFromSurface(renderer, cm);
+    SDL_FreeSurface(ws);
+    SDL_FreeSurface(ls);
+    SDL_FreeSurface(cm);
     wlswitch = 0;
     score = 0;
     //Commandeering score writing to write lives
@@ -134,9 +138,17 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 }
 
 GameScreen::~GameScreen() {
-    // Mix_FreeMusic(music);
+    std::cout << "destruct" << std::endl;
+    Mix_FreeMusic(music);
     if (Mix_PlayingMusic())
         Mix_PauseMusic();
+    SDL_DestroyTexture(wintext);
+    SDL_DestroyTexture(losetext);
+    SDL_DestroyTexture(continuetext);
+    SDL_DestroyTexture(scoretext);
+    SDL_DestroyTexture(lifetext);
+    SDL_DestroyTexture(background);
+    SDL_FreeSurface(bs);
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -336,6 +348,8 @@ playables[playerNum].setUpperBound(0);
     lifetext = SDL_CreateTextureFromSurface(renderer, ls);
     SDL_RenderCopy(renderer, scoretext, NULL, &gamescorerect);
     SDL_RenderCopy(renderer, lifetext, NULL, &lifecountrect);
+    SDL_FreeSurface(ss);
+    SDL_FreeSurface(ls);
     if (wlswitch == 1) {
         SDL_RenderCopy(renderer, wintext, NULL, &winrect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
@@ -377,3 +391,15 @@ void GameScreen::reset(){
     gameOver = true;
   }
 }
+
+void GameScreen::hardReset(){
+    level = LevelEditor("level1.txt");
+    SDL_Rect playerLoc = *player.getTrueRect();
+    player.move(-playerLoc.x, -playerLoc.y);
+    enemies = level.enemies;
+    lives = 5;
+    score = 0;
+    gameOver = false;
+    wlswitch = 0;
+}
+

@@ -24,6 +24,7 @@ Camera::Camera(int levelWidth, int levelHeight, int x, int y, int w, int h) {
     this->levelWidth = levelWidth;
     this->levelHeight = levelHeight;
     this->rect = {x, y, w, h};
+    this->fileName = "chris.jpg";
 }    
 
 Camera::~Camera() {}
