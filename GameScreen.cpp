@@ -62,8 +62,10 @@ bool scorewritten = false;
 Camera camera;
 int lives;
 
-string levelfile = "level2A.txt";
-LevelEditor level = LevelEditor(levelfile);
+int levelnum = 1;
+string levelfile;
+//string levelfile = "level2A.txt";
+LevelEditor level; // = LevelEditor(levelfile);
 std::list<Movable> ground;
 std::list<AutoMovable> enemies;
 std::list<AutoMovable> pit;
@@ -80,8 +82,11 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Level Stuff
     //level = LevelEditor("level1.txt");
   //level = LevelEditor("level2A.txt");
-  level = LevelEditor(levelfile);
-    width = level.levelWidth;
+  levelfile = "level" + to_string(levelnum) + ".txt";
+  cout << levelfile << endl;
+  //level = LevelEditor(levelfile);
+  level.read(levelfile);  
+  width = level.levelWidth;
     height = level.levelHeight;
 //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
     background = SDL_CreateTextureFromSurface(renderer, bs);
@@ -168,7 +173,12 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-            return 3;
+	  if (levelnum==2) {
+	    return 3;
+	  }
+	  else if (youWin == true) {
+	    GameScreen::advanceLevel();
+	  }
         }
 
     } else {
@@ -347,7 +357,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
 void GameScreen::reset(){
   //We will need the level object to replace dead enemies
-  level = LevelEditor(levelfile);
+  //level = LevelEditor(levelfile);
+  level.read(levelfile);
   cout << "loaded reset" << endl;
   if(lives > 0){
     //Move player back to start
@@ -366,14 +377,37 @@ void GameScreen::reset(){
 }
 
 void GameScreen::hardReset(){
-    level = LevelEditor(levelfile);
+    levelnum = 1;
+    levelfile = "level" + to_string(levelnum) + ".txt";
+    //level = LevelEditor(levelfile);
+    level.read(levelfile);
     cout << "loaded hard reset" << endl;
     SDL_Rect playerLoc = *player.getTrueRect();
     player.move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     enemies = level.enemies;
+    ground = level.ground;
+    pit = level.pit;
+    door = level.door;
     lives = 5;
     score = 0;
     gameOver = false;
     wlswitch = 0;
 }
 
+void GameScreen::advanceLevel() {
+  levelnum++;
+  levelfile = "level" + to_string(levelnum) + ".txt";
+  cout << "advancing" << endl;
+  //level = LevelEditor(levelfile);
+  level.read(levelfile);
+  cout << "advanced" << endl;
+  SDL_Rect playerLoc = *player.getTrueRect();
+  player.move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
+  enemies = level.enemies;
+  ground = level.ground;
+  pit = level.pit;
+  door = level.door;
+  gameOver = false;
+  wlswitch = 0;
+  youWin = false;
+}
