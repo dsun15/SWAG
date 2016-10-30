@@ -109,6 +109,7 @@ void Movable::move(int dt) {
     this->rect.y = this->truey;
   
     //setting
+    dt /= 2;
     dt = dt / 2;
     this->rect.x += this->velX * dt;
     this->rect.y += this->velY * dt;
@@ -249,8 +250,11 @@ int Movable::getReallyRectY(){
 }
 
 SDL_Rect * Movable::getTrueRect() {
-  this->truerect.x = this->truex;
+  /*this->truerect.x = this->truex;
   this->truerect.y = this->truey;
+  return &(this->truerect);
+  */
+  truerect = {this->truex, this->truey, this->rect.w, this->rect.h};
   return &(this->truerect);
 }
 

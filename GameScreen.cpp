@@ -21,11 +21,11 @@
 #include <vector>
 #include <string>
 #include <unistd.h>
-
+using namespace std;
 int width = 1000;
 int height = 600;
-SDL_Texture* gTexture;
-SDL_Texture* gTexture2;
+//SDL_Texture* gTexture;
+//SDL_Texture* gTexture2;
 Movable door;
 
 //AutoMovable enemy;
@@ -62,8 +62,9 @@ Camera camera;
 int lives;
 int playerNum = 0;
 
-LevelEditor level = LevelEditor("level1.txt");
 std::vector<Movable> playables;
+string levelfile = "level1.txt";
+LevelEditor level = LevelEditor(levelfile);
 std::list<Movable> ground;
 std::list<AutoMovable> enemies;
 std::list<AutoMovable> pit;
@@ -77,7 +78,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
   lives = 5;
   
     //Level Stuff
-    level = LevelEditor("level1.txt");
+    //level = LevelEditor("level1.txt");
+  //level = LevelEditor("level2A.txt");
+  level = LevelEditor(levelfile);
     width = level.levelWidth;
     height = level.levelHeight;
 //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
@@ -258,18 +261,18 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
 
       std::cout << "check all players \n";      
     
-
-      
       if (playables[playerNum].checkCollide(playables[z].getTrueRect())) {
 	  std::cout << "player player collision \n";
             if (playerLoc.y < playables[z].getTrueRect()->y) {
                 playerOnGround = true;
 
                 playables[playerNum].setLowerBound(playables[z].getTrueRect()->y + 1);
-            } else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x < playables[z].getTrueRect()->x) {
+            } else if (playerLoc.y > playables[z].getTrueRect()->y){
+	      playables[playerNum].setUpperBound(playables[z].getTrueRect()->y);
+	    }else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x < playables[z].getTrueRect()->x) {
                 playables[playerNum].setRightBound(playables[z].getTrueRect()->x);
             } else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x > playables[z].getTrueRect()->x) {
-                playables[playerNum].setLeftBound(playables[z].getTrueRect()->x + playables[z].getTrueRect()->w);
+	      playables[playerNum].setLeftBound(playables[z].getTrueRect()->x + playables[z].getRect()->w);
             }
             anyCollide = true;
         }
@@ -379,11 +382,11 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
 
 void GameScreen::reset(){
   //We will need the level object to replace dead enemies
-  level = LevelEditor("level1.txt");
-
+  level = LevelEditor(levelfile);
+  cout << "loaded reset" << endl;
   if(lives > 0){
     //Move player back to start
-    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+   SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     for(int x = 0; x < playables.size(); x++){
       playables[x].move(-playerLoc.x * (50 * x), -playerLoc.y);
     }
@@ -400,11 +403,12 @@ void GameScreen::reset(){
 }
 
 void GameScreen::hardReset(){
-    level = LevelEditor("level1.txt");
+    level = LevelEditor(levelfile);
     SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     for(int x = 0; x < playables.size(); x++){
       playables[x].move(-playerLoc.x, -playerLoc.y);
     }
+
     enemies = level.enemies;
     lives = 5;
     score = 0;

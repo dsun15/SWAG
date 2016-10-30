@@ -19,6 +19,8 @@ public:
     std::list<Movable> ground;
     std::list<AutoMovable> enemies;
     std::list<AutoMovable> pit;
+    int playerInitX;
+    int playerInitY;
     Movable door;
     int levelWidth;
     int levelHeight;
