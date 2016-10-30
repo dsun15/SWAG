@@ -1,0 +1,6 @@
+2500 600
+G 0 600 300 300 300 Texture1.png
+G 0 1050 300 250 300 Texture1.png
+G 0 1300 450 200 150 Texture1.png
+G 0 2250 300 150 300 Texture1.png
+D 0 2450 250 50 50 door.png
