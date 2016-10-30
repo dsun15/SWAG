@@ -135,10 +135,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 }
 
 GameScreen::~GameScreen() {
-    std::cout << "destruct" << std::endl;
+    //std::cout << "destruct" << std::endl;
     Mix_FreeMusic(music);
-    if (Mix_PlayingMusic())
-        Mix_PauseMusic();
+    Mix_FreeChunk(sfx);
+    Mix_FreeChunk(sfxJump);
     SDL_DestroyTexture(wintext);
     SDL_DestroyTexture(losetext);
     SDL_DestroyTexture(continuetext);
