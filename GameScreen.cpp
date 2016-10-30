@@ -208,7 +208,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 	      GameScreen::advanceLevel();
 	    }
 	    if (event->key.keysym.sym == SDLK_TAB) {
-	      if(playerNum + 1 >= playables.size()){
+	      if(playerNum + 1 >= (int) playables.size()){
 		playerNum = 0;
 	      } else {
 		playerNum++;
@@ -252,7 +252,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         door.draw(renderer, dt, -cameraLoc.x, 0, true);
     }
 
-playables[playerNum].setUpperBound(0);
+    playables[playerNum].setUpperBound(0);
         playables[playerNum].setLeftBound(0);
         playables[playerNum].setRightBound(width);
         playables[playerNum].setLowerBound(height + 100);
@@ -281,12 +281,12 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     }
       
     
-    for (int z = 0; z < playables.size(); z++){
+ for (int z = 0; z < (int) playables.size(); z++){
 
       //std::cout << "check all players \n";      
     
       if (playables[playerNum].checkCollide(playables[z].getTrueRect())) {
-	  //std::cout << "player player collision \n";
+  //std::cout << "player player collision \n";
             if (playerLoc.y < playables[z].getTrueRect()->y) {
                 playerOnGround = true;
 
@@ -303,16 +303,16 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
       
     }
 
-    /*
     
+    /*
     if (!anyCollide) {
         playables[playerNum].setUpperBound(0);
         playables[playerNum].setLeftBound(0);
         playables[playerNum].setRightBound(width);
         playables[playerNum].setLowerBound(height + 100);
-    }
+	}*/
 
-    */
+    
     
     //collision with enemies
     //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
@@ -359,7 +359,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     }
    // enemy.moveBetween(1900, 2300, dt);
    // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
-    for (int z = 0; z < playables.size(); z++){
+    for (int z = 0; z < (int) playables.size(); z++){
         if (playables[z].checkCollide(&cameraLoc)) {
 	  if(z != playerNum){
            playables[z].draw(renderer, dt, -cameraLoc.x, 0, true);
@@ -412,7 +412,7 @@ void GameScreen::reset(){
   if(lives > 0){
     //Move player back to start
    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-    for(int x = 0; x < playables.size(); x++){
+   for(int x = 0; x < (int) playables.size(); x++){
       playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     }
 
@@ -433,7 +433,7 @@ void GameScreen::hardReset(){
     //level = LevelEditor(levelfile);
     level.read(levelfile);
     SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-    for(int x = 0; x < playables.size(); x++){
+    for(int x = 0; x < (int) playables.size(); x++){
       playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     }
 
@@ -455,7 +455,7 @@ void GameScreen::advanceLevel() {
   level.read(levelfile);
   //cout << "advanced" << endl;
   SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-  for (int i = 0; i< playables.size(); i++) {
+  for (int i = 0; i< (int) playables.size(); i++) {
     playables[i].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
   }
   enemies = level.enemies;
