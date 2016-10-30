@@ -78,7 +78,7 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
 
 Movable::~Movable() {
   if (this->img != NULL) {
-  std::cout << "destruct movable " << this->fileName <<std::endl;
+//  std::cout << "destruct movable " << this->fileName <<std::endl;
  // SDL_FreeSurface(this->img);
   }
 }
@@ -86,7 +86,7 @@ Movable::~Movable() {
 void Movable::accelerate(int dt, int accX) {
     this->velX = this->velX + accX * dt;
     //    if (this->inAir) {
-      this->velY = this->velY + this->gravity * (dt / 2);
+      this->velY = this->velY + this->gravity * (dt / 1);
       //}
     if (abs(this->velX) > MAX_HORIZ) {
         if (this->velX > 0) {
@@ -109,8 +109,8 @@ void Movable::move(int dt) {
     this->rect.y = this->truey;
   
     //setting
-    dt /= 2;
-    dt = dt / 2;
+    dt /= 3;
+    //dt = dt / 2;
     this->rect.x += this->velX * dt;
     this->rect.y += this->velY * dt;
     if (!this->isMoving) {
@@ -233,7 +233,7 @@ void Movable::setVelY(int n) {
 void Movable::jump() {
     if (!this->inAir) {
         this->inAir = true;
-        Movable::setVelY(-10);
+        Movable::setVelY(-17);
     }
 }
 
