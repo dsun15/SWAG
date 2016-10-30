@@ -201,6 +201,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
             }
             if (event->key.keysym.sym == SDLK_UP) {
             }
+	    if (event->key.keysym.sym == SDLK_r) {
+	      GameScreen::advanceLevel();
+	    }
 	    if (event->key.keysym.sym == SDLK_TAB) {
 	      if(playerNum + 1 >= playables.size()){
 		playerNum = 0;
