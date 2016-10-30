@@ -9,8 +9,10 @@ LevelEditor::LevelEditor() {}
 
 LevelEditor::~LevelEditor() {}
 
-LevelEditor::LevelEditor(string fileName) {
-
+void LevelEditor::read(string fileName) {
+  enemies.clear();
+  ground.clear();
+  pit.clear();
     ifstream inFile;
     inFile.open(fileName);
 

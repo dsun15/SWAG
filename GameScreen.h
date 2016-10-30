@@ -27,6 +27,7 @@ public:
     void draw(SDL_Renderer* renderer, int dt);
     void reset();
     void hardReset();
+    void advanceLevel();
 };
 
 #endif

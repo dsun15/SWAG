@@ -408,7 +408,7 @@ void GameScreen::reset(){
     //Move player back to start
    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     for(int x = 0; x < playables.size(); x++){
-      playables[x].move(-playerLoc.x * (50 * x), -playerLoc.y);
+      playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     }
 
     //Reset all enemies

@@ -27,7 +27,7 @@ public:
 
     LevelEditor();
     ~LevelEditor();
-    LevelEditor(string s);
+    void read(string s);
 };
 
 #endif
