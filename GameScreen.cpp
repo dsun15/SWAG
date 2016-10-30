@@ -60,6 +60,7 @@ bool scorewritten = false;
 Camera camera;
 int lives;
 
+
 string levelfile = "level2A.txt";
 LevelEditor level = LevelEditor(levelfile);
 std::list<Movable> ground;
@@ -341,7 +342,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 void GameScreen::reset(){
   //We will need the level object to replace dead enemies
   level = LevelEditor(levelfile);
-  cout << "loaded reset" << endl;
+  //cout << "loaded reset" << endl;
   if(lives > 0){
     //Move player back to start
     SDL_Rect playerLoc = *player.getTrueRect();
@@ -360,7 +361,7 @@ void GameScreen::reset(){
 
 void GameScreen::hardReset(){
     level = LevelEditor(levelfile);
-    cout << "loaded hard reset" << endl;
+    //cout << "loaded hard reset" << endl;
     SDL_Rect playerLoc = *player.getTrueRect();
     player.move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     enemies = level.enemies;

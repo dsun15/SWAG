@@ -84,5 +84,5 @@ LevelEditor::LevelEditor(string fileName) {
         }
     }
 
-    //inFile.close();
+    inFile.close();
 }
