@@ -86,7 +86,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
     playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 50, width, height, 600, 50));
-    playables[0].accelerate(1, 0);
+    //playables[0].accelerate(1, 0);
+
+    playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50));
+    //playables[1].accelerate(1, 0);
    
 
     //Objects from level file
@@ -231,29 +234,30 @@ playables[playerNum].setUpperBound(0);
     bool anyCollide = false;
     //collision with platforms
 
-
-    for (int z = 0; z < playables.size(); z++){
-
-      
-    for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
         Movable temp = *it;
         if (temp.checkCollide(&cameraLoc)) {
             temp.draw(renderer, dt, -cameraLoc.x, 0, true);
         }
-        if (playables[z].checkCollide(&temp)) {
+        if (playables[playerNum].checkCollide(&temp)) {
             if (playerLoc.y < temp.getTrueRect()->y) {
                 playerOnGround = true;
 
-                playables[z].setLowerBound(temp.getTrueRect()->y + 1);
+                playables[playerNum].setLowerBound(temp.getTrueRect()->y + 1);
             } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x < temp.getTrueRect()->x) {
-                playables[z].setRightBound(temp.getTrueRect()->x);
+                playables[playerNum].setRightBound(temp.getTrueRect()->x);
             } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x > temp.getTrueRect()->x) {
-                playables[z].setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
+                playables[playerNum].setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
             }
             anyCollide = true;
         }
     }
       
+    
+    for (int z = 0; z < playables.size(); z++){
+
+      
+    
 
         if (playables[playerNum].checkCollide(&playables[z])) {
             if (playerLoc.y < playables[z].getTrueRect()->y) {
@@ -394,8 +398,10 @@ void GameScreen::reset(){
 
 void GameScreen::hardReset(){
     level = LevelEditor("level1.txt");
-    SDL_Rect playerLoc = *player.getTrueRect();
-    player.move(-playerLoc.x, -playerLoc.y);
+    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+    for(int x = 0; x < playables.size(); x++){
+      playables[x].move(-playerLoc.x, -playerLoc.y);
+    }
     enemies = level.enemies;
     lives = 5;
     score = 0;
