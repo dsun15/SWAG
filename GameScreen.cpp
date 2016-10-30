@@ -186,6 +186,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
 	  else if (youWin == true) {
 	    GameScreen::advanceLevel();
 	  }
+	  else {
+	    GameScreen::hardReset();
+	  }
         }
 
     } else {
