@@ -256,10 +256,12 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     
     for (int z = 0; z < playables.size(); z++){
 
-      
+      std::cout << "check all players \n";      
     
 
-        if (playables[playerNum].checkCollide(&playables[z])) {
+      
+      if (playables[playerNum].checkCollide(playables[z].getTrueRect())) {
+	  std::cout << "player player collision \n";
             if (playerLoc.y < playables[z].getTrueRect()->y) {
                 playerOnGround = true;
 
@@ -299,6 +301,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         if (playables[playerNum].checkCollide(&*it)) {
             if (playerLoc.y < (*it).getTrueRect()->y) {
                 //enemy kill;
+	      std::cout << "GET REKT BYOTCH\n";
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
                 enemies.erase(it);
@@ -382,7 +385,7 @@ void GameScreen::reset(){
     //Move player back to start
     SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     for(int x = 0; x < playables.size(); x++){
-      playables[x].move(-playerLoc.x, -playerLoc.y);
+      playables[x].move(-playerLoc.x * (50 * x), -playerLoc.y);
     }
 
     //Reset all enemies
