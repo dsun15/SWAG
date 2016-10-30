@@ -399,11 +399,8 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         youWin = true;
         gameOver = true;
     }
-    std::cout << playables[playerNum].getReallyRectY();
     if (playables[playerNum].getReallyRectY() > height - 25) {
-      std::cout << "I ded\n";
-      
-      GameScreen::reset();
+        GameScreen::reset();
     }
 }
 
