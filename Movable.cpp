@@ -250,8 +250,11 @@ int Movable::getReallyRectY(){
 }
 
 SDL_Rect * Movable::getTrueRect() {
-  this->truerect.x = this->truex;
+  /*this->truerect.x = this->truex;
   this->truerect.y = this->truey;
+  return &(this->truerect);
+  */
+  truerect = {this->truex, this->truey, this->rect.w, this->rect.h};
   return &(this->truerect);
 }
 
