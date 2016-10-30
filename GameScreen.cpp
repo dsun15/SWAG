@@ -23,8 +23,8 @@
 using namespace std;
 int width = 1000;
 int height = 600;
-SDL_Texture* gTexture;
-SDL_Texture* gTexture2;
+//SDL_Texture* gTexture;
+//SDL_Texture* gTexture2;
 Movable door;
 Movable player;
 //AutoMovable enemy;

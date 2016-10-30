@@ -109,6 +109,7 @@ void Movable::move(int dt) {
     this->rect.y = this->truey;
   
     //setting
+    dt /= 2;
     dt = dt / 2;
     this->rect.x += this->velX * dt;
     this->rect.y += this->velY * dt;
