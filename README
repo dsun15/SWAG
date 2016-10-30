@@ -13,28 +13,39 @@ You start with 5 lives. Your current lives is displayed on the
 bottom right corner. Your score is in the top right corner.
 Get to the door at the end of the level to win.
 
-List of improvements from last time:
- - Collisions with ground objects work now. You can fall on top of
-   the ground and stay there. You get blocked when moving into a wall.
- - You no longer jitter up and down on top of the ground.
- - A lives system is implemented. You start with 5 and lose them by dying.
-   You game over by dying at 0 lives.
- - You can die by falling into a pit now.
- - Enemies and enemy movement has been implemented. They move left
-   and right. They disappear if you jump on top of them.
- - A new enemy type has been implemented. They wear spiky helmets to
-   protect their noggins from you.
- - The level is longer and more interesting.
- - Graphical improvements include new ground textures and a spiffy
-   purple background. I think it looks pretty.
+This week has mostly been behind-the-scenes cleanup.
+
+List of visible improvements from last time:
+ - A new level is implemented.
+ - A system for progressing through levels has been implemented.
+ - New textures for level 2.
+ - Musical adjustments.
+ - A smoother movement experience, hopefully.
+ - A new player character graphic - it's Jibby.
+ - The lives count is more obvious because Jibby's face is next to it.
 
 Here is what each member accomplished:
-Devin: Implemented enemy collision behavior. Corrected collision
-	detection with ground objects. Implemented pitfalls.
-Chris: Implemented enemy movement behavior. Added important level
-	reader functionalities and improvements.
-Kevin: Implemented the lives system.
-William: Redesigned and extended level 1. Updated textures. Created 
-	background gradient. Created additional enemy graphics.
+Devin: Implemented the level progression system. Added ability to
+	specify the initial position of the player, which currently
+	isn't used, but is useful in the future.
+Chris: Fixed up multiple musical implementations. Restructured the code so
+	that a new GameScreen isn't constructed multiple times. Fixed
+	various memory leaks. Reconfigured gravity and dt movement.
+Kevin: Implemented a system for multiple playable characters. This currently
+	isn't used, however in the future you may see cool things. Multiple
+	players has been tested, and collision behavior between players is in.
+William: Designed level 2. Created textures for this level. Created the player
+	character - his name is Jibby.
+
+Note that we are not satisfied with level 2. The original vision for it
+was a lot more ambitious, featuring multiple floors allowing for up/down as 
+well as left-right movement, as well as multiple playable character that
+you can alternate through. This week has not been kind, and we were unable
+to fully implement all the planned features.
+
+(We implemented a cheat. By pressing R, you can force a level advance.
+Obviously, since level 3 doesn't exist, pressing R on level 2 will crash
+the game. We would take this out, but figured the graders may appreciate
+not having to go through level 1 over and over to get to 2.)
 
 That's all for now.

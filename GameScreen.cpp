@@ -88,7 +88,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //level = LevelEditor("level1.txt");
   //level = LevelEditor("level2A.txt");
   levelfile = "level" + to_string(levelnum) + ".txt";
-  cout << levelfile << endl;
+  //cout << levelfile << endl;
   //level = LevelEditor(levelfile);
   level.read(levelfile);  
   width = level.levelWidth;
