@@ -277,10 +277,10 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     
     for (int z = 0; z < playables.size(); z++){
 
-      std::cout << "check all players \n";      
+      //std::cout << "check all players \n";      
     
       if (playables[playerNum].checkCollide(playables[z].getTrueRect())) {
-	  std::cout << "player player collision \n";
+	  //std::cout << "player player collision \n";
             if (playerLoc.y < playables[z].getTrueRect()->y) {
                 playerOnGround = true;
 
@@ -322,7 +322,6 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         if (playables[playerNum].checkCollide(&*it)) {
             if (playerLoc.y < (*it).getTrueRect()->y) {
                 //enemy kill;
-	      std::cout << "GET REKT BYOTCH\n";
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
                 enemies.erase(it);
@@ -403,7 +402,7 @@ void GameScreen::reset(){
   //We will need the level object to replace dead enemies
   //level = LevelEditor(levelfile);
   level.read(levelfile);
-  cout << "loaded reset" << endl;
+  //cout << "loaded reset" << endl;
   if(lives > 0){
     //Move player back to start
    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
@@ -445,10 +444,10 @@ void GameScreen::hardReset(){
 void GameScreen::advanceLevel() {
   levelnum++;
   levelfile = "level" + to_string(levelnum) + ".txt";
-  cout << "advancing" << endl;
+//  cout << "advancing" << endl;
   //level = LevelEditor(levelfile);
   level.read(levelfile);
-  cout << "advanced" << endl;
+  //cout << "advanced" << endl;
   SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
   for (int i = 0; i< playables.size(); i++) {
     playables[i].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
