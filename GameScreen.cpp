@@ -60,7 +60,8 @@ bool scorewritten = false;
 Camera camera;
 int lives;
 
-LevelEditor level = LevelEditor("level1.txt");
+string levelfile = "level2A.txt";
+LevelEditor level = LevelEditor("levelfile");
 std::list<Movable> ground;
 std::list<AutoMovable> enemies;
 std::list<AutoMovable> pit;
@@ -74,7 +75,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
   lives = 5;
   
     //Level Stuff
-    level = LevelEditor("level1.txt");
+    //level = LevelEditor("level1.txt");
+  //level = LevelEditor("level2A.txt");
     width = level.levelWidth;
     height = level.levelHeight;
 //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
@@ -83,7 +85,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
     //player = Movable("player1.png", 50, 50, 0, 0, width, height, 600, 50);
-    player = Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 800, 50);
+    //player = Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 800, 50);
+    player = Movable("jibbyidle.png", 50, 50, level.playerInitX, level.playerInitY, width, height, 800, 50);
     player.accelerate(1, 0);
 
     //Objects from level file
@@ -336,12 +339,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
 void GameScreen::reset(){
   //We will need the level object to replace dead enemies
-  level = LevelEditor("level1.txt");
+  level = LevelEditor("levelfile");
 
   if(lives > 0){
     //Move player back to start
     SDL_Rect playerLoc = *player.getTrueRect();
-    player.move(-playerLoc.x, -playerLoc.y);
+    player.move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
 
     //Reset all enemies
     enemies = level.enemies;
@@ -355,9 +358,9 @@ void GameScreen::reset(){
 }
 
 void GameScreen::hardReset(){
-    level = LevelEditor("level1.txt");
+    level = LevelEditor("levelfile");
     SDL_Rect playerLoc = *player.getTrueRect();
-    player.move(-playerLoc.x, -playerLoc.y);
+    player.move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     enemies = level.enemies;
     lives = 5;
     score = 0;

@@ -35,6 +35,8 @@ LevelEditor::LevelEditor(string fileName) {
 
     inFile >> this->levelWidth;
     inFile >> this->levelHeight;
+    inFile >> playerInitX;
+    inFile >> playerInitY;
 
     while (!inFile.eof()) {
         inFile >> code;

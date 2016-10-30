@@ -1,4 +1,5 @@
 2500 600
+2450 0
 G 0 600 300 300 300 Texture1.png
 G 0 1050 300 250 300 Texture1.png
 G 0 1300 450 200 150 Texture1.png
