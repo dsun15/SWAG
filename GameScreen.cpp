@@ -47,12 +47,14 @@ SDL_Texture* continuetext;
 SDL_Texture* scoretext;
 SDL_Texture* lifetext;
 SDL_Texture* background;
+SDL_Texture* spriteLives;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 100, 125, 600, 50 };
 SDL_Rect gamescorerect = { 50, 50, 75, 50 };
 SDL_Rect lifecountrect = { 725, 525, 75, 50 };
 SDL_Rect backrect = {0,0,800,600};
+SDL_Rect livesRect = {650, 534, 40, 40};
 int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
@@ -60,13 +62,14 @@ bool scorewritten = false;
 Camera camera;
 int lives;
 
-string levelfile = "level2A.txt";
+string levelfile = "level1.txt";
 LevelEditor level = LevelEditor(levelfile);
 std::list<Movable> ground;
 std::list<AutoMovable> enemies;
 std::list<AutoMovable> pit;
 
 SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
+SDL_Surface* jibby = IMG_Load("jibbyOneFrame.png");
 
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
@@ -82,6 +85,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     height = level.levelHeight;
 //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
     background = SDL_CreateTextureFromSurface(renderer, bs);
+    spriteLives = SDL_CreateTextureFromSurface(renderer, jibby);
 //    SDL_FreeSurface(bs);
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
@@ -149,7 +153,9 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(scoretext);
     SDL_DestroyTexture(lifetext);
     SDL_DestroyTexture(background);
+    SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(bs);
+    SDL_FreeSurface(jibby);
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -313,6 +319,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     lifetext = SDL_CreateTextureFromSurface(renderer, ls);
     SDL_RenderCopy(renderer, scoretext, NULL, &gamescorerect);
     SDL_RenderCopy(renderer, lifetext, NULL, &lifecountrect);
+    SDL_RenderCopy(renderer, spriteLives, NULL, &livesRect);
     SDL_FreeSurface(ss);
     SDL_FreeSurface(ls);
     if (wlswitch == 1) {
@@ -361,6 +368,7 @@ void GameScreen::reset(){
 void GameScreen::hardReset(){
     level = LevelEditor(levelfile);
     cout << "loaded hard reset" << endl;
+    cout << "asdf" << endl;
     SDL_Rect playerLoc = *player.getTrueRect();
     player.move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     enemies = level.enemies;
