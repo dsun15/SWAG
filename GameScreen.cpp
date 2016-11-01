@@ -456,7 +456,7 @@ void GameScreen::advanceLevel() {
 //  cout << "advancing" << endl;
   //level = LevelEditor(levelfile);
   level.read(levelfile);
-  //cout << "advanced" << endl;
+//  cout << "advanced" << endl;
   SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
   for (int i = 0; i< (int) playables.size(); i++) {
     playables[i].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);

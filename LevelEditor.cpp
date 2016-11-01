@@ -10,9 +10,9 @@ LevelEditor::LevelEditor() {}
 LevelEditor::~LevelEditor() {}
 
 void LevelEditor::read(string fileName) {
-  enemies.clear();
-  ground.clear();
-  pit.clear();
+    enemies.clear();
+    ground.clear();
+    pit.clear();
     ifstream inFile;
     inFile.open(fileName);
 
@@ -32,7 +32,7 @@ void LevelEditor::read(string fileName) {
     int min; //minimum moving bounds. -1 if not moving between.
     int max; //maximum moving bounds. -1 if not moving between.
     bool animate;
-    Movable temp;
+    //Movable temp;
     AutoMovable autoTemp;
 
     inFile >> this->levelWidth;
@@ -52,8 +52,8 @@ void LevelEditor::read(string fileName) {
 
         switch (code) {
         case 'G':
-            temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate);
-            this->ground.push_back(temp);
+            this->ground.push_back(Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate));
+            //this->ground.push_back(temp);
             break;
         case 'P':
             inFile >> move;
@@ -80,8 +80,7 @@ void LevelEditor::read(string fileName) {
             this->enemies.push_back(autoTemp);
             break;
         case 'D':
-            temp = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false, animate);
-            this->door = temp;
+            this->door = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false, animate);
             break;
         }
     }
