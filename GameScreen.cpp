@@ -72,7 +72,7 @@ LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable> playables;
 
 std::list<Movable> ground;
-std::list<AutoMovable> enemies;
+std::vector<AutoMovable> enemies;
 std::list<AutoMovable> pit;
 
 SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
@@ -316,21 +316,21 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     
     //collision with enemies
     //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
-    for (std::list<AutoMovable>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+ for (int x = 0; x < (int) enemies.size(); ++x) {
         //if no gravity, then it is moving between a bounds
-        if (!((*it).getGravity())) {
-            (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
+        if (!(enemies[x].getGravity())) {
+            enemies[x].moveBetween(enemies[x].getMinMoveBound(), enemies[x].getMaxMoveBound(), dt);
         }
-        if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, 0, true);
+        if (enemies[x].checkCollide(&cameraLoc)) {
+            enemies[x].draw(renderer, dt, -cameraLoc.x, 0, true);
 
         }
-        if (playables[playerNum].checkCollide(&*it)) {
-            if (playerLoc.y < (*it).getTrueRect()->y) {
+        if (playables[playerNum].checkCollide(enemies[x].getTrueRect())) {
+	  if (playables[playerNum].getTrueRect()->y < enemies[x].getTrueRect()->y) {
                 //enemy kill;
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
-                enemies.erase(it);
+                enemies.erase(enemies.begin()+x);
                 score += 100;
             } else {
 	      GameScreen::reset();

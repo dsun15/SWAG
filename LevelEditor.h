@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <list>
+#include <vector>
 #include "Movable.h"
 #include "AutoMovable.h"
 
@@ -17,7 +18,7 @@ class LevelEditor {
 
 public:
     std::list<Movable> ground;
-    std::list<AutoMovable> enemies;
+    std::vector<AutoMovable> enemies;
     std::list<AutoMovable> pit;
     int playerInitX;
     int playerInitY;
