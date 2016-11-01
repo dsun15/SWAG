@@ -246,7 +246,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     SDL_Rect cameraLoc = *camera.getRect();
     //this works
-    camera.center(playables[playerNum].getReallyRectX(), 0);
+    camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
 
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, 0, true);
@@ -264,7 +264,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
         Movable temp = *it;
         if (temp.checkCollide(&cameraLoc)) {
-            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
+            temp.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         }
         if (playables[playerNum].checkCollide(&temp)) {
             if (playerLoc.y < temp.getTrueRect()->y) {
@@ -322,7 +322,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
             (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
         }
         if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, 0, true);
+            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
 
         }
         if (playables[playerNum].checkCollide(&*it)) {
@@ -344,7 +344,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
             (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
         }
         if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, 0, true);
+            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
             //if no gravity, then it is moving between a bounds
             if (!((*it).getGravity())) {
                 (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
@@ -362,10 +362,10 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     for (int z = 0; z < (int) playables.size(); z++){
         if (playables[z].checkCollide(&cameraLoc)) {
 	  if(z != playerNum){
-           playables[z].draw(renderer, dt, -cameraLoc.x, 0, true);
+           playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
 	  }
 	  else{
-	    playables[z].draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
+	    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
 	  }
         }
     }
