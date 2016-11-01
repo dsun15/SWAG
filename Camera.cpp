@@ -43,3 +43,8 @@ void Camera::center(int x, int y){
     if (this->rect.y + this->rect.h > this->levelHeight)
       this->rect.y = this->levelHeight - this->rect.h;
 }
+
+void Camera::updateBounds(int x, int y) {
+  this->levelWidth = x;
+  this->levelHeight = y;
+}

@@ -441,6 +441,9 @@ void GameScreen::hardReset(){
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    width = level.levelWidth;
+    height = level.levelHeight;
+    camera.updateBounds(width,height);
     lives = 5;
     score = 0;
     gameOver = false;
@@ -462,6 +465,9 @@ void GameScreen::advanceLevel() {
   ground = level.ground;
   pit = level.pit;
   door = level.door;
+  width = level.levelWidth;
+  height = level.levelHeight;
+  camera.updateBounds(width,height);
   gameOver = false;
   wlswitch = 0;
   youWin = false;
