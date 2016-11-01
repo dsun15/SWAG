@@ -24,6 +24,7 @@ int timeSinceChange = 0;
 AutoMovable::AutoMovable() {}
 
 AutoMovable::~AutoMovable() {
+    //cout << "automove destructed" << endl;
   Movable::~Movable();
 }
 
