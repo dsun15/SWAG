@@ -90,8 +90,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
   levelfile = "level" + to_string(levelnum) + ".txt";
   //cout << levelfile << endl;
   //level = LevelEditor(levelfile);
-  //level.read(levelfile);  
-  level.read("level2B.txt");
+  level.read(levelfile);  
+  //level.read("level2B.txt");
   width = level.levelWidth;
     height = level.levelHeight;
 //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
