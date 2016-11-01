@@ -103,6 +103,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //playables[0].accelerate(1, 0);
 
     playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50));
+    playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 50, width, height, 600, 50));
+
     //playables[1].accelerate(1, 0);
    
 
@@ -280,7 +282,8 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         }
     }
       
-    
+ playables[playerNum].setStacked(-1);
+ 
  for (int z = 0; z < (int) playables.size(); z++){
 
       //std::cout << "check all players \n";      
@@ -292,7 +295,9 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
 
                 playables[playerNum].setLowerBound(playables[z].getTrueRect()->y + 1);
             } else if (playerLoc.y > playables[z].getTrueRect()->y){
+	      //There is someone on top, get ready to bring them with
 	      playables[playerNum].setUpperBound(playables[z].getTrueRect()->y);
+	      playables[z].setStacked(playerNum);
 	    }else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x < playables[z].getTrueRect()->x) {
                 playables[playerNum].setRightBound(playables[z].getTrueRect()->x);
             } else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x > playables[z].getTrueRect()->x) {
@@ -361,11 +366,16 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
    // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     for (int z = 0; z < (int) playables.size(); z++){
         if (playables[z].checkCollide(&cameraLoc)) {
-	  if(z != playerNum){
-           playables[z].draw(renderer, dt, -cameraLoc.x, 0, true);
+	  if(z == playerNum){
+           playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
 	  }
 	  else{
-	    playables[z].draw(renderer, dt, -cameraLoc.x, 0, playerOnGround);
+	    if(playables[z].getStacked() == playerNum){
+
+	      playables[z].move(playables[playerNum].getTrueRect()->x - playables[z].getTrueRect()->x,
+				playables[playerNum].getTrueRect()->y - playables[z].getTrueRect()->y);
+	    }
+	    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
 	  }
         }
     }

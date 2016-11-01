@@ -50,6 +50,8 @@ protected:
     int lowerBound;
     int minMoveBound = 0;
     int maxMoveBound = 0;
+    bool stackedMove = false;
+    int stacked = -1;
 
 public:
     Movable();
@@ -99,6 +101,10 @@ public:
     int getMinMoveBound();
     int getMaxMoveBound();
     void moveBetween(int dt);
+    void setStacked(int x);
+    void setStackedMove(bool z);
+    int getStacked();
+    bool getStackedMove();
 private:
 };
 

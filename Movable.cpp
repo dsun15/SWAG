@@ -330,3 +330,26 @@ void Movable::moveBetween(int dt) {
      }
 }
 
+void Movable::setStacked(int x){
+
+  this->stacked = x;
+
+}
+
+void Movable::setStackedMove(bool z){
+
+  this->stackedMove = z;
+
+}
+
+int Movable::getStacked(){
+
+  return this->stacked;
+
+}
+
+bool Movable::getStackedMove(){
+
+  return this->stackedMove;
+
+}
