@@ -243,6 +243,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
+
   SDL_RenderCopy(renderer,background,NULL,&backrect);
     SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     SDL_Rect cameraLoc = *camera.getRect();
@@ -263,19 +264,18 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //collision with platforms
 
 for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
-        Movable temp = *it;
-        if (temp.checkCollide(&cameraLoc)) {
-            temp.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+        if ((*it).checkCollide(&cameraLoc)) {
+            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         }
-        if (playables[playerNum].checkCollide(&temp)) {
-            if (playerLoc.y < temp.getTrueRect()->y) {
+        if (playables[playerNum].checkCollide(&*it)) {
+            if (playerLoc.y < (*it).getTrueRect()->y) {
                 playerOnGround = true;
 
-                playables[playerNum].setLowerBound(temp.getTrueRect()->y + 1);
-            } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x < temp.getTrueRect()->x) {
-                playables[playerNum].setRightBound(temp.getTrueRect()->x);
-            } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x > temp.getTrueRect()->x) {
-                playables[playerNum].setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
+                playables[playerNum].setLowerBound((*it).getTrueRect()->y + 1);
+            } else if (playerLoc.y >= (*it).getTrueRect()->y && playerLoc.x < (*it).getTrueRect()->x) {
+                playables[playerNum].setRightBound((*it).getTrueRect()->x);
+            } else if (playerLoc.y >= (*it).getTrueRect()->y && playerLoc.x > (*it).getTrueRect()->x) {
+                playables[playerNum].setLeftBound((*it).getTrueRect()->x + (*it).getTrueRect()->w);
             }
             anyCollide = true;
         }
