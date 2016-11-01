@@ -24,6 +24,7 @@ public:
     Camera(int levelWidth, int levelHeight, int x, int y, int w, int h);
     ~Camera();
     void center(int x, int y);
+    void updateBounds(int x, int y);
 };
 
 #endif
