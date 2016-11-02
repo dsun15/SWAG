@@ -28,7 +28,8 @@ void LevelEditor::read(string fileName) {
     int y;
     int width;
     int height;
-    char move; //Y or N
+    //char move; //Y or N
+    bool move;
     int min; //minimum moving bounds. -1 if not moving between.
     int max; //maximum moving bounds. -1 if not moving between.
     bool animate;
@@ -59,24 +60,31 @@ void LevelEditor::read(string fileName) {
             inFile >> move;
             inFile >> min;
             inFile >> max;
-            if(move == 'Y') {
+	    this->pit.push_back(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, !move, animate));
+            if(move) {
+	      this->pit.back().setMoveBounds(min,max);
+	    }
+	      /*
                 autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, false, animate);
                 autoTemp.setMoveBounds(min,max);
             } else {
                 autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
-            }
+		}*/
             this->pit.push_back(autoTemp);
             break;
         case 'E':
             inFile >> move;
             inFile >> min;
             inFile >> max;
-            if(move == 'Y') {
-                autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, false, animate);
-                autoTemp.setMoveBounds(min,max);
-            } else {
+	    this->enemies.push_back(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, !move, animate));
+            if(move) {
+	      //autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, false, animate);
+	      //autoTemp.setMoveBounds(min,max);
+	      this->enemies.back().setMoveBounds(min,max);
+	    }
+		/*} else {
                 autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
-            }
+		}*/
             this->enemies.push_back(autoTemp);
             break;
         case 'D':
