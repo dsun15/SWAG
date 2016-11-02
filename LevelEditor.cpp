@@ -70,7 +70,7 @@ void LevelEditor::read(string fileName) {
             } else {
                 autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
 		}*/
-            this->pit.push_back(autoTemp);
+            //this->pit.push_back(autoTemp);
             break;
         case 'E':
             inFile >> move;
@@ -85,7 +85,7 @@ void LevelEditor::read(string fileName) {
 		/*} else {
                 autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
 		}*/
-            this->enemies.push_back(autoTemp);
+            //this->enemies.push_back(autoTemp);
             break;
         case 'D':
             this->door = Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false, animate);
