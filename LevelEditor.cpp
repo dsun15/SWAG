@@ -34,7 +34,7 @@ void LevelEditor::read(string fileName) {
     int max; //maximum moving bounds. -1 if not moving between.
     bool animate;
     //Movable temp;
-    AutoMovable autoTemp;
+    //AutoMovable autoTemp;
 
     inFile >> this->levelWidth;
     inFile >> this->levelHeight;
