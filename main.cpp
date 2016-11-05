@@ -85,7 +85,6 @@ void run() {
     bool running = true;
     unsigned int lastTime = 0;
     unsigned int currentTime;
-    double time = 0.0;
     int screenswitch = 0;
     
     TitleScreen t = TitleScreen(gRenderer);
@@ -93,11 +92,10 @@ void run() {
     HighScoreScreen h = HighScoreScreen(gRenderer);
     MenuScreen m = MenuScreen(gRenderer);
     activeScreen = &t; 
-    
+ 
     while (running) {
         currentTime = SDL_GetTicks();
         unsigned int dt = currentTime - lastTime;
-        time += (double)dt / 1000.00;
         lastTime = currentTime;
         while (SDL_PollEvent(&event) != 0) {
             screenswitch = activeScreen->input(&event, dt);
