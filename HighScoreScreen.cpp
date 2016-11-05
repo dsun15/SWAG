@@ -96,6 +96,16 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer* renderer) {
 }
 
 HighScoreScreen::~HighScoreScreen() {
+  TTF_CloseFont(TitleFont);
+  TTF_CloseFont(ScoresFont);
+  SDL_DestroyTexture(titletex);
+  SDL_FreeSurface(titlesurface);
+  for (int i=0; i<5; i++) {
+    SDL_DestroyTexture(scoretex[i]);
+  }
+  for (int i=0;i<5; i++) {
+    SDL_FreeSurface(scoresurfaces[i]);
+  }
     //TTF_Quit();
 }
 
