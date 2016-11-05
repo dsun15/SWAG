@@ -113,6 +113,8 @@ void run() {
     double time = 0.0;
     int screenswitch = 0;
     GameScreen g = GameScreen(gRenderer);
+   
+    MenuScreen m = MenuScreen(gRenderer);
     while (running) {
         currentTime = SDL_GetTicks();
         unsigned int dt = currentTime - lastTime;
