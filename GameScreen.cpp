@@ -137,7 +137,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     youWin = false;
 
     //Text Stuff
-    TTF_Init();
+    //TTF_Init();
     gamefont = TTF_OpenFont("8bit.ttf", 72);
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ws = TTF_RenderUTF8_Blended(gamefont, win, white);
@@ -159,9 +159,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 
 GameScreen::~GameScreen() {
     std::cout << "destruct gamescreen" << std::endl;
-    ground->clear();
-    pit->clear();
-    enemies->clear();
+    //ground->clear();
+    //pit->clear();
+    //enemies->clear();
     Mix_FreeMusic(music);
     Mix_FreeChunk(sfx);
     Mix_FreeChunk(sfxJump);
@@ -174,6 +174,7 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(bs);
     SDL_FreeSurface(jibby);
+    TTF_CloseFont(gamefont);
     cout << "gamescreen destructed" << endl;
 }
 
@@ -416,7 +417,7 @@ void GameScreen::reset(){
   //We will need the level object to replace dead enemies
   //level = LevelEditor(levelfile);
   level.read(levelfile);
-  //cout << "loaded reset" << endl;
+  cout << "loaded reset" << endl;
   if(lives > 0){
     //Move player back to start
    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
@@ -426,7 +427,7 @@ void GameScreen::reset(){
 
     //Reset all enemies
     enemies = level.enemies;
-
+    cout << "enemies reset" << endl;
     lives--;
   } else {
     //You are out of lives: game over

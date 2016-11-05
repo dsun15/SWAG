@@ -55,7 +55,7 @@ void setup() {
                   << Mix_GetError() << "\n";
     }
 
-    //   	TTF_Init();
+       	TTF_Init();
     gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
     if (gWindow == NULL) {
@@ -89,10 +89,11 @@ void run() {
     int screenswitch = 0;
     
     TitleScreen t = TitleScreen(gRenderer);
+    activeScreen = &t;
     GameScreen g = GameScreen(gRenderer);
     HighScoreScreen h = HighScoreScreen(gRenderer);
     MenuScreen m = MenuScreen(gRenderer);
-    activeScreen = &t; 
+    //activeScreen = &t; 
     
     while (running) {
         currentTime = SDL_GetTicks();
