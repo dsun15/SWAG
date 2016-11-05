@@ -99,6 +99,7 @@ public:
     int getMinMoveBound();
     int getMaxMoveBound();
     void moveBetween(int dt);
+    void prepFree();
 private:
 };
 

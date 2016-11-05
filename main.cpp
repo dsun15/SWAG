@@ -77,7 +77,10 @@ void setup() {
     }
 
     t = TitleScreen(gRenderer);
-    m = MenuScreen(gRenderer);
+    MenuScreen tempm(gRenderer);
+    //m = MenuScreen(gRenderer);
+    m = tempm;
+    //tempm.prepFree();
     h = HighScoreScreen(gRenderer);
 //    g = GameScreen(gRenderer);
     return;

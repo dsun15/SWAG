@@ -71,9 +71,9 @@ string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable> playables;
 
-std::list<Movable> ground;
-std::vector<AutoMovable> enemies;
-std::list<AutoMovable> pit;
+std::list<Movable> * ground;
+std::vector<AutoMovable> * enemies;
+std::list<AutoMovable> * pit;
 
 SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
 SDL_Surface* jibby = IMG_Load("jibbyOneFrame.png");
@@ -88,9 +88,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //level = LevelEditor("level1.txt");
   //level = LevelEditor("level2A.txt");
   levelfile = "level" + to_string(levelnum) + ".txt";
-  //cout << levelfile << endl;
+  cout << "loading lv" << endl;
   //level = LevelEditor(levelfile);
-  level.read(levelfile);  
+  level.read(levelfile);
   //level.read("level2B.txt");
   width = level.levelWidth;
     height = level.levelHeight;
@@ -102,8 +102,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
     //playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 50, width, height, 600, 50));
     //playables[0].accelerate(1, 0);
-
-    playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50));
+    Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
+    //playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50));
+    playables.emplace_back(jibby);
+    jibby.prepFree();
     //playables[1].accelerate(1, 0);
    
 
@@ -156,7 +158,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 }
 
 GameScreen::~GameScreen() {
-    //std::cout << "destruct" << std::endl;
+    std::cout << "destruct gamescreen" << std::endl;
+    ground->clear();
+    pit->clear();
+    enemies->clear();
     Mix_FreeMusic(music);
     Mix_FreeChunk(sfx);
     Mix_FreeChunk(sfxJump);
@@ -169,6 +174,7 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(bs);
     SDL_FreeSurface(jibby);
+    cout << "gamescreen destructed" << endl;
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -249,7 +255,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_Rect cameraLoc = *camera.getRect();
     //this works
     camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
-
+    cout << "check door" << endl;
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
@@ -263,10 +269,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     bool anyCollide = false;
     //collision with platforms
 
-for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+    for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
         if ((*it).checkCollide(&cameraLoc)) {
+	  cout << "draw" << endl;
             (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-        }
+	    cout << "drawn" << endl;
+	}
         if (playables[playerNum].checkCollide(&*it)) {
             if (playerLoc.y < (*it).getTrueRect()->y) {
                 playerOnGround = true;
@@ -282,7 +290,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     }
       
     
- for (int z = 0; z < (int) playables.size(); z++){
+    for (int z = 0; z < (int) playables.size(); z++){
 
       //std::cout << "check all players \n";      
     
@@ -316,21 +324,21 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     
     
     //collision with enemies
-    //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
- for (int x = 0; x < (int) enemies.size(); ++x) {
+    cout << "check enemies" << endl;
+ for (int x = 0; x < (int) enemies->size(); ++x) {
         //if no gravity, then it is moving between a bounds
-        if (!(enemies[x].getGravity())) {
-            enemies[x].moveBetween(enemies[x].getMinMoveBound(), enemies[x].getMaxMoveBound(), dt);
+   if (!((*enemies)[x].getGravity())) {
+     (*enemies)[x].moveBetween((*enemies)[x].getMinMoveBound(), (*enemies)[x].getMaxMoveBound(), dt);
         }
-        if (enemies[x].checkCollide(&cameraLoc)) {
-            enemies[x].draw(renderer, dt, -cameraLoc.x, 0, true);
+   if ((*enemies)[x].checkCollide(&cameraLoc)) {
+     (*enemies)[x].draw(renderer, dt, -cameraLoc.x, 0, true);
         }
-        if (playables[playerNum].checkCollide(enemies[x].getTrueRect())) {
-	  if (playables[playerNum].getTrueRect()->y < enemies[x].getTrueRect()->y) {
+   if (playables[playerNum].checkCollide((*enemies)[x].getTrueRect())) {
+     if (playables[playerNum].getTrueRect()->y < (*enemies)[x].getTrueRect()->y) {
                 //enemy kill;
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
-                enemies.erase(enemies.begin()+x);
+                (*enemies).erase((*enemies).begin()+x);
                 score += 100;
             } else {
 	      GameScreen::reset();
@@ -338,7 +346,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         }
     }
     //pits
-    for (std::list<AutoMovable>::iterator it = pit.begin(); it != pit.end(); ++it) {
+    for (std::list<AutoMovable>::iterator it = pit->begin(); it != pit->end(); ++it) {
         //if no gravity, then it is moving between a bounds
         if (!((*it).getGravity())) {
             (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);

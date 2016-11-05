@@ -23,10 +23,7 @@ int timeSinceChange = 0;
 
 AutoMovable::AutoMovable() {}
 
-AutoMovable::~AutoMovable() {
-    //cout << "automove destructed" << endl;
-  Movable::~Movable();
-}
+AutoMovable::~AutoMovable() {}
 
 void AutoMovable::automove(int time) {
     //for time based movement

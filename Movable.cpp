@@ -79,7 +79,7 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
 Movable::~Movable() {
   if (this->img != NULL) {
     std::cout << "destruct movable " << this->fileName <<std::endl;
- // SDL_FreeSurface(this->img);
+    SDL_FreeSurface(this->img);
   }
 }
 
@@ -198,13 +198,19 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool 
       spriteUpdate(dt);
     }
     Movable::translate(transx, transy);
+    //SDL_Surface * surf = IMG_Load(this->fileName);
+    cout << "here " << this->fileName << endl;
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
+    //SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
+    
+    cout << "not here" << endl;
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
  //   Movable::setAir(false);
     if(hasGrav && !onGround){
       this->gravity = 1;
     }
     SDL_DestroyTexture(texture);
+    //SDL_FreeSurface(surf);
 }
 
 void Movable::spriteUpdate(int dt) {
@@ -329,4 +335,7 @@ void Movable::moveBetween(int dt) {
          }
      }
 }
-
+// to be used in the case of another object sharing the same SDL_Surface *
+void Movable::prepFree() {
+  this->img = NULL;
+}
