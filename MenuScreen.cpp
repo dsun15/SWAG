@@ -77,7 +77,7 @@ MenuScreen::~MenuScreen() {
     //	Mix_FreeMusic(confirm);
    // TTF_Quit();
   //std::cout << "got to menu" << std::endl;
-    if (tt!=NULL) {
+  /*    if (tt!=NULL) {
     SDL_DestroyTexture(tt);
   }
   if (t1!=NULL) {
@@ -91,7 +91,12 @@ MenuScreen::~MenuScreen() {
   }
   if (t4!=NULL) {
     SDL_DestroyTexture(t4);
-  }
+    }*/
+  SDL_DestroyTexture(tt);
+  SDL_DestroyTexture(t1);
+  SDL_DestroyTexture(t2);
+  SDL_DestroyTexture(t3);
+  SDL_DestroyTexture(t4);
   /*
   tt = NULL;
   t1 = NULL;
