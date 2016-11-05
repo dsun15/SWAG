@@ -116,7 +116,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //  enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
 
     door = level.door;
-
+    level.door.prepFree();
     //Audio Stuff
     Mix_HaltChannel(1);
     Mix_Resume(1);
@@ -437,6 +437,7 @@ void GameScreen::hardReset() {
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    level.door.prepFree();
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
@@ -461,6 +462,7 @@ void GameScreen::advanceLevel() {
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    level.door.prepFree();
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
