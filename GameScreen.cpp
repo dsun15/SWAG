@@ -330,13 +330,35 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 //enemy kill;
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
-                (*enemies).erase((*enemies).begin() + x);
+                (*enemies)[x].setLife(false);
+                cout << (*enemies)[x].getLife() << endl;
                 score += 100;
             } else {
                 GameScreen::reset();
             }
         }
     }
+    for (vector<AutoMovable>::iterator it = enemies->begin(); it != enemies->end(); ++it ){
+        cout << it->getLife() << endl;
+    }
+    for (vector<AutoMovable>::iterator it = enemies->begin(); it != enemies->end(); ) {
+        cout << "checking life" << endl;
+        if ((*it).getLife()) {
+            cout << "alive" << endl;
+            ++it;
+        } else {
+            cout << "dead" << endl;
+            enemies->erase(it);
+        }
+    }
+    /*
+    for (int x =0; x < (int)enemies->size(); ++x) {
+        if (!((*enemies)[x].getLife())) {
+            (*enemies).erase((*enemies).begin() + x);
+            
+        }
+    }*/
+
     //pits
     for (std::list<AutoMovable>::iterator it = pit->begin(); it != pit->end(); ++it) {
         //if no gravity, then it is moving between a bounds
@@ -414,6 +436,11 @@ void GameScreen::reset(){
 
     //Reset all enemies
     enemies = level.enemies;
+    ground = level.ground;
+    pit = level.pit;
+    door = level.door;
+    level.door.prepFree();
+
     cout << "enemies reset" << endl;
     lives--;
   } else {

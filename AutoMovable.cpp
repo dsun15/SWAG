@@ -115,3 +115,11 @@ void AutoMovable::genDir() {
         break;
     }
 }
+
+void AutoMovable::setLife(bool isAlive) {
+    this->isAlive = isAlive;
+}
+
+bool AutoMovable::getLife() {
+    return this->isAlive;
+}
