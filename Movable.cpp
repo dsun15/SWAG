@@ -338,6 +338,42 @@ void Movable::moveBetween(int dt) {
          }
      }
 }
+
+void Movable::setStacked(int x){
+
+  this->stacked = x;
+
+}
+
+void Movable::setStackedMove(bool z){
+
+  this->stackedMove = z;
+
+}
+
+int Movable::getStacked(){
+
+  return this->stacked;
+
+}
+
+bool Movable::getStackedMove(){
+
+  return this->stackedMove;
+
+}
+
+int Movable::getLowerBound(){
+
+  return this->lowerBound;
+
+}
+
+int Movable::getUpperBound(){
+
+  return this->upperBound;
+
+}
 // to be used in the case of another object sharing the same SDL_Surface *
 void Movable::prepFree() {
   this->img = NULL;
