@@ -103,12 +103,12 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
     Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
-    //Movable jibby2("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
+    Movable jibby2("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
 
     playables.emplace_back(jibby);
-    //playables.emplace_back(jibby2);
+    playables.emplace_back(jibby2);
     jibby.prepFree();
-    //jibby2.prepFree();
+    jibby2.prepFree();
 
 
     //Objects from level file
@@ -190,7 +190,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-            if (levelnum == 2) {
+            if (levelnum == 3) {
                 return 3;
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
@@ -358,11 +358,19 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	}*/
     vector<AutoMovable>::iterator iter = enemies->begin();
     while (iter!=enemies->end()) {
+      cout << enemies->size() << ": " << iter->getReallyRectX() << " " << iter->getReallyRectY() << endl;
       if (!((*iter).getGravity())) {
 	(*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
       }
+      //<<<<<<< HEAD
      
-      if (playables[playerNum].checkCollide((*iter).getTrueRect())) {
+	  // if (playables[playerNum].checkCollide((*iter).getTrueRect())) {
+	//=======
+      if ((*iter).getLife() /*(*iter).checkCollide(&cameraLoc)*/) {
+	(*iter).draw(renderer, dt, -cameraLoc.x, 0, true);
+      }
+      if (playables[playerNum].checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
+	//>>>>>>> 71b63058d950f47b8cbacd59c4a0143e59edd01c
 	if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
 	    //enemy kill;                                                                                                 
 	    Mix_PlayChannel(-1, sfx, 1);
@@ -370,17 +378,15 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	    //(*enemies)[x].setLife(false);
 	    //cout << (*enemies)[x].getLife() << endl;                                                                    
 	    cout << "erasing" << endl;
-	    iter = enemies->erase(iter);
+	    //iter = enemies->erase(iter);
 	    cout << "erased" << endl;
 	    score += 100;
+	    (*iter).setLife(false);
 	  } else {
 	    iter = enemies->begin();
 	    GameScreen::reset();
 	  }
         } else {
-	 if ((*iter).checkCollide(&cameraLoc)) {
-	(*iter).draw(renderer, dt, -cameraLoc.x, 0, true);
-      }
 	  ++iter;
       }
     }
