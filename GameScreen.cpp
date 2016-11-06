@@ -188,7 +188,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-            if (levelnum == 2) {
+            if (levelnum == 3) {
                 return 3;
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
@@ -342,13 +342,14 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	}*/
     vector<AutoMovable>::iterator iter = enemies->begin();
     while (iter!=enemies->end()) {
+      cout << enemies->size() << ": " << iter->getReallyRectX() << " " << iter->getReallyRectY() << endl;
       if (!((*iter).getGravity())) {
 	(*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
       }
-      if ((*iter).checkCollide(&cameraLoc)) {
+      if ((*iter).getLife() /*(*iter).checkCollide(&cameraLoc)*/) {
 	(*iter).draw(renderer, dt, -cameraLoc.x, 0, true);
       }
-      if (playables[playerNum].checkCollide((*iter).getTrueRect())) {
+      if (playables[playerNum].checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
 	if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
 	    //enemy kill;                                                                                                 
 	    Mix_PlayChannel(-1, sfx, 1);
@@ -356,9 +357,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	    //(*enemies)[x].setLife(false);
 	    //cout << (*enemies)[x].getLife() << endl;                                                                    
 	    cout << "erasing" << endl;
-	    iter = enemies->erase(iter);
+	    //iter = enemies->erase(iter);
 	    cout << "erased" << endl;
 	    score += 100;
+	    (*iter).setLife(false);
 	  } else {
 	    iter = enemies->begin();
 	    GameScreen::reset();
