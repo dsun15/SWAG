@@ -17,9 +17,9 @@ using std::string;
 class LevelEditor {
 
 public:
-    std::list<Movable> ground;
-    std::vector<AutoMovable> enemies;
-    std::list<AutoMovable> pit;
+    std::list<Movable> * ground;
+    std::vector<AutoMovable> * enemies;
+    std::list<AutoMovable> * pit;
     int playerInitX;
     int playerInitY;
     Movable door;

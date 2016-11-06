@@ -107,6 +107,7 @@ public:
     void setStackedMove(bool z);
     int getStacked();
     bool getStackedMove();
+    void prepFree();
 private:
 };
 

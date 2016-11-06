@@ -18,9 +18,9 @@
 #include <fstream>
 #include <iostream>
 #include <list>
-#include <vector>
 #include <string>
 #include <unistd.h>
+#include <vector>
 using namespace std;
 int width = 1000;
 int height = 600;
@@ -54,8 +54,8 @@ SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 100, 125, 600, 50 };
 SDL_Rect gamescorerect = { 50, 50, 75, 50 };
 SDL_Rect lifecountrect = { 725, 525, 75, 50 };
-SDL_Rect backrect = {0,0,800,600};
-SDL_Rect livesRect = {650, 534, 40, 40};
+SDL_Rect backrect = { 0, 0, 800, 600 };
+SDL_Rect livesRect = { 650, 534, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
@@ -64,16 +64,15 @@ Camera camera;
 int lives;
 int playerNum = 0;
 
-
 int levelnum = 1;
 string levelfile;
 //string levelfile = "level2A.txt";
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable> playables;
 
-std::list<Movable> ground;
-std::vector<AutoMovable> enemies;
-std::list<AutoMovable> pit;
+std::list<Movable>* ground;
+std::vector<AutoMovable>* enemies;
+std::list<AutoMovable>* pit;
 
 SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
 SDL_Surface* jibby = IMG_Load("jibbyOneFrame.png");
@@ -81,33 +80,30 @@ SDL_Surface* jibby = IMG_Load("jibbyOneFrame.png");
 GameScreen::GameScreen() {}
 GameScreen::GameScreen(SDL_Renderer* renderer) {
     std::cout << "YO" << std::endl;
-  //set starting lives
-  lives = 5;
-  
+    //set starting lives
+    lives = 5;
+
     //Level Stuff
     //level = LevelEditor("level1.txt");
-  //level = LevelEditor("level2A.txt");
-  levelfile = "level" + to_string(levelnum) + ".txt";
-  //cout << levelfile << endl;
-  //level = LevelEditor(levelfile);
-  level.read(levelfile);  
-  //level.read("level2B.txt");
-  width = level.levelWidth;
+    //level = LevelEditor("level2A.txt");
+    levelfile = "level" + to_string(levelnum) + ".txt";
+    cout << "loading lv" << endl;
+    //level = LevelEditor(levelfile);
+    level.read(levelfile);
+    //level.read("level2B.txt");
+    width = level.levelWidth;
     height = level.levelHeight;
-//    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
+    //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
     background = SDL_CreateTextureFromSurface(renderer, bs);
     spriteLives = SDL_CreateTextureFromSurface(renderer, jibby);
-//    SDL_FreeSurface(bs);
+    //    SDL_FreeSurface(bs);
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
-    //playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 50, width, height, 600, 50));
-    //playables[0].accelerate(1, 0);
 
-    playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50));
-    playables.emplace_back(Movable("jibbyidle.png", 50, 50, 0, 50, width, height, 600, 50));
+    Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
+    playables.emplace_back(jibby);
+    jibby.prepFree();
 
-    //playables[1].accelerate(1, 0);
-   
 
     //Objects from level file
     ground = level.ground;
@@ -115,10 +111,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     pit = level.pit;
 
     //test enemy
-  //  enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
+    //  enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
 
     door = level.door;
-
+    level.door.prepFree();
     //Audio Stuff
     Mix_HaltChannel(1);
     Mix_Resume(1);
@@ -137,7 +133,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     youWin = false;
 
     //Text Stuff
-    TTF_Init();
+    //TTF_Init();
     gamefont = TTF_OpenFont("8bit.ttf", 72);
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ws = TTF_RenderUTF8_Blended(gamefont, win, white);
@@ -158,7 +154,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 }
 
 GameScreen::~GameScreen() {
-    //std::cout << "destruct" << std::endl;
+    std::cout << "destruct gamescreen" << std::endl;
+    //ground->clear();
+    //pit->clear();
+    //enemies->clear();
     Mix_FreeMusic(music);
     Mix_FreeChunk(sfx);
     Mix_FreeChunk(sfxJump);
@@ -171,6 +170,8 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(bs);
     SDL_FreeSurface(jibby);
+    TTF_CloseFont(gamefont);
+    cout << "gamescreen destructed" << endl;
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -183,15 +184,13 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-	  if (levelnum==2) {
-	    return 3;
-	  }
-	  else if (youWin == true) {
-	    GameScreen::advanceLevel();
-	  }
-	  else {
-	    GameScreen::hardReset();
-	  }
+            if (levelnum == 2) {
+                return 3;
+            } else if (youWin == true) {
+                GameScreen::advanceLevel();
+            } else {
+                GameScreen::hardReset();
+            }
         }
 
     } else {
@@ -207,17 +206,17 @@ int GameScreen::input(SDL_Event* event, int dt) {
             }
             if (event->key.keysym.sym == SDLK_UP) {
             }
-	    if (event->key.keysym.sym == SDLK_r) {
-	      GameScreen::advanceLevel();
-	    }
-	    if (event->key.keysym.sym == SDLK_TAB) {
-	      std::cout << "changed active player\n";
-	      if(playerNum + 1 >= (int) playables.size()){
-		playerNum = 0;
-	      } else {
-		playerNum++;
-	      }
-	    }
+
+            if (event->key.keysym.sym == SDLK_r) {
+                GameScreen::advanceLevel();
+            }
+            if (event->key.keysym.sym == SDLK_TAB) {
+                if (playerNum + 1 >= (int)playables.size()) {
+                    playerNum = 0;
+                } else {
+                    playerNum++;
+                }
+            }
             break;
 
         case SDL_KEYDOWN:
@@ -248,13 +247,13 @@ int GameScreen::input(SDL_Event* event, int dt) {
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
   SDL_RenderCopy(renderer,background,NULL,&backrect);
-  //SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+
     SDL_Rect cameraLoc = *camera.getRect();
     bool playerOnGround = false;
 
     //this works
     camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
-
+    cout << "check door" << endl;
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
@@ -273,11 +272,17 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         playables[z].setLowerBound(height + 100);
 
 	playables[z].setStacked(-1);
+
+	bool playerOnGround = false;
+	bool anyCollide = false;
     
 
-for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+
+    for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
         if ((*it).checkCollide(&cameraLoc)) {
+            cout << "draw" << endl;
             (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+            cout << "drawn" << endl;
         }
         if (playables[z].checkCollide(&*it)) {
 	  if (playables[z].getTrueRect()->y < (*it).getTrueRect()->y) {
@@ -311,9 +316,9 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
             }
         }
  }
+
     }
 
-    
     /*
     if (!anyCollide) {
         playables[playerNum].setUpperBound(0);
@@ -322,53 +327,69 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         playables[playerNum].setLowerBound(height + 100);
 	}*/
 
-    
-    
     //collision with enemies
-    //THIS DOESNT INCLUDE THE ONE ENEMY THATS HARDCODED IN
- for (int x = 0; x < (int) enemies.size(); ++x) {
+    cout << "check enemies" << endl;
+    for (int x = 0; x < (int)enemies->size(); ++x) {
         //if no gravity, then it is moving between a bounds
-        if (!(enemies[x].getGravity())) {
-            enemies[x].moveBetween(enemies[x].getMinMoveBound(), enemies[x].getMaxMoveBound(), dt);
+        if (!((*enemies)[x].getGravity())) {
+            (*enemies)[x].moveBetween((*enemies)[x].getMinMoveBound(), (*enemies)[x].getMaxMoveBound(), dt);
         }
-        if (enemies[x].checkCollide(&cameraLoc)) {
-            enemies[x].draw(renderer, dt, -cameraLoc.x, 0, true);
+        if ((*enemies)[x].checkCollide(&cameraLoc)) {
+            (*enemies)[x].draw(renderer, dt, -cameraLoc.x, 0, true);
         }
-        if (playables[playerNum].checkCollide(enemies[x].getTrueRect())) {
-	  if (playables[playerNum].getTrueRect()->y < enemies[x].getTrueRect()->y) {
+        if (playables[playerNum].checkCollide((*enemies)[x].getTrueRect())) {
+            if (playables[playerNum].getTrueRect()->y < (*enemies)[x].getTrueRect()->y) {
                 //enemy kill;
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
-                enemies.erase(enemies.begin()+x);
+                (*enemies)[x].setLife(false);
+                cout << (*enemies)[x].getLife() << endl;
                 score += 100;
             } else {
-	      GameScreen::reset();
+                GameScreen::reset();
             }
         }
     }
+    /*for (vector<AutoMovable>::iterator it = enemies->begin(); it != enemies->end(); ++it ){
+        cout << it->getLife() << endl;
+    }
+    for (vector<AutoMovable>::iterator it = enemies->begin(); it != enemies->end(); ) {
+        cout << "checking life" << endl;
+        if ((*it).getLife()) {
+            cout << "alive" << endl;
+            ++it;
+        } else {
+            cout << "dead" << endl;
+            enemies->erase(it);
+        }
+	}*/
+    
+    for (int x =0; x < (int)enemies->size(); ++x) {
+        if (!((*enemies)[x].getLife())) {
+            (*enemies).erase((*enemies).begin() + x);
+            
+        }
+    }
+
     //pits
-    for (std::list<AutoMovable>::iterator it = pit.begin(); it != pit.end(); ++it) {
+    for (std::list<AutoMovable>::iterator it = pit->begin(); it != pit->end(); ++it) {
         //if no gravity, then it is moving between a bounds
         if (!((*it).getGravity())) {
             (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
         }
         if ((*it).checkCollide(&cameraLoc)) {
             (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-            //if no gravity, then it is moving between a bounds
-            if (!((*it).getGravity())) {
-                (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
-            }
         }
         if (playables[playerNum].checkCollide(&*it)) {
-	  /*wlswitch = 2;
+            /*wlswitch = 2;
             gameOver = true;
 	  */
-	  GameScreen::reset();
+            GameScreen::reset();
         }
     }
-   // enemy.moveBetween(1900, 2300, dt);
-   // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
-    for (int z = 0; z < (int) playables.size(); z++){
+    // enemy.moveBetween(1900, 2300, dt);
+    // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
+    for (int z = 0; z < (int)playables.size(); z++) {
         if (playables[z].checkCollide(&cameraLoc)) {
 	  if(z == playerNum){
            playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
@@ -387,6 +408,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
 	    }
 
 	  }
+
         }
     }
 
@@ -424,11 +446,12 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
     }
 }
 
+
 void GameScreen::reset(){
   //We will need the level object to replace dead enemies
   //level = LevelEditor(levelfile);
   level.read(levelfile);
-  //cout << "loaded reset" << endl;
+  cout << "loaded reset" << endl;
   if(lives > 0){
     //Move player back to start
    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
@@ -438,7 +461,12 @@ void GameScreen::reset(){
 
     //Reset all enemies
     enemies = level.enemies;
+    ground = level.ground;
+    pit = level.pit;
+    door = level.door;
+    level.door.prepFree();
 
+    cout << "enemies reset" << endl;
     lives--;
   } else {
     //You are out of lives: game over
@@ -447,23 +475,24 @@ void GameScreen::reset(){
   }
 }
 
-void GameScreen::hardReset(){
+void GameScreen::hardReset() {
     levelnum = 1;
     levelfile = "level" + to_string(levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
     SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-    for(int x = 0; x < (int) playables.size(); x++){
-      playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
+    for (int x = 0; x < (int)playables.size(); x++) {
+        playables[x].move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     }
 
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    level.door.prepFree();
     width = level.levelWidth;
     height = level.levelHeight;
-    camera.updateBounds(width,height);
+    camera.updateBounds(width, height);
     lives = 5;
     score = 0;
     gameOver = false;
@@ -471,24 +500,25 @@ void GameScreen::hardReset(){
 }
 
 void GameScreen::advanceLevel() {
-  levelnum++;
-  levelfile = "level" + to_string(levelnum) + ".txt";
-//  cout << "advancing" << endl;
-  //level = LevelEditor(levelfile);
-  level.read(levelfile);
-  //cout << "advanced" << endl;
-  SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-  for (int i = 0; i< (int) playables.size(); i++) {
-    playables[i].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
-  }
-  enemies = level.enemies;
-  ground = level.ground;
-  pit = level.pit;
-  door = level.door;
-  width = level.levelWidth;
-  height = level.levelHeight;
-  camera.updateBounds(width,height);
-  gameOver = false;
-  wlswitch = 0;
-  youWin = false;
+    levelnum++;
+    levelfile = "level" + to_string(levelnum) + ".txt";
+    //  cout << "advancing" << endl;
+    //level = LevelEditor(levelfile);
+    level.read(levelfile);
+    //  cout << "advanced" << endl;
+    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+    for (int i = 0; i < (int)playables.size(); i++) {
+        playables[i].move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+    }
+    enemies = level.enemies;
+    ground = level.ground;
+    pit = level.pit;
+    door = level.door;
+    level.door.prepFree();
+    width = level.levelWidth;
+    height = level.levelHeight;
+    camera.updateBounds(width, height);
+    gameOver = false;
+    wlswitch = 0;
+    youWin = false;
 }

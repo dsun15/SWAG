@@ -1,0 +1,55 @@
+2500 600
+250 1100
+G 0 0 0 50 1200 red.png
+G 0 50 1100 1350 50 red.png
+G 0 500 1000 200 150 red.png
+G 0 1400 1000 350 200 red.png
+G 0 1800 1000 50 200 red.png
+G 0 1950 1050 50 150 red.png
+G 0 2100 1100 50 100 red.png
+G 0 2250 1050 50 150 red.png
+G 0 2400 1000 100 200 red.png
+
+G 0 1250 800 100 75 red.png
+G 0 1350 700 100 175 red.png
+G 0 1450 750 50 125 red.png
+G 0 1500 800 50 75 red.png
+G 0 1550 850 50 25 red.png
+
+G 0 50 650 1350 50 red.png
+
+G 0 50 575 50 25 red.png
+G 0 50 475 50 25 red.png
+G 0 50 375 50 25 red.png
+G 0 50 275 50 25 red.png
+G 0 200 525 50 25 red.png
+G 0 200 425 50 25 red.png
+G 0 200 325 50 25 red.png
+G 0 200 225 50 25 red.png
+
+G 0 250 200 50 350 red.png
+G 0 300 400 2050 50 red.png
+G 0 2450 0 50 750 red.png
+G 0 1700 450 50 300 red.png
+G 0 1850 550 600 50 red.png
+G 0 1700 750 800 50 red.png
+
+G 0 400 200 50 50 red.png
+G 0 550 200 50 50 red.png
+G 0 900 200 50 50 red.png
+G 0 1400 200 50 50 red.png
+G 0 2100 200 50 50 red.png
+G 0 750 250 50 50 red.png
+G 0 1100 250 50 50 red.png
+G 0 1250 250 50 50 red.png
+G 0 1600 250 50 50 red.png
+G 0 1800 250 50 50 red.png
+G 0 1950 250 50 50 red.png
+G 0 2300 250 50 50 red.png
+
+G 0 100 1150 50 25 blue.png
+G 0 400 1075 100 75 blue.png
+G 0 1325 1075 75 75 green.png
+G 0 1650 925 50 75 green.png
+
+D 0 2400 100 50 50 door.png

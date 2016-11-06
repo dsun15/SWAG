@@ -58,15 +58,51 @@ MenuScreen::MenuScreen(SDL_Renderer* renderer) {
     t2 = SDL_CreateTextureFromSurface(renderer, s2);
     t3 = SDL_CreateTextureFromSurface(renderer, s3);
     t4 = SDL_CreateTextureFromSurface(renderer, s4);
-    indicator = Movable(point, 50, 50, 50, 50, 800, 600, 50, 50, false,false);
+    //indicator = Movable(point, 50, 50, 50, 50, 800, 600, 50, 50, false,false);
+    Movable tempind(point, 50, 50, 50, 50, 800, 600, 50, 50, false,false);
+    indicator = tempind;
+    tempind.prepFree();
     Mix_SetMusicCMD("ogg123");
     move = Mix_LoadWAV(moveName);
     confirm = Mix_LoadWAV(comfirmName);
+
+    SDL_FreeSurface(st);
+    SDL_FreeSurface(s1);
+    SDL_FreeSurface(s2);
+    SDL_FreeSurface(s3);
+    SDL_FreeSurface(s4);
 }
 MenuScreen::~MenuScreen() {
     //	Mix_FreeMusic(move);
     //	Mix_FreeMusic(confirm);
-    //TTF_Quit();
+   // TTF_Quit();
+  //std::cout << "got to menu" << std::endl;
+  /*    if (tt!=NULL) {
+    SDL_DestroyTexture(tt);
+  }
+  if (t1!=NULL) {
+  SDL_DestroyTexture(t1);
+  }
+  if (t2!=NULL) {
+    SDL_DestroyTexture(t2);
+  }
+  if (t3!=NULL) {
+    SDL_DestroyTexture(t3);
+  }
+  if (t4!=NULL) {
+    SDL_DestroyTexture(t4);
+    }*/
+  SDL_DestroyTexture(tt);
+  SDL_DestroyTexture(t1);
+  SDL_DestroyTexture(t2);
+  SDL_DestroyTexture(t3);
+  SDL_DestroyTexture(t4);
+  /*
+  tt = NULL;
+  t1 = NULL;
+  t2 = NULL;
+  t3 = NULL;
+  t4 = NULL;*/
 }
 
 //return ints for to determine which screen to switch to
@@ -118,4 +154,12 @@ void MenuScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_RenderCopy(renderer, t3, NULL, &rect3);
     SDL_RenderCopy(renderer, t4, NULL, &rect4);
     indicator.draw(renderer, dt, 0, 0, true);
+}
+
+void MenuScreen::prepFree() {
+  tt = NULL;
+  t1 = NULL;
+  t2 = NULL;
+  t3 = NULL;
+  t4 = NULL;
 }

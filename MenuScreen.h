@@ -27,6 +27,7 @@ public:
 
     int input(SDL_Event* event, int dt);
     void draw(SDL_Renderer* renderer, int dt);
+    void prepFree();
 };
 
 #endif

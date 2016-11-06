@@ -21,20 +21,11 @@
 
 const int width = 800;
 const int height = 600;
-const char* title = "Game Engine Demo";
-const char* bigtext = "replace this text later";
-//const char* gameMusic = "levelOne.ogg";
-//const char* titleMusicTitle = "title.ogg";
+const char* title = "S.W.A.G. Demo";
 const double radToDeg = 180 / M_PI;
 
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
-//Mix_Music* titleMusic;
-//Mix_Music* game;
-//GameScreen g;
-TitleScreen t;
-MenuScreen m;
-HighScoreScreen h;
 Screen* activeScreen;
 
 int center(int large, int small) {
@@ -64,7 +55,7 @@ void setup() {
                   << Mix_GetError() << "\n";
     }
 
-    //   	TTF_Init();
+       	TTF_Init();
     gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
     if (gWindow == NULL) {
@@ -76,19 +67,6 @@ void setup() {
         std::cout << "Something broke insetup2: " << SDL_GetError();
     }
 
-    t = TitleScreen(gRenderer);
-    m = MenuScreen(gRenderer);
-    h = HighScoreScreen(gRenderer);
-//    g = GameScreen(gRenderer);
-    return;
-}
-
-void load() {
-    //	titleMusic = Mix_LoadMUS(titleMusicTitle);
-    //	game = Mix_LoadMUS(gameMusic);
-    std::cout << "loaded music"
-              << "\n";
-    activeScreen = &t;
     return;
 }
 
@@ -107,15 +85,18 @@ void run() {
     bool running = true;
     unsigned int lastTime = 0;
     unsigned int currentTime;
-    double time = 0.0;
     int screenswitch = 0;
+    
+    TitleScreen t = TitleScreen(gRenderer);
+    activeScreen = &t;
     GameScreen g = GameScreen(gRenderer);
+    HighScoreScreen h = HighScoreScreen(gRenderer);
+    MenuScreen m = MenuScreen(gRenderer);
+
     while (running) {
         currentTime = SDL_GetTicks();
         unsigned int dt = currentTime - lastTime;
-        time += (double)dt / 1000.00;
         lastTime = currentTime;
-
         while (SDL_PollEvent(&event) != 0) {
             screenswitch = activeScreen->input(&event, dt);
             switch (event.type) {
@@ -137,7 +118,6 @@ void run() {
         }
         if (screenswitch == 1) {
             //new game
-            //GameScreen g = GameScreen(gRenderer);
             activeScreen = &g;
             std::cout << "triggered screen switch\n";
         }
@@ -147,7 +127,6 @@ void run() {
         }
         if (screenswitch == 3) {
             //high score
-            h = HighScoreScreen(gRenderer);
             activeScreen = &h;
         }
         if (screenswitch == 4) {
@@ -172,8 +151,6 @@ void run() {
 
 int main() {
     setup();
-
-    load();
 
     //	Mix_PlayMusic(gMusic, -1);
 
