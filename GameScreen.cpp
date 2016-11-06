@@ -493,10 +493,10 @@ void GameScreen::reset(){
    //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
-    pit = level.pit;
+    //pit = level.pit;
     door = level.door;
     level.door.prepFree();
-
+    //gameOver = false;
     cout << "enemies reset" << endl;
     lives--;
   } else {
