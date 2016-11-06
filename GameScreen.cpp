@@ -21,6 +21,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <algorithm>
 using namespace std;
 int width = 1000;
 int height = 600;
@@ -71,6 +72,7 @@ LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable> playables;
 
 std::list<Movable>* ground;
+//std::vector<AutoMovable>* enemies = new vector<AutoMovable>;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
 
@@ -317,7 +319,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     //collision with enemies
     cout << "check enemies" << endl;
-    for (int x = 0; x < (int)enemies->size(); ++x) {
+    /*for (int x = 0; x < (int)enemies->size(); ++x) {
         //if no gravity, then it is moving between a bounds
         if (!((*enemies)[x].getGravity())) {
             (*enemies)[x].moveBetween((*enemies)[x].getMinMoveBound(), (*enemies)[x].getMaxMoveBound(), dt);
@@ -331,13 +333,63 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 Mix_PlayChannel(-1, sfx, 1);
                 playables[playerNum].setVelY(-4);
                 (*enemies)[x].setLife(false);
-                cout << (*enemies)[x].getLife() << endl;
+                //cout << (*enemies)[x].getLife() << endl;
                 score += 100;
             } else {
                 GameScreen::reset();
             }
         }
+	}*/
+    vector<AutoMovable>::iterator iter = enemies->begin();
+    while (iter!=enemies->end()) {
+      if (!((*iter).getGravity())) {
+	(*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
+      }
+      if ((*iter).checkCollide(&cameraLoc)) {
+	(*iter).draw(renderer, dt, -cameraLoc.x, 0, true);
+      }
+      if (playables[playerNum].checkCollide((*iter).getTrueRect())) {
+	if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
+	    //enemy kill;                                                                                                 
+	    Mix_PlayChannel(-1, sfx, 1);
+	    playables[playerNum].setVelY(-4);
+	    //(*enemies)[x].setLife(false);
+	    //cout << (*enemies)[x].getLife() << endl;                                                                    
+	    cout << "erasing" << endl;
+	    iter = enemies->erase(iter);
+	    cout << "erased" << endl;
+	    score += 100;
+	  } else {
+	    iter = enemies->begin();
+	    GameScreen::reset();
+	  }
+        } else {
+	  ++iter;
+      }
     }
+    /*vector<AutoMovable>::iterator iter = enemies->begin();
+    while (iter!=enemies->end()) {
+      cout << iter->getLife() << endl;
+      if ((*iter).getLife()) {
+	++iter;
+      } else {
+	iter = enemies->erase(iter);
+      }
+      }*/
+    /*vector<AutoMovable> * updatedvect = new vector<AutoMovable>;
+    updatedvect->reserve(30);
+    for (vector<AutoMovable>::iterator it = enemies->begin(); it != enemies->end(); ++it) {
+      cout << (*it).getLife() << endl;
+      if ((*it).getLife()) {
+	updatedvect->push_back(*it);
+	(*it).prepFree();
+      }
+    }
+    //delete enemies;
+    enemies = updatedvect;
+    cout << "new vector assigned" << endl;*/
+    //enemies->erase(std::remove_if(enemies->begin(), enemies->end(), isDead), enemies->end());
+    /*
     for (vector<AutoMovable>::iterator it = enemies->begin(); it != enemies->end(); ++it ){
         cout << it->getLife() << endl;
     }
@@ -350,7 +402,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             cout << "dead" << endl;
             enemies->erase(it);
         }
-    }
+	}*/
     /*
     for (int x =0; x < (int)enemies->size(); ++x) {
         if (!((*enemies)[x].getLife())) {
@@ -425,6 +477,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 void GameScreen::reset(){
   //We will need the level object to replace dead enemies
   //level = LevelEditor(levelfile);
+  //delete enemies;
   level.read(levelfile);
   cout << "loaded reset" << endl;
   if(lives > 0){
@@ -435,6 +488,7 @@ void GameScreen::reset(){
     }
 
     //Reset all enemies
+   //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;
@@ -459,7 +513,7 @@ void GameScreen::hardReset() {
     for (int x = 0; x < (int)playables.size(); x++) {
         playables[x].move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     }
-
+    //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;
@@ -497,3 +551,7 @@ void GameScreen::advanceLevel() {
     wlswitch = 0;
     youWin = false;
 }
+/*
+static bool GameScreen::isDead(AutoMovable  m) {
+  return !m.getLife();
+  }*/
