@@ -216,6 +216,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_r) {
                 GameScreen::advanceLevel();
             }
+	    if (event->key.keysym.sym == SDLK_k) {
+	      GameScreen::reset();
+	    }
             if (event->key.keysym.sym == SDLK_TAB) {
                 if (playerNum + 1 >= (int)playables.size()) {
                     playerNum = 0;
@@ -375,7 +378,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 (*iter).setLife(false);
             } else {
 	      iter = enemies->end();
-                GameScreen::reset();
+              if (!gameOver) {GameScreen::reset();}
             }
 	} else {
 	  ++iter;
