@@ -15,13 +15,13 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <list>
 #include <string>
 #include <unistd.h>
 #include <vector>
-#include <algorithm>
 using namespace std;
 int width = 1000;
 int height = 600;
@@ -341,33 +341,33 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
 	}*/
     vector<AutoMovable>::iterator iter = enemies->begin();
-    while (iter!=enemies->end()) {
-      cout << enemies->size() << ": " << iter->getReallyRectX() << " " << iter->getReallyRectY() << endl;
-      if (!((*iter).getGravity())) {
-	(*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
-      }
-      if ((*iter).getLife() /*(*iter).checkCollide(&cameraLoc)*/) {
-	(*iter).draw(renderer, dt, -cameraLoc.x, 0, true);
-      }
-      if (playables[playerNum].checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
-	if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
-	    //enemy kill;                                                                                                 
-	    Mix_PlayChannel(-1, sfx, 1);
-	    playables[playerNum].setVelY(-4);
-	    //(*enemies)[x].setLife(false);
-	    //cout << (*enemies)[x].getLife() << endl;                                                                    
-	    cout << "erasing" << endl;
-	    //iter = enemies->erase(iter);
-	    cout << "erased" << endl;
-	    score += 100;
-	    (*iter).setLife(false);
-	  } else {
-	    iter = enemies->begin();
-	    GameScreen::reset();
-	  }
+    while (iter != enemies->end()) {
+        cout << enemies->size() << ": " << iter->getReallyRectX() << " " << iter->getReallyRectY() << endl;
+        if (!((*iter).getGravity())) {
+            (*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
+        }
+        if ((*iter).getLife() /*(*iter).checkCollide(&cameraLoc)*/) {
+            (*iter).draw(renderer, dt, -cameraLoc.x, 0, true);
+        }
+        if (playables[playerNum].checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
+            if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
+                //enemy kill;
+                Mix_PlayChannel(-1, sfx, 1);
+                playables[playerNum].setVelY(-4);
+                //(*enemies)[x].setLife(false);
+                //cout << (*enemies)[x].getLife() << endl;
+                cout << "erasing" << endl;
+                //iter = enemies->erase(iter);
+                cout << "erased" << endl;
+                score += 100;
+                (*iter).setLife(false);
+            } else {
+                iter = enemies->begin();
+                GameScreen::reset();
+            }
         } else {
-	  ++iter;
-      }
+            ++iter;
+        }
     }
     /*vector<AutoMovable>::iterator iter = enemies->begin();
     while (iter!=enemies->end()) {
@@ -414,19 +414,18 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }*/
 
     //pits
-    for (std::list<AutoMovable>::iterator it = pit->begin(); it != pit->end(); ++it) {
+    for (std::list<AutoMovable>::iterator it = pit->begin(), end = pit->end(); it != end; ++it) {
         //if no gravity, then it is moving between a bounds
         if (!((*it).getGravity())) {
             (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
         }
-        if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-        }
-        if (playables[playerNum].checkCollide(&*it)) {
+        (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+        if (playables[playerNum].checkCollide((*it).getTrueRect())) {
             /*wlswitch = 2;
             gameOver = true;
 	  */
             GameScreen::reset();
+            it = end;
         }
     }
     // enemy.moveBetween(1900, 2300, dt);
@@ -475,35 +474,34 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 }
 
+void GameScreen::reset() {
+    //We will need the level object to replace dead enemies
+    //level = LevelEditor(levelfile);
+    //delete enemies;
+    level.read(levelfile);
+    cout << "loaded reset" << endl;
+    if (lives > 0) {
+        //Move player back to start
+        SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+        for (int x = 0; x < (int)playables.size(); x++) {
+            playables[x].move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+        }
 
-void GameScreen::reset(){
-  //We will need the level object to replace dead enemies
-  //level = LevelEditor(levelfile);
-  //delete enemies;
-  level.read(levelfile);
-  cout << "loaded reset" << endl;
-  if(lives > 0){
-    //Move player back to start
-   SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-   for(int x = 0; x < (int) playables.size(); x++){
-      playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
+        //Reset all enemies
+        //delete enemies;
+        enemies = level.enemies;
+        ground = level.ground;
+        pit = level.pit;
+        door = level.door;
+        level.door.prepFree();
+
+        cout << "enemies reset" << endl;
+        lives--;
+    } else {
+        //You are out of lives: game over
+        wlswitch = 2;
+        gameOver = true;
     }
-
-    //Reset all enemies
-   //delete enemies;
-    enemies = level.enemies;
-    ground = level.ground;
-    pit = level.pit;
-    door = level.door;
-    level.door.prepFree();
-
-    cout << "enemies reset" << endl;
-    lives--;
-  } else {
-    //You are out of lives: game over
-    wlswitch = 2;
-    gameOver = true;
-  }
 }
 
 void GameScreen::hardReset() {
