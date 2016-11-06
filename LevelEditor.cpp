@@ -10,7 +10,7 @@ LevelEditor::LevelEditor() {}
 LevelEditor::~LevelEditor() {}
 
 void LevelEditor::read(string fileName) {
-  //enemies.clear();
+  enemies.clear();
   ground.clear();
   pit.clear();
     ifstream inFile;

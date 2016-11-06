@@ -91,6 +91,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
   //cout << levelfile << endl;
   //level = LevelEditor(levelfile);
   level.read(levelfile);  
+  //level.read("level2B.txt");
   width = level.levelWidth;
     height = level.levelHeight;
 //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
@@ -210,6 +211,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 	      GameScreen::advanceLevel();
 	    }
 	    if (event->key.keysym.sym == SDLK_TAB) {
+	      std::cout << "changed active player\n";
 	      if(playerNum + 1 >= (int) playables.size()){
 		playerNum = 0;
 	      } else {
@@ -244,68 +246,71 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
+
   SDL_RenderCopy(renderer,background,NULL,&backrect);
-    SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+  //SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
     SDL_Rect cameraLoc = *camera.getRect();
+    bool playerOnGround = false;
+
     //this works
-    camera.center(playables[playerNum].getReallyRectX(), 0);
+    camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
 
     if (door.checkCollide(camera.getRect())) {
-        door.draw(renderer, dt, -cameraLoc.x, 0, true);
+        door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
+ 
 
-    playables[playerNum].setUpperBound(0);
-        playables[playerNum].setLeftBound(0);
-        playables[playerNum].setRightBound(width);
-        playables[playerNum].setLowerBound(height + 100);
-    
-    bool playerOnGround = false;
-    bool anyCollide = false;
-    //collision with platforms
-
-for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
-        Movable temp = *it;
-        if (temp.checkCollide(&cameraLoc)) {
-            temp.draw(renderer, dt, -cameraLoc.x, 0, true);
-        }
-        if (playables[playerNum].checkCollide(&temp)) {
-            if (playerLoc.y < temp.getTrueRect()->y) {
-                playerOnGround = true;
-
-                playables[playerNum].setLowerBound(temp.getTrueRect()->y + 1);
-            } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x < temp.getTrueRect()->x) {
-                playables[playerNum].setRightBound(temp.getTrueRect()->x);
-            } else if (playerLoc.y >= temp.getTrueRect()->y && playerLoc.x > temp.getTrueRect()->x) {
-                playables[playerNum].setLeftBound(temp.getTrueRect()->x + temp.getTrueRect()->w);
-            }
-            anyCollide = true;
-        }
-    }
-      
- playables[playerNum].setStacked(-1);
  
  for (int z = 0; z < (int) playables.size(); z++){
 
       //std::cout << "check all players \n";      
+
+
+
+    playables[z].setUpperBound(0);
+        playables[z].setLeftBound(0);
+        playables[z].setRightBound(width);
+        playables[z].setLowerBound(height + 100);
+
+	playables[z].setStacked(-1);
     
-      if (playables[playerNum].checkCollide(playables[z].getTrueRect())) {
-  //std::cout << "player player collision \n";
-            if (playerLoc.y < playables[z].getTrueRect()->y) {
+
+for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it) {
+        if ((*it).checkCollide(&cameraLoc)) {
+            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+        }
+        if (playables[z].checkCollide(&*it)) {
+	  if (playables[z].getTrueRect()->y < (*it).getTrueRect()->y) {
                 playerOnGround = true;
 
-                playables[playerNum].setLowerBound(playables[z].getTrueRect()->y + 1);
-            } else if (playerLoc.y > playables[z].getTrueRect()->y){
-	      //There is someone on top, get ready to bring them with
-	      playables[playerNum].setUpperBound(playables[z].getTrueRect()->y);
-	      playables[z].setStacked(playerNum);
-	    }else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x < playables[z].getTrueRect()->x) {
-                playables[playerNum].setRightBound(playables[z].getTrueRect()->x);
-            } else if (playerLoc.y >= playables[z].getTrueRect()->y && playerLoc.x > playables[z].getTrueRect()->x) {
-	      playables[playerNum].setLeftBound(playables[z].getTrueRect()->x + playables[z].getRect()->w);
+                playables[z].setLowerBound((*it).getTrueRect()->y + 1);
+	  } else if (playables[z].getTrueRect()->y > (*it).getTrueRect()->y + (*it).getTrueRect()->h) {
+	    playables[z].setUpperBound((*it).getTrueRect()->y + (*it).getTrueRect()->h);
+	  }else if (playables[z].getTrueRect()->y >= (*it).getTrueRect()->y && playables[z].getTrueRect()->x < (*it).getTrueRect()->x) {
+                playables[z].setRightBound((*it).getTrueRect()->x);
+	  } else if (playables[z].getTrueRect()->y >= (*it).getTrueRect()->y && playables[z].getTrueRect()->x > (*it).getTrueRect()->x) {
+                playables[z].setLeftBound((*it).getTrueRect()->x + (*it).getTrueRect()->w);
             }
-            anyCollide = true;
         }
-      
+    }
+ for(int x = 0; x < (int)playables.size(); x++){
+      if (playables[x].checkCollide(playables[z].getTrueRect()) && z != x) {
+	std::cout << playerNum << "player player collision \n";
+	if (playables[x].getTrueRect()->y < playables[z].getTrueRect()->y) {
+                playerOnGround = true;
+                playables[x].setLowerBound(playables[z].getTrueRect()->y + 1);
+	} else if (playables[x].getTrueRect()->y > playables[z].getTrueRect()->y){
+	      //There is someone on top, get ready to bring them with
+	      playables[x].setUpperBound(playables[z].getTrueRect()->y+playables[z].getTrueRect()->h);
+	      playerOnGround = false;
+	      playables[z].setStacked(playerNum);
+	}else if (playables[x].getTrueRect()->y >= playables[z].getTrueRect()->y && playables[x].getTrueRect()->x < playables[z].getTrueRect()->x) {
+                playables[x].setRightBound(playables[z].getTrueRect()->x);
+	} else if (playables[x].getTrueRect()->y >= playables[z].getTrueRect()->y && playables[x].getTrueRect()->x > playables[z].getTrueRect()->x) {
+	      playables[x].setLeftBound(playables[z].getTrueRect()->x + playables[z].getRect()->w);
+            }
+        }
+ }
     }
 
     
@@ -328,7 +333,6 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
         }
         if (enemies[x].checkCollide(&cameraLoc)) {
             enemies[x].draw(renderer, dt, -cameraLoc.x, 0, true);
-
         }
         if (playables[playerNum].checkCollide(enemies[x].getTrueRect())) {
 	  if (playables[playerNum].getTrueRect()->y < enemies[x].getTrueRect()->y) {
@@ -349,7 +353,7 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
             (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
         }
         if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, 0, true);
+            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
             //if no gravity, then it is moving between a bounds
             if (!((*it).getGravity())) {
                 (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
@@ -372,10 +376,16 @@ for (std::list<Movable>::iterator it = ground.begin(); it != ground.end(); ++it)
 	  else{
 	    if(playables[z].getStacked() == playerNum){
 
-	      playables[z].move(playables[playerNum].getTrueRect()->x - playables[z].getTrueRect()->x,
-				playables[playerNum].getTrueRect()->y - playables[z].getTrueRect()->y);
+	       playables[z].move(playables[playerNum].getTrueRect()->x - playables[z].getTrueRect()->x,
+		 playables[playerNum].getTrueRect()->y - playables[z].getTrueRect()->y);
+       	    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+	    
+	    } else {
+
+	      playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+	      
 	    }
-	    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+
 	  }
         }
     }

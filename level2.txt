@@ -1,12 +1,28 @@
-2500 600
-0 0
-G 0 0 550 600 50 Level2Texture1.png
-G 0 600 250 300 300 Level2Texture2.png
-G 0 1050 250 250 350 Level2Texture3.png
-G 0 1300 200 200 200 Level2Texture4.png
-G 0 1500 550 750 50 Level2Texture5.png
-G 0 2250 250 250 350 Level2Texture6.png
-G 0 450 400 150 150 Texture4.png
-G 0 2050 400 100 150 Texture4.png
-G 0 2150 250 100 300 Texture4.png
-D 0 2450 200 50 50 door.png
+5000 1200
+0 900
+G 0 0 1150 600 50 Level2Texture1.png
+G 0 600 850 300 350 Level2Texture2.png
+G 0 1050 850 250 350 Level2Texture3.png
+G 0 1300 1000 200 200 Level2Texture4.png
+G 0 1500 1150 750 50 Level2Texture5.png
+G 0 2250 850 250 350 Level2Texture6.png
+
+G 0 2500 1150 1600 50 Level2Texture5.png
+G 0 3100 950 300 200 Level2Texture6.png
+G 0 3400 750 350 400 Level2Texture6.png
+G 0 3750 450 350 700 Level2Texture6.png
+G 0 4200 450 75 50 Level2Texture6.png
+G 0 4375 450 75 50 Level2Texture6.png
+G 0 4550 450 75 50 Level2Texture6.png
+G 0 4725 450 75 50 Level2Texture6.png
+G 0 4900 450 100 100 Level2Texture6.png
+
+G 0 450 1000 150 150 Texture4.png
+G 0 2050 1000 100 150 Texture4.png
+G 0 2150 850 100 300 Texture4.png
+G 0 3000 1050 100 100 Texture4.png
+G 0 3300 850 100 100 Texture4.png
+G 0 3550 650 100 100 Texture4.png
+G 0 3650 550 100 200 Texture4.png
+
+D 0 4950 400 50 50 door.png
