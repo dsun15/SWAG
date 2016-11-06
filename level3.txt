@@ -1,7 +1,6 @@
 2500 1200
-250 1100
-G 0 0 50 50 1150 red.png
-G 0 50 1100 1350 50 red.png
+0 0
+G 0 0 1150 1400 50 red.png
 G 0 500 1000 200 150 red.png
 G 0 1400 1000 350 200 red.png
 G 0 1800 1000 50 200 red.png
@@ -16,7 +15,7 @@ G 0 1450 750 50 125 red.png
 G 0 1500 800 50 75 red.png
 G 0 1550 850 50 25 red.png
 
-G 0 50 650 1350 50 red.png
+G 0 0 650 1400 50 red.png
 
 G 0 50 575 50 25 red.png
 G 0 50 475 50 25 red.png
@@ -29,9 +28,8 @@ G 0 200 225 50 25 red.png
 
 G 0 250 200 50 350 red.png
 G 0 300 400 2050 50 red.png
-G 0 2450 0 50 750 red.png
 G 0 1700 450 50 300 red.png
-G 0 1850 550 600 50 red.png
+G 0 1850 550 650 50 red.png
 G 0 1700 750 800 50 red.png
 
 G 0 400 200 50 50 red.png
