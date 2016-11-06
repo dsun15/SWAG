@@ -24,7 +24,7 @@ G 0 0 225 50 25 red.png
 G 0 200 475 50 25 red.png
 G 0 200 375 50 25 red.png
 G 0 200 275 50 25 red.png
-G 0 200 225 50 25 red.png
+G 0 200 175 50 25 red.png
 
 G 0 250 150 50 350 red.png
 G 0 300 350 2050 50 red.png
@@ -44,6 +44,14 @@ G 0 1600 200 50 50 red.png
 G 0 1800 200 50 50 red.png
 G 0 1950 200 50 50 red.png
 G 0 2300 200 50 50 red.png
+
+E 1 850 1100 50 50 enemy1.png 1 700 1400
+E 1 1050 1100 50 50 enemy1.png 1 700 1400
+E 1 1250 1100 50 50 enemy1.png 1 700 1400
+
+P 1 650 329 50 71 enemy2.png 1 300 2350
+P 1 1100 329 50 71 enemy2.png 1 300 2350
+P 1 1800 329 50 71 enemy2.png 1 300 2350
 
 G 0 100 1125 50 25 blue.png
 G 0 400 1075 100 75 blue.png
