@@ -28,7 +28,7 @@ int height = 600;
 //SDL_Texture* gTexture;
 //SDL_Texture* gTexture2;
 Movable door;
-
+const int MAX_LV = 3;
 //AutoMovable enemy;
 bool gameOver = false;
 bool youWin = false;
@@ -48,7 +48,7 @@ SDL_Texture* losetext;
 SDL_Texture* continuetext;
 SDL_Texture* scoretext;
 SDL_Texture* lifetext;
-SDL_Texture* background;
+SDL_Texture* background[MAX_LV];
 SDL_Texture* spriteLives;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
@@ -76,7 +76,7 @@ std::list<Movable>* ground;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
 
-SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
+SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibby = IMG_Load("jibbyOneFrame.png");
 
 GameScreen::GameScreen() {}
@@ -94,7 +94,12 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     width = level.levelWidth;
     height = level.levelHeight;
     //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
-    background = SDL_CreateTextureFromSurface(renderer, bs);
+    for (int i = 0; i<MAX_LV; i++) {
+      string backfile = "BackgroundGradient" + to_string(i+1) + ".png";
+      bs[i] = IMG_Load(backfile.c_str());
+      background[i] = SDL_CreateTextureFromSurface(renderer,bs[i]);
+    }
+    //background[0] = SDL_CreateTextureFromSurface(renderer, bs);
     spriteLives = SDL_CreateTextureFromSurface(renderer, jibby);
     //    SDL_FreeSurface(bs);
     //Player, Camera
@@ -169,11 +174,15 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(continuetext);
     SDL_DestroyTexture(scoretext);
     SDL_DestroyTexture(lifetext);
-    SDL_DestroyTexture(background);
+    //SDL_DestroyTexture(background);
     SDL_DestroyTexture(spriteLives);
-    SDL_FreeSurface(bs);
+    //SDL_FreeSurface(bs);
     SDL_FreeSurface(jibby);
     TTF_CloseFont(gamefont);
+    for (int i = 0; i<MAX_LV; i++) {
+      SDL_FreeSurface(bs[i]);
+      SDL_DestroyTexture(background[i]);
+    }
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -251,7 +260,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
-  SDL_RenderCopy(renderer,background,NULL,&backrect);
+  SDL_RenderCopy(renderer,background[levelnum-1],NULL,&backrect);
 
     SDL_Rect cameraLoc = *camera.getRect();
     bool playerOnGround = false;
