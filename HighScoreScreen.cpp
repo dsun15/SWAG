@@ -74,7 +74,7 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer* renderer) {
         }
     }
     //cout << scores.size();
-    TTF_Init();
+    //TTF_Init();
     TitleFont = TTF_OpenFont("8bit.ttf", 72);
     ScoresFont = TTF_OpenFont("8bit.ttf", 24);
     titlesurface = TTF_RenderUTF8_Blended(TitleFont, ScoreTitle, textcolor);

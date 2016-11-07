@@ -78,8 +78,8 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
 
 Movable::~Movable() {
     if (this->img != NULL) {
-      std::cout << "destruct movable " << this->fileName <<std::endl;
-      //SDL_FreeSurface(this->img);
+      //std::cout << "destruct movable " << this->fileName <<std::endl;
+      SDL_FreeSurface(this->img);
     }
 }
 
@@ -199,12 +199,12 @@ void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool 
     }
     Movable::translate(transx, transy);
     //SDL_Surface * surf = IMG_Load(this->fileName);
-    cout << "here " << this->fileName << endl;
+    //cout << "here " << this->fileName << endl;
     if (this->img != NULL) {
       SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, this->img);
       //SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
     
-    cout << "not here" << endl;
+      //cout << "not here" << endl;
     SDL_RenderCopy(renderer, texture, &(this->spriteSheetRect), &(this->rect));
  //   Movable::setAir(false);
     SDL_DestroyTexture(texture);

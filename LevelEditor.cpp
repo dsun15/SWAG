@@ -13,18 +13,19 @@ LevelEditor::LevelEditor() {
 }
 
 LevelEditor::~LevelEditor() {
-  cout << "deleting..." << endl;
+  //cout << "deleting..." << endl;
   this->enemies->clear();
   this->ground->clear();
   this->pit->clear();
   delete this->enemies;
   delete this->pit;
   delete this->ground;
-  cout << "deleted" << endl;
+  //cout << "deleted" << endl;
 }
 
 void LevelEditor::read(string fileName) {
-    enemies->clear();
+  //cout << "LevelEditor.read()" << endl;
+  enemies->clear();
     ground->clear();
     pit->clear();
     ifstream inFile;
@@ -69,7 +70,7 @@ void LevelEditor::read(string fileName) {
         case 'G':{
 	  Movable tempg(Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate));
 	  //this->ground->push_back(Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate));
-            this->ground->push_back(tempg);
+	  this->ground->push_back(tempg);
 	    tempg.prepFree();
             break;}
         case 'P':{
@@ -105,7 +106,9 @@ void LevelEditor::read(string fileName) {
 		/*} else {
                 autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, true, animate);
 		}*/
+	    //cout << tempe.getLife() << endl;
             this->enemies->push_back(tempe);
+	    //cout << this->enemies->back().getLife() << endl;
 	    tempe.prepFree();
             break;}
         case 'D':{

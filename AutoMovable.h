@@ -25,11 +25,13 @@ public:
         : Movable(fileName, width, height, cornerX, cornerY, levelWidth, levelHeight, sheetW, sheetH) {
         srand(time(NULL));
         this->MAX_HORIZ = 1;
+	this->isAlive = true;
     };
     AutoMovable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetW, int sheetH, bool hasGravity, bool anim)
         : Movable(fileName, width, height, cornerX, cornerY, levelWidth, levelHeight, sheetW, sheetH, hasGravity, anim) {
         srand(time(NULL));
         this->MAX_HORIZ = 1;
+	this->isAlive = true;
     };
     ~AutoMovable();
     void automove(int time);

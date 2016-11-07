@@ -28,6 +28,9 @@ public:
     void reset();
     void hardReset();
     void advanceLevel();
+    static bool isDead(AutoMovable m) {
+      return !m.getLife();
+    };
 };
 
 #endif

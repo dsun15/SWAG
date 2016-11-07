@@ -45,7 +45,7 @@ const char* comfirmName = "confirmClick.ogg";
 
 MenuScreen::MenuScreen() {}
 MenuScreen::MenuScreen(SDL_Renderer* renderer) {
-    TTF_Init();
+  //TTF_Init();
     font = TTF_OpenFont("8bit.ttf", 72);
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* st = TTF_RenderUTF8_Blended(font, ng, white);
@@ -97,6 +97,9 @@ MenuScreen::~MenuScreen() {
   SDL_DestroyTexture(t2);
   SDL_DestroyTexture(t3);
   SDL_DestroyTexture(t4);
+  TTF_CloseFont(font);
+  Mix_FreeChunk(move);
+  Mix_FreeChunk(confirm);
   /*
   tt = NULL;
   t1 = NULL;
