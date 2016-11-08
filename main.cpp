@@ -156,7 +156,7 @@ void run() {
 int main() {
     setup();
 
-    Mix_PlayChannel(1, gMusic, 1);
+    Mix_PlayChannel(-1, gMusic, -1);
 
     run();
 
