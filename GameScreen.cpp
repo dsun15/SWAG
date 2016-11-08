@@ -493,4 +493,5 @@ void GameScreen::advanceLevel() {
     gameOver = false;
     wlswitch = 0;
     youWin = false;
+  
 }

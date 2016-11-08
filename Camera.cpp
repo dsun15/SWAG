@@ -32,7 +32,7 @@ Camera::~Camera() {}
 
 void Camera::center(int x, int y){
   if(x > this->rect.x + this->rect.w / 2){
-    if(x + 20 > this->rect.x + this->rect.w / 2 && x + 7 < this->rect.x + this->rect.w / 2){
+    if(x > this->rect.x + this->rect.w / 2 + 20 && x < this->rect.x + this->rect.w / 2 + 7){
       this->rect.x = x + this->rect.w / 2;
       std::cout << "warp right\n";
     }
@@ -44,7 +44,7 @@ void Camera::center(int x, int y){
     }
   }
   else if(x < this->rect.x + this->rect.w / 2){
-    if(x - 20 < this->rect.x + this->rect.w / 2 && x - 7 > this->rect.x + this->rect.w / 2){
+    if(x < this->rect.x + this->rect.w / 2 - 20 && x > this->rect.x + this->rect.w / 2 - 7){
       this->rect.x = x - this->rect.h / 2;
       std::cout << "warp left\n";
     }
@@ -72,7 +72,7 @@ void Camera::center(int x, int y){
 	this->rect.y++;
     }
     else if(y < this->rect.y + this->rect.h / 2){
-      if(y - 20 < this->rect.y + this->rect.h / 2 && y - 7 > this->rect.y + this->rect.h / 2)
+      if(y < this->rect.y + this->rect.h / 2 - 20 && y > this->rect.y + this->rect.h / 2 - 7)
 	this->rect.y = y - this->rect.h / 2;
       else if(y - 7 < this->rect.y + this->rect.h / 2 && y < this->rect.y)
 	this->rect.y-=7;
