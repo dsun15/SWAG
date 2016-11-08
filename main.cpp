@@ -27,6 +27,7 @@ const double radToDeg = 180 / M_PI;
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
 Screen* activeScreen;
+Mix_Chunk *gMusic;
 
 int center(int large, int small) {
 
@@ -49,13 +50,16 @@ void setup() {
         std::cerr << "oops. Failed to init: " << SDL_GetError() << "\n";
     }
 
+//    Mix_Init(MIX_INIT_OGG);
     Mix_SetMusicCMD("ogg123");
     if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
         std::cerr << "SDL_mixer could not initialize! SDL_mixer Error:"
                   << Mix_GetError() << "\n";
     }
-
-       	TTF_Init();
+    
+    gMusic = Mix_LoadWAV("title.ogg");
+     
+   	TTF_Init();
     gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
     if (gWindow == NULL) {
@@ -71,7 +75,7 @@ void setup() {
 }
 
 void cleanup() {
-    //Mix_FreeMusic(gMusic);
+    Mix_FreeChunk(gMusic);
     //Mix_FreeMusic(sfx);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
@@ -152,11 +156,11 @@ void run() {
 int main() {
     setup();
 
-    //	Mix_PlayMusic(gMusic, -1);
+    Mix_PlayChannel(1, gMusic, 1);
 
     run();
 
-    cleanup();
+    //cleanup();
 
     return 0;
 }
