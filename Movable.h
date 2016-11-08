@@ -22,13 +22,13 @@ class Movable {
 
 protected:
     const char* fileName;
-    int MAX_HORIZ = 3;
-    int MAX_VERT = 3;
-    int gravity = 1;
+    double MAX_HORIZ = 3.5;
+    double MAX_VERT = 5;
+    double gravity = 1;
     int levelWidth; //x axis
     int levelHeight; //y axis
-    int velX = 0;
-    int velY = 0;
+    double velX = 0;
+    double velY = 0;
     SDL_Rect rect;
     SDL_Surface* img;
     int timeSinceSpriteChange;
@@ -65,7 +65,7 @@ public:
 
     ~Movable();
 
-    void accelerate(int dt, int accX);
+    void accelerate(int dt, double accX, double accY);
 
     void move(int dt);
 

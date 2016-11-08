@@ -83,25 +83,33 @@ Movable::~Movable() {
     }
 }
 
-void Movable::accelerate(int dt, int accX) {
-    this->velX = this->velX + accX * dt;
+void Movable::accelerate(int dt, double accX, double accY) {
+  if(dt > 10)
+    dt = 10;
+  this->velX = this->velX + accX * (double) dt;
     //    if (this->inAir) {
-      this->velY = this->velY + this->gravity * (dt / 1);
-      //}
-    if (abs(this->velX) > MAX_HORIZ) {
-        if (this->velX > 0) {
-            this->velX = MAX_HORIZ;
-        } else if (this->velX < 0) {
-            this->velX = -1 * MAX_HORIZ;
-        }
+  this->velY = this->velY + accY * (double) dt + (gravity * (double) dt / 1.2);
+  if(velY < 0){
+    this->inAir = true;
+  }
+   
+    
+    //}
+    
+    if (this->velX > MAX_HORIZ) {
+      this->velX = MAX_HORIZ;
     }
-    if (velY > MAX_VERT) {
-        if (this->velY > 0) {
-            this->velY = MAX_VERT;
-        } else if (this->velY < 0) {
-            this->velY = -1 * MAX_VERT;
-        }
+    else if (this->velX < -MAX_HORIZ){
+      this->velX = -MAX_HORIZ;
     }
+    
+    if (this->velY > MAX_VERT) {
+      this->velY = MAX_VERT;
+    }
+    /*else if (this->velY < -MAX_VERT) {
+      this->velY = -MAX_VERT;
+      }*/
+    
 }
 
 void Movable::move(int dt) {
@@ -122,7 +130,7 @@ void Movable::move(int dt) {
 	    }*/
       this->velX = 0;
     }
-    Movable::accelerate(dt, 0);
+    Movable::accelerate(dt, 0, 0);
 
     //checking for boundary collisions
     if (this->rect.x < this->leftBound) {
@@ -323,17 +331,17 @@ int Movable::getMaxMoveBound() {
 
 void Movable::moveBetween(int dt) {
      if (!(this->isMoving)) {
-         Movable::accelerate(dt,1);
+       Movable::accelerate(dt,1,0);
          Movable::setMove(true);
      }
      if (this->isMoving) {
          if ((this->truex + Movable::getRect()->w) >= this->maxMoveBound) {
              Movable::setVelX(0);
-             Movable::accelerate(dt, -1);
+             Movable::accelerate(dt, -1,0);
              Movable::move(dt/4);
          } else if ((this->truex) <= this->minMoveBound) {
              Movable::setVelX(0);
-             Movable::accelerate(dt, 1);
+             Movable::accelerate(dt, 1,0);
              Movable::move(dt/4);
          }
      }

@@ -236,12 +236,12 @@ int GameScreen::input(SDL_Event* event, int dt) {
         case SDL_KEYDOWN:
             if (event->key.keysym.sym == SDLK_RIGHT) {
                 option = 3;
-                playables[playerNum].accelerate(dt, 2);
+                playables[playerNum].accelerate(dt, 1, 0);
                 playables[playerNum].setMove(true);
             }
             if (event->key.keysym.sym == SDLK_LEFT) {
                 option = 4;
-                playables[playerNum].accelerate(dt, -2);
+                playables[playerNum].accelerate(dt, -1, 0);
                 playables[playerNum].setMove(true);
             }
             if (event->key.keysym.sym == SDLK_DOWN) {
@@ -250,7 +250,10 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 1);
                 option = 2;
-                playables[playerNum].jump();
+	        if(!playables[playerNum].getAir())
+		  playables[playerNum].accelerate(dt, 0, -2);
+		//playables[playerNum].setAir(true);
+                //playables[playerNum].jump();
             }
             break;
         }
