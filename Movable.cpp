@@ -84,8 +84,8 @@ Movable::~Movable() {
 }
 
 void Movable::accelerate(int dt, double accX, double accY) {
-  if(dt > 10)
-    dt = 10;
+  if(dt > 8)
+    dt = 8;
   this->velX = this->velX + accX * (double) dt;
     //    if (this->inAir) {
   this->velY = this->velY + accY * (double) dt + (gravity * (double) dt / 1.2);

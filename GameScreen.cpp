@@ -251,7 +251,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 1);
                 option = 2;
 	        if(!playables[playerNum].getAir())
-		  playables[playerNum].accelerate(dt, 0, -2);
+		  playables[playerNum].accelerate(dt, 0, -2.5);
 		//playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
             }

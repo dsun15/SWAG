@@ -22,8 +22,8 @@ class Movable {
 
 protected:
     const char* fileName;
-    double MAX_HORIZ = 3.5;
-    double MAX_VERT = 5;
+    double MAX_HORIZ = 2;
+    double MAX_VERT = 2;
     double gravity = 1;
     int levelWidth; //x axis
     int levelHeight; //y axis
