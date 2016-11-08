@@ -79,19 +79,19 @@ void AutoMovable::moveBetween(int minCoor, int maxCoor, int dt) {
   //  std::cout << this->isMoving << endl;
     if (!(this->isMoving)) {
     //    std::cout << "only once" << std::endl;
-        Movable::accelerate(dt,1);
+      Movable::accelerate(dt,1,0);
         Movable::setMove(true);
     }
     if (this->isMoving) {
       //  std::cout << "more than once" << std::endl;
         if ((this->truex + Movable::getRect()->w) >= maxCoor) {
             Movable::setVelX(0);
-            Movable::accelerate(dt, -1);
+            Movable::accelerate(dt, -1,0);
             Movable::move(dt/4);
         //    std::cout<< "move left" << std::endl;
         } else if ((this->truex) <= minCoor) {
             Movable::setVelX(0);
-            Movable::accelerate(dt, 1);
+            Movable::accelerate(dt, 1,0);
             Movable::move(dt/4);
           //  std::cout<< "move right" << std::endl;
         }
