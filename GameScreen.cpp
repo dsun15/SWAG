@@ -107,7 +107,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
-    Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
+    Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 950, 50);
     //Movable jibby2("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
 
     playables.emplace_back(jibby);
@@ -277,18 +277,16 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
  
     for (int z = 0; z < (int) playables.size(); z++){
-        playables[z].setUpperBound(0);
-        playables[z].setLeftBound(0);
-        playables[z].setRightBound(width);
-        playables[z].setLowerBound(height + 100);
-
+        
 	playables[z].setStacked(-1);
-
+	bool anyCollide = false;
+	//ground
     for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
         if ((*it).checkCollide(&cameraLoc)) {
             (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         }
         if (playables[z].checkCollide(&*it)) {
+	  anyCollide = true;
 	  if (playables[z].getTrueRect()->y < (*it).getTrueRect()->y) {
                 playerOnGround = true;
 
@@ -304,6 +302,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 		playables[z].setVelX(0);
             }
         }
+    }
+    if (!anyCollide) {
+      playables[z].setUpperBound(0);
+        playables[z].setLeftBound(0);
+        playables[z].setRightBound(width);
+        playables[z].setLowerBound(height + 100);
     }
  
     for(int x = 0; x < (int)playables.size(); x++){
@@ -348,7 +352,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 (*iter).setLife(false);
             } else {
                 Mix_PlayChannel(-1, sfx, 0);
-`	            iter = enemies->end();
+	            iter = enemies->end();
               if (!gameOver) {GameScreen::reset();}
             }
 	} else {
