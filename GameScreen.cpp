@@ -248,7 +248,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 option = 1;
             }
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
-                Mix_PlayChannel(-1, sfxJump, 1);
+                Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
 	        if(!playables[playerNum].getAir())
 		  playables[playerNum].accelerate(dt, 0, -2.5);
@@ -336,12 +336,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         if (playables[playerNum].checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
             if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
                 //enemy kill;
-                Mix_PlayChannel(-1, sfx, 1);
+
                 playables[playerNum].setVelY(-4);
 
                 score += 100;
                 (*iter).setLife(false);
             } else {
+                Mix_PlayChannel(-1, sfx, 0);
 	      iter = enemies->end();
               if (!gameOver) {GameScreen::reset();}
             }
@@ -357,6 +358,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
         (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         if (playables[playerNum].checkCollide((*it).getTrueRect())) {
+                Mix_PlayChannel(-1, sfx, 0);
 	  //wlswitch = 2;
 	  //gameOver = true;
 	  if (!gameOver) {GameScreen::reset();}
