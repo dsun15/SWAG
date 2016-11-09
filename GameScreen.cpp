@@ -275,18 +275,16 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
  
     for (int z = 0; z < (int) playables.size(); z++){
-        playables[z].setUpperBound(0);
-        playables[z].setLeftBound(0);
-        playables[z].setRightBound(width);
-        playables[z].setLowerBound(height + 100);
-
+        
 	playables[z].setStacked(-1);
-
+	bool anyCollide = false;
+	//ground
     for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
         if ((*it).checkCollide(&cameraLoc)) {
             (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         }
         if (playables[z].checkCollide(&*it)) {
+	  anyCollide = true;
 	  if (playables[z].getTrueRect()->y < (*it).getTrueRect()->y) {
                 playerOnGround = true;
 
@@ -299,6 +297,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 playables[z].setLeftBound((*it).getTrueRect()->x + (*it).getTrueRect()->w);
             }
         }
+    }
+    if (!anyCollide) {
+      playables[z].setUpperBound(0);
+        playables[z].setLeftBound(0);
+        playables[z].setRightBound(width);
+        playables[z].setLowerBound(height + 100);
     }
  
     for(int x = 0; x < (int)playables.size(); x++){
