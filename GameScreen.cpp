@@ -343,7 +343,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 (*iter).setLife(false);
             } else {
                 Mix_PlayChannel(-1, sfx, 0);
-`	            iter = enemies->end();
+	            iter = enemies->end();
               if (!gameOver) {GameScreen::reset();}
             }
 	} else {
