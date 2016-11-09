@@ -106,12 +106,12 @@ void run() {
             switch (event.type) {
 
             case SDL_QUIT:
-                Mix_HaltMusic();
+                Mix_HaltChannel(-1);
                 running = false;
                 break;
             case SDL_KEYUP:
                 if (event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
-                    Mix_HaltMusic();
+                    Mix_HaltChannel(-1);
                     running = false;
                 }
                 if (event.key.keysym.sym == SDLK_p) {
