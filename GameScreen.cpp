@@ -251,7 +251,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
 	        if(!playables[playerNum].getAir())
-		  playables[playerNum].accelerate(dt, 0, -2.5);
+		  playables[playerNum].accelerate(dt, 0, -2.75);
 		//playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
             }
@@ -304,6 +304,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         playables[z].setLeftBound(0);
         playables[z].setRightBound(width);
         playables[z].setLowerBound(height + 100);
+	playables[z].setAir(true);
     }
  
     for(int x = 0; x < (int)playables.size(); x++){
@@ -439,7 +440,7 @@ void GameScreen::reset(){
    for(int x = 0; x < (int) playables.size(); x++){
       playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
     }
-
+   camera.move(-1*camera.getTrueRect()->x, -1*camera.getTrueRect()->y);
     //Reset all enemies
    //delete enemies;
     enemies = level.enemies;
@@ -475,6 +476,7 @@ void GameScreen::hardReset() {
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
+    camera.move(-1*camera.getTrueRect()->x, -1*camera.getTrueRect()->y);
     lives = 5;
     score = 0;
     gameOver = false;
@@ -497,6 +499,7 @@ void GameScreen::advanceLevel() {
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
+    camera.move(-1*camera.getTrueRect()->x, -1*camera.getTrueRect()->y);
     gameOver = false;
     wlswitch = 0;
     youWin = false;
