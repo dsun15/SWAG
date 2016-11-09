@@ -50,11 +50,13 @@ SDL_Texture* scoretext;
 SDL_Texture* lifetext;
 SDL_Texture* background[MAX_LV];
 SDL_Texture* spriteLives;
+SDL_Texture* deadtext;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 100, 125, 600, 50 };
 SDL_Rect gamescorerect = { 50, 50, 75, 50 };
 SDL_Rect lifecountrect = { 725, 525, 75, 50 };
+SDL_Rect deadrect = { 100, 75, 600, 400 };
 SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect livesRect = { 650, 534, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
@@ -251,7 +253,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 1);
                 option = 2;
 	        if(!playables[playerNum].getAir())
-		  playables[playerNum].accelerate(dt, 0, -2.5);
+		  playables[playerNum].accelerate(dt, 0, -2.6);
 		//playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
             }
@@ -293,10 +295,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 playables[z].setLowerBound((*it).getTrueRect()->y + 1);
 	  } else if (playables[z].getTrueRect()->y > (*it).getTrueRect()->y + (*it).getTrueRect()->h) {
 	    playables[z].setUpperBound((*it).getTrueRect()->y + (*it).getTrueRect()->h);
+	    playables[z].setVelY(0);
 	  }else if (playables[z].getTrueRect()->y >= (*it).getTrueRect()->y && playables[z].getTrueRect()->x < (*it).getTrueRect()->x) {
+	    playables[z].setVelX(0);
                 playables[z].setRightBound((*it).getTrueRect()->x);
 	  } else if (playables[z].getTrueRect()->y >= (*it).getTrueRect()->y && playables[z].getTrueRect()->x > (*it).getTrueRect()->x) {
                 playables[z].setLeftBound((*it).getTrueRect()->x + (*it).getTrueRect()->w);
+		playables[z].setVelX(0);
             }
         }
     }
@@ -391,6 +396,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     string temp = std::to_string(score);
     string life = std::to_string(lives);
+    string dead = "Get Ready!";
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
@@ -401,6 +407,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_RenderCopy(renderer, scoretext, NULL, &gamescorerect);
     SDL_RenderCopy(renderer, lifetext, NULL, &lifecountrect);
     SDL_RenderCopy(renderer, spriteLives, NULL, &livesRect);
+    
     SDL_FreeSurface(ss);
     SDL_FreeSurface(ls);
     if (wlswitch == 1) {
