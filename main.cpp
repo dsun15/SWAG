@@ -115,6 +115,7 @@ void run() {
                     running = false;
                 }
                 if (event.key.keysym.sym == SDLK_p) {
+                    Mix_HaltChannel(-1);
                     screenswitch = 2;
                 }
                 break;
