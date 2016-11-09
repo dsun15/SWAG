@@ -19,7 +19,7 @@
 #define _TITLESCREEN_H
 
 class TitleScreen : public Screen {
-    TTF_Font* font;
+  /*    TTF_Font* font;
     const char* title = "SWAG DEMO";
     const char* subtitle = "Press Space to continue";
     SDL_Color textcolor = { 255, 255, 255, 255 };
@@ -28,7 +28,7 @@ class TitleScreen : public Screen {
     SDL_Texture* texture;
     SDL_Texture* texture2;
     SDL_Rect textrect;
-    SDL_Rect textrect2;
+    SDL_Rect textrect2;*/
 
 public:
     TitleScreen();
