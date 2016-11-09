@@ -57,7 +57,7 @@ void setup() {
                   << Mix_GetError() << "\n";
     }
     
-    gMusic = Mix_LoadWAV("title.ogg");
+    gMusic = Mix_LoadWAV("titleScreen.ogg");
      
    	TTF_Init();
     gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
