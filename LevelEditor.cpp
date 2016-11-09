@@ -77,7 +77,7 @@ void LevelEditor::read(string fileName) {
             inFile >> move;
             inFile >> min;
             inFile >> max;
-	    AutoMovable tempp(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, !move, animate));
+	    AutoMovable tempp(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 550, 50, !move, animate));
 	    //this->pit->push_back(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, !move, animate));
             if(move) {
 	      tempp.setMoveBounds(min,max);
@@ -96,7 +96,7 @@ void LevelEditor::read(string fileName) {
             inFile >> move;
             inFile >> min;
             inFile >> max;
-	    AutoMovable tempe(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, !move, animate));
+	    AutoMovable tempe(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 550, 50, !move, animate));
 	    //this->enemies->push_back(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, !move, animate));
             if(move) {
 	      //autoTemp = AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 300, 50, false, animate);
