@@ -105,7 +105,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
-    Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
+    Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 950, 50);
     //Movable jibby2("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
 
     playables.emplace_back(jibby);
