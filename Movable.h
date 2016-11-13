@@ -52,7 +52,8 @@ protected:
     int maxMoveBound = 0;
     bool stackedMove = false;
     int stacked = -1;
-
+    bool isJumping = false;
+    int jumpTime = 0;
 public:
     Movable();
 

@@ -201,7 +201,13 @@ bool Movable::checkCollide(SDL_Rect* rect) {
 }
 
 void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool onGround) {
-    Movable::move(dt);
+  if (this->isJumping) {
+    jumpTime += dt;
+    if (jumpTime <=400) {
+      Movable::accelerate(dt, 0, -4);
+    }
+  }
+  Movable::move(dt);
     if (animate) {
       spriteUpdate(dt);
     }
@@ -249,8 +255,10 @@ void Movable::setVelY(int n) {
 
 void Movable::jump() {
     if (!this->inAir) {
-        this->inAir = true;
-        Movable::setVelY(-17);
+      //this->inAir = true;
+      //Movable::setVelY(-17);
+      Movable::setVelY(-1);
+      this->isJumping = true;
     }
 }
 
@@ -314,6 +322,10 @@ void Movable::setUpperBound(int x) {
 }
 void Movable::setLowerBound(int x) {
   this->lowerBound = x;
+  if (this->jumpTime > 0) {
+    this->jumpTime = 0;
+    this->isJumping = false;
+  }
   //std::cout << "set lower bound " << x << std::endl;
 }
 void Movable::setMoveBounds(int min, int max){

@@ -240,7 +240,8 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 option = 2;
 	        if(!playables[playerNum].getAir()) {
 		  std::cout << dt << endl;
-		  playables[playerNum].accelerate(7, 0, -2.75);
+		  //playables[playerNum].accelerate(7, 0, -2.75);
+		  playables[playerNum].jump();
 		}
 		//playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
@@ -275,17 +276,21 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
         if (playables[z].checkCollide(&*it)) {
 	  SDL_Rect * playrect = playables[z].getTrueRect();
+	  SDL_Rect * itrect = (*it).getTrueRect();
 	  anyCollide = true;
-	  if (playrect->y < (*it).getTrueRect()->y && (playrect->x + playrect->w) > (*it).getTrueRect()->x && playrect->x < ((*it).getTrueRect()->x + (*it).getTrueRect()->w)) {
+	  if (playrect->y < itrect->y && (playrect->x + playrect->w) > itrect->x && playrect->x < itrect->x + itrect->w) {
+	    //above
                 playerOnGround = true;
-
-                playables[z].setLowerBound((*it).getTrueRect()->y + 1);
-	  } else if (playrect->y > (*it).getTrueRect()->y + (*it).getTrueRect()->h) {
-	    playables[z].setUpperBound((*it).getTrueRect()->y + (*it).getTrueRect()->h);
-	  } else if (playrect->y >= (*it).getTrueRect()->y && playrect->x < (*it).getTrueRect()->x) {
-                playables[z].setRightBound((*it).getTrueRect()->x);
-	  } else if (playrect->y >= (*it).getTrueRect()->y && playrect->x > (*it).getTrueRect()->x) {
-                playables[z].setLeftBound((*it).getTrueRect()->x + (*it).getTrueRect()->w);
+                playables[z].setLowerBound(itrect->y + 1);
+	  } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x+playrect->w<itrect->x + itrect->w) {
+	    //below
+	    playables[z].setUpperBound(itrect->y + itrect->h);
+	  } else if (playrect->y >= itrect->y && playrect->x < itrect->x) {
+	    // from left
+	       playables[z].setRightBound(itrect->x);
+	  } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
+	    //from right  
+	      playables[z].setLeftBound(itrect->x + itrect->w);
             }
         }
     }
@@ -416,6 +421,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (playables[playerNum].getReallyRectY() > height - 25) {
         GameScreen::reset();
     }
+    camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
 }
 
 void GameScreen::reset(){
