@@ -67,12 +67,10 @@ int playerNum = 0;
 
 int levelnum = 1;
 string levelfile;
-//string levelfile = "level2A.txt";
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable> playables;
 
 std::list<Movable>* ground;
-//std::vector<AutoMovable>* enemies = new vector<AutoMovable>;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
 
@@ -85,23 +83,17 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     lives = 5;
 
     //Level Stuff
-    //level = LevelEditor("level1.txt");
-    //level = LevelEditor("level2A.txt");
     levelfile = "level" + to_string(levelnum) + ".txt";
-    //level = LevelEditor(levelfile);
     level.read(levelfile);
-    //level.read("level2B.txt");
     width = level.levelWidth;
     height = level.levelHeight;
-    //    SDL_Surface* bs = IMG_Load("BackgroundGradient.png");
     for (int i = 0; i<MAX_LV; i++) {
       string backfile = "BackgroundGradient" + to_string(i+1) + ".png";
       bs[i] = IMG_Load(backfile.c_str());
       background[i] = SDL_CreateTextureFromSurface(renderer,bs[i]);
     }
-    //background[0] = SDL_CreateTextureFromSurface(renderer, bs);
     spriteLives = SDL_CreateTextureFromSurface(renderer, jibby);
-    //    SDL_FreeSurface(bs);
+
     //Player, Camera
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
@@ -118,10 +110,6 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     ground = level.ground;
     enemies = level.enemies;
     pit = level.pit;
-
-    //test enemy
-    //  enemy = AutoMovable("enemy1.png", 50, 50, 2000, 450, width, height, 300, 50, false, true);
-
     door = level.door;
     level.door.prepFree();
     //Audio Stuff
@@ -156,7 +144,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     SDL_FreeSurface(cm);
     wlswitch = 0;
     score = 0;
-    //Commandeering score writing to write lives
+
     scorewritten = false;
 
     return;
@@ -251,7 +239,8 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
 	        if(!playables[playerNum].getAir())
-		  playables[playerNum].accelerate(dt, 0, -2.75);
+		  std::cout << dt << endl;
+		  playables[playerNum].accelerate(7, 0, -2.75);
 		//playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
             }
@@ -332,7 +321,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     vector<AutoMovable>::iterator iter = enemies->begin();
     while (iter != enemies->end()) {
-      //cout << enemies->size() << ": " << iter->getReallyRectX() << " " << iter->getReallyRectY() << endl;
         if (!((*iter).getGravity())) {
             (*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
         }
