@@ -238,9 +238,10 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
-	        if(!playables[playerNum].getAir())
+	        if(!playables[playerNum].getAir()) {
 		  std::cout << dt << endl;
 		  playables[playerNum].accelerate(7, 0, -2.75);
+		}
 		//playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
             }
