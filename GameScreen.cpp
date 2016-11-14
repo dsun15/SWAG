@@ -365,7 +365,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             it = end;
         }
     }
-
     // enemy.moveBetween(1900, 2300, dt);
     // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     for (int z = 0; z < (int)playables.size(); z++) {
@@ -421,7 +420,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (playables[playerNum].getReallyRectY() > height - 25) {
         GameScreen::reset();
     }
-    camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
+    //camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
 }
 
 void GameScreen::reset(){
