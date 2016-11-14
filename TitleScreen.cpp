@@ -19,21 +19,19 @@
 
 Mix_Chunk* titleMusic;
 Mix_Chunk* sfxConfirm;
-//const char* musicTitleName = "title.ogg";
 const char* effectName = "confirmClick.ogg";
 const char* titleImageFile = "title.png";
 SDL_Texture* titleImage;
 
 TitleScreen::TitleScreen() {}
 TitleScreen::TitleScreen(SDL_Renderer* renderer) {
-  SDL_Surface * surf = IMG_Load(titleImageFile);
+    SDL_Surface* surf = IMG_Load(titleImageFile);
     titleImage = SDL_CreateTextureFromSurface(renderer, surf);
-    std::cout << "?" << std::endl;    
     SDL_FreeSurface(surf);
 }
 
 TitleScreen::~TitleScreen() {
-  SDL_DestroyTexture(titleImage);
+    SDL_DestroyTexture(titleImage);
 }
 
 int TitleScreen::input(SDL_Event* event, int dt) {
@@ -50,6 +48,6 @@ int TitleScreen::input(SDL_Event* event, int dt) {
 }
 
 void TitleScreen::draw(SDL_Renderer* renderer, int dt) {
-  SDL_RenderCopy(renderer,titleImage, NULL, NULL);
+    SDL_RenderCopy(renderer, titleImage, NULL, NULL);
     dt++;
 }

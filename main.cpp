@@ -27,7 +27,7 @@ const double radToDeg = 180 / M_PI;
 SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
 Screen* activeScreen;
-Mix_Chunk *gMusic;
+Mix_Chunk* gMusic;
 
 int center(int large, int small) {
 
@@ -50,16 +50,15 @@ void setup() {
         std::cerr << "oops. Failed to init: " << SDL_GetError() << "\n";
     }
 
-//    Mix_Init(MIX_INIT_OGG);
     Mix_SetMusicCMD("ogg123");
     if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
         std::cerr << "SDL_mixer could not initialize! SDL_mixer Error:"
                   << Mix_GetError() << "\n";
     }
-    
+
     gMusic = Mix_LoadWAV("titleScreen.ogg");
-     
-   	TTF_Init();
+
+    TTF_Init();
     gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
     if (gWindow == NULL) {
@@ -76,7 +75,6 @@ void setup() {
 
 void cleanup() {
     Mix_FreeChunk(gMusic);
-    //Mix_FreeMusic(sfx);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     TTF_Quit();
@@ -90,7 +88,7 @@ void run() {
     unsigned int lastTime = 0;
     unsigned int currentTime;
     int screenswitch = 0;
-    
+
     TitleScreen t = TitleScreen(gRenderer);
     activeScreen = &t;
     GameScreen g = GameScreen(gRenderer);
@@ -124,7 +122,6 @@ void run() {
         if (screenswitch == 1) {
             //new game
             activeScreen = &g;
-            std::cout << "triggered screen switch\n";
         }
         if (screenswitch == 2) {
             //menu
@@ -161,7 +158,7 @@ int main() {
 
     run();
 
-    //cleanup();
+    cleanup();
 
     return 0;
 }

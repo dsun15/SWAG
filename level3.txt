@@ -19,7 +19,7 @@ G 0 0 600 1400 50 red.png
 
 G 0 0 450 75 200 red.png
 G 0 0 200 75 25 red.png
-G 0 175 350 75 25 red.png
+G 0 175 335 75 25 red.png
 G 0 175 100 75 25 red.png
 
 G 0 250 100 50 350 red.png

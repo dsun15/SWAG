@@ -25,11 +25,8 @@
 using namespace std;
 int width = 1000;
 int height = 600;
-//SDL_Texture* gTexture;
-//SDL_Texture* gTexture2;
 Movable door;
 const int MAX_LV = 3;
-//AutoMovable enemy;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -150,9 +147,6 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 }
 
 GameScreen::~GameScreen() {
-    //ground->clear();
-    //pit->clear();
-    //enemies->clear();
     Mix_FreeMusic(music);
     Mix_FreeChunk(sfx);
     Mix_FreeChunk(sfxJump);
@@ -161,9 +155,7 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(continuetext);
     SDL_DestroyTexture(scoretext);
     SDL_DestroyTexture(lifetext);
-    //SDL_DestroyTexture(background);
     SDL_DestroyTexture(spriteLives);
-    //SDL_FreeSurface(bs);
     SDL_FreeSurface(jibby);
     TTF_CloseFont(gamefont);
     for (int i = 0; i < MAX_LV; i++) {
@@ -238,12 +230,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
                 if (!playables[playerNum].getAir()) {
-                    std::cout << dt << endl;
                     playables[playerNum].accelerate(9, 0, -2.75);
                     //playables[playerNum].jump();
                 }
-                //playables[playerNum].setAir(true);
-                //playables[playerNum].jump();
             }
             break;
         }
@@ -258,7 +247,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_Rect cameraLoc = *camera.getRect();
     bool playerOnGround = false;
 
-    //this works
+    //camera centering
     camera.center(playables[playerNum].getReallyRectX() + (playables[playerNum].getRect()->w / 2), playables[playerNum].getReallyRectY() + (playables[playerNum].getRect()->h / 2));
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
@@ -305,7 +294,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
         for (int x = 0; x < (int)playables.size(); x++) {
             if (playables[x].checkCollide(playables[z].getTrueRect()) && z != x) {
-                //std::cout << playerNum << "player player collision \n";
                 if (playables[x].getTrueRect()->y < playables[z].getTrueRect()->y) {
                     playerOnGround = true;
                     playables[x].setLowerBound(playables[z].getTrueRect()->y + 1);
@@ -324,7 +312,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     //collision with enemies
-
     vector<AutoMovable>::iterator iter = enemies->begin();
     while (iter != enemies->end()) {
         if (!((*iter).getGravity())) {
@@ -336,9 +323,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         if (playables[playerNum].checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
             if (playables[playerNum].getTrueRect()->y < (*iter).getTrueRect()->y) {
                 //enemy kill;
-
                 playables[playerNum].setVelY(-4);
-
                 score += 100;
                 (*iter).setLife(false);
             } else {
@@ -352,7 +337,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             ++iter;
         }
     }
-    //pits
+
+    //non-killable enemies
     for (std::list<AutoMovable>::iterator it = pit->begin(), end = pit->end(); it != end; ++it) {
         //if no gravity, then it is moving between a bounds
         if (!((*it).getGravity())) {
@@ -361,16 +347,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         if (playables[playerNum].checkCollide((*it).getTrueRect())) {
             Mix_PlayChannel(-1, sfx, 0);
-            //wlswitch = 2;
-            //gameOver = true;
             if (!gameOver) {
                 GameScreen::reset();
             }
             it = end;
         }
     }
-    // enemy.moveBetween(1900, 2300, dt);
-    // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
+
     for (int z = 0; z < (int)playables.size(); z++) {
         if (playables[z].checkCollide(&cameraLoc)) {
             if (z == playerNum) {
@@ -428,7 +411,6 @@ void GameScreen::reset() {
     //We will need the level object to replace dead enemies
     //delete enemies;
     level.read(levelfile);
-    //cout << "loaded reset" << endl;
     if (lives > 0) {
         //Move player back to start
         SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
@@ -444,7 +426,6 @@ void GameScreen::reset() {
         door = level.door;
         level.door.prepFree();
         //gameOver = false;
-        //cout << "enemies reset" << endl;
         lives--;
     } else {
         //You are out of lives: game over
