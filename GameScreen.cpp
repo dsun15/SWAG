@@ -87,10 +87,10 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     level.read(levelfile);
     width = level.levelWidth;
     height = level.levelHeight;
-    for (int i = 0; i<MAX_LV; i++) {
-      string backfile = "BackgroundGradient" + to_string(i+1) + ".png";
-      bs[i] = IMG_Load(backfile.c_str());
-      background[i] = SDL_CreateTextureFromSurface(renderer,bs[i]);
+    for (int i = 0; i < MAX_LV; i++) {
+        string backfile = "BackgroundGradient" + to_string(i + 1) + ".png";
+        bs[i] = IMG_Load(backfile.c_str());
+        background[i] = SDL_CreateTextureFromSurface(renderer, bs[i]);
     }
     spriteLives = SDL_CreateTextureFromSurface(renderer, jibby);
 
@@ -104,7 +104,6 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //playables.emplace_back(jibby2);
     jibby.prepFree();
     //jibby2.prepFree();
-
 
     //Objects from level file
     ground = level.ground;
@@ -167,9 +166,9 @@ GameScreen::~GameScreen() {
     //SDL_FreeSurface(bs);
     SDL_FreeSurface(jibby);
     TTF_CloseFont(gamefont);
-    for (int i = 0; i<MAX_LV; i++) {
-      SDL_FreeSurface(bs[i]);
-      SDL_DestroyTexture(background[i]);
+    for (int i = 0; i < MAX_LV; i++) {
+        SDL_FreeSurface(bs[i]);
+        SDL_DestroyTexture(background[i]);
     }
 }
 
@@ -209,9 +208,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_r) {
                 GameScreen::advanceLevel();
             }
-	    if (event->key.keysym.sym == SDLK_k) {
-	      GameScreen::reset();
-	    }
+            if (event->key.keysym.sym == SDLK_k) {
+                GameScreen::reset();
+            }
             if (event->key.keysym.sym == SDLK_TAB) {
                 if (playerNum + 1 >= (int)playables.size()) {
                     playerNum = 0;
@@ -238,12 +237,12 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
-	        if(!playables[playerNum].getAir()) {
-		  std::cout << dt << endl;
-		  //playables[playerNum].accelerate(7, 0, -2.75);
-		  playables[playerNum].jump();
-		}
-		//playables[playerNum].setAir(true);
+                if (!playables[playerNum].getAir()) {
+                    std::cout << dt << endl;
+                    playables[playerNum].accelerate(9, 0, -2.75);
+                    //playables[playerNum].jump();
+                }
+                //playables[playerNum].setAir(true);
                 //playables[playerNum].jump();
             }
             break;
@@ -254,73 +253,74 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
-  SDL_RenderCopy(renderer,background[levelnum-1],NULL,&backrect);
+    SDL_RenderCopy(renderer, background[levelnum - 1], NULL, &backrect);
 
     SDL_Rect cameraLoc = *camera.getRect();
     bool playerOnGround = false;
 
     //this works
-    camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
+    camera.center(playables[playerNum].getReallyRectX() + (playables[playerNum].getRect()->w / 2), playables[playerNum].getReallyRectY() + (playables[playerNum].getRect()->h / 2));
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
- 
-    for (int z = 0; z < (int) playables.size(); z++){
-        
-	playables[z].setStacked(-1);
-	bool anyCollide = false;
-	//ground
-    for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
-        if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-        }
-        if (playables[z].checkCollide(&*it)) {
-	  SDL_Rect * playrect = playables[z].getTrueRect();
-	  SDL_Rect * itrect = (*it).getTrueRect();
-	  anyCollide = true;
-	  if (playrect->y < itrect->y && (playrect->x + playrect->w) > itrect->x && playrect->x < itrect->x + itrect->w) {
-	    //above
-                playerOnGround = true;
-                playables[z].setLowerBound(itrect->y + 1);
-	  } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x+playrect->w<itrect->x + itrect->w) {
-	    //below
-	    playables[z].setUpperBound(itrect->y + itrect->h);
-	  } else if (playrect->y >= itrect->y && playrect->x < itrect->x) {
-	    // from left
-	       playables[z].setRightBound(itrect->x);
-	  } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
-	    //from right  
-	      playables[z].setLeftBound(itrect->x + itrect->w);
+
+    for (int z = 0; z < (int)playables.size(); z++) {
+
+        playables[z].setStacked(-1);
+        bool anyCollide = false;
+        //ground
+        for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
+            if ((*it).checkCollide(&cameraLoc)) {
+                (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+            }
+            if (playables[z].checkCollide(&*it)) {
+                SDL_Rect* playrect = playables[z].getTrueRect();
+                SDL_Rect* itrect = (*it).getTrueRect();
+                anyCollide = true;
+                if (playrect->y < itrect->y && (playrect->x + playrect->w) > itrect->x && playrect->x < itrect->x + itrect->w) {
+                    //above
+                    playerOnGround = true;
+                    //playables[z].move(0,-1);
+                    playables[z].setLowerBound(itrect->y + 1);
+
+                } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
+                    //below
+                    playables[z].setUpperBound(itrect->y + itrect->h);
+                } else if (playrect->y >= itrect->y && playrect->x < itrect->x) {
+                    // from left
+                    playables[z].setRightBound(itrect->x);
+                } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
+                    //from right
+                    playables[z].setLeftBound(itrect->x + itrect->w);
+                }
             }
         }
-    }
-    if (!anyCollide) {
-      playables[z].setUpperBound(0);
-        playables[z].setLeftBound(0);
-        playables[z].setRightBound(width);
-        playables[z].setLowerBound(height + 100);
-	playables[z].setAir(true);
-    }
- 
-    for(int x = 0; x < (int)playables.size(); x++){
-      if (playables[x].checkCollide(playables[z].getTrueRect()) && z != x) {
-	//std::cout << playerNum << "player player collision \n";
-	if (playables[x].getTrueRect()->y < playables[z].getTrueRect()->y) {
-                playerOnGround = true;
-                playables[x].setLowerBound(playables[z].getTrueRect()->y + 1);
-	} else if (playables[x].getTrueRect()->y > playables[z].getTrueRect()->y){
-	      //There is someone on top, get ready to bring them with
-	      playables[x].setUpperBound(playables[z].getTrueRect()->y+playables[z].getTrueRect()->h);
-	      playerOnGround = false;
-	      playables[z].setStacked(playerNum);
-	}else if (playables[x].getTrueRect()->y >= playables[z].getTrueRect()->y && playables[x].getTrueRect()->x < playables[z].getTrueRect()->x) {
-                playables[x].setRightBound(playables[z].getTrueRect()->x);
-	} else if (playables[x].getTrueRect()->y >= playables[z].getTrueRect()->y && playables[x].getTrueRect()->x > playables[z].getTrueRect()->x) {
-	      playables[x].setLeftBound(playables[z].getTrueRect()->x + playables[z].getRect()->w);
+        if (!anyCollide) {
+            playables[z].setUpperBound(0);
+            playables[z].setLeftBound(0);
+            playables[z].setRightBound(width);
+            playables[z].setLowerBound(height + 100);
+            playables[z].setAir(true);
+        }
+
+        for (int x = 0; x < (int)playables.size(); x++) {
+            if (playables[x].checkCollide(playables[z].getTrueRect()) && z != x) {
+                //std::cout << playerNum << "player player collision \n";
+                if (playables[x].getTrueRect()->y < playables[z].getTrueRect()->y) {
+                    playerOnGround = true;
+                    playables[x].setLowerBound(playables[z].getTrueRect()->y + 1);
+                } else if (playables[x].getTrueRect()->y > playables[z].getTrueRect()->y) {
+                    //There is someone on top, get ready to bring them with
+                    playables[x].setUpperBound(playables[z].getTrueRect()->y + playables[z].getTrueRect()->h);
+                    playerOnGround = false;
+                    playables[z].setStacked(playerNum);
+                } else if (playables[x].getTrueRect()->y >= playables[z].getTrueRect()->y && playables[x].getTrueRect()->x < playables[z].getTrueRect()->x) {
+                    playables[x].setRightBound(playables[z].getTrueRect()->x);
+                } else if (playables[x].getTrueRect()->y >= playables[z].getTrueRect()->y && playables[x].getTrueRect()->x > playables[z].getTrueRect()->x) {
+                    playables[x].setLeftBound(playables[z].getTrueRect()->x + playables[z].getRect()->w);
+                }
             }
         }
-    }
-    
     }
 
     //collision with enemies
@@ -343,12 +343,14 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 (*iter).setLife(false);
             } else {
                 Mix_PlayChannel(-1, sfx, 0);
-	            iter = enemies->end();
-              if (!gameOver) {GameScreen::reset();}
+                iter = enemies->end();
+                if (!gameOver) {
+                    GameScreen::reset();
+                }
             }
-	} else {
-	  ++iter;
-	}
+        } else {
+            ++iter;
+        }
     }
     //pits
     for (std::list<AutoMovable>::iterator it = pit->begin(), end = pit->end(); it != end; ++it) {
@@ -358,10 +360,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
         (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         if (playables[playerNum].checkCollide((*it).getTrueRect())) {
-                Mix_PlayChannel(-1, sfx, 0);
-	  //wlswitch = 2;
-	  //gameOver = true;
-	  if (!gameOver) {GameScreen::reset();}
+            Mix_PlayChannel(-1, sfx, 0);
+            //wlswitch = 2;
+            //gameOver = true;
+            if (!gameOver) {
+                GameScreen::reset();
+            }
             it = end;
         }
     }
@@ -369,24 +373,20 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     // enemy.draw(renderer, dt, -cameraLoc.x, 0, true);
     for (int z = 0; z < (int)playables.size(); z++) {
         if (playables[z].checkCollide(&cameraLoc)) {
-	  if(z == playerNum){
-           playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
-	  }
-	  else{
-	    if(playables[z].getStacked() == playerNum){
+            if (z == playerNum) {
+                playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
+            } else {
+                if (playables[z].getStacked() == playerNum) {
 
-	       playables[z].move(playables[playerNum].getTrueRect()->x - playables[z].getTrueRect()->x,
-		 playables[playerNum].getTrueRect()->y - playables[z].getTrueRect()->y);
-       	    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-	    
-	    } else {
+                    playables[z].move(playables[playerNum].getTrueRect()->x - playables[z].getTrueRect()->x,
+                        playables[playerNum].getTrueRect()->y - playables[z].getTrueRect()->y);
+                    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
 
-	      playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-	      
-	    }
+                } else {
 
-	  }
-
+                    playables[z].draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+                }
+            }
         }
     }
 
@@ -420,36 +420,37 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (playables[playerNum].getReallyRectY() > height - 25) {
         GameScreen::reset();
     }
-    //camera.center(playables[playerNum].getReallyRectX(), playables[playerNum].getReallyRectY());
+    camera.center(playables[playerNum].getReallyRectX() + (playables[playerNum].getRect()->w / 2), playables[playerNum].getReallyRectY() + (playables[playerNum].getRect()->h / 2));
+
 }
 
-void GameScreen::reset(){
-  //We will need the level object to replace dead enemies
-  //delete enemies;
-  level.read(levelfile);
-  //cout << "loaded reset" << endl;
-  if(lives > 0){
-    //Move player back to start
-   SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
-   for(int x = 0; x < (int) playables.size(); x++){
-      playables[x].move(level.playerInitX-playerLoc.x, level.playerInitY-playerLoc.y);
+void GameScreen::reset() {
+    //We will need the level object to replace dead enemies
+    //delete enemies;
+    level.read(levelfile);
+    //cout << "loaded reset" << endl;
+    if (lives > 0) {
+        //Move player back to start
+        SDL_Rect playerLoc = *playables[playerNum].getTrueRect();
+        for (int x = 0; x < (int)playables.size(); x++) {
+            playables[x].move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+        }
+        camera.move(-1 * camera.getTrueRect()->x, -1 * camera.getTrueRect()->y);
+        //Reset all enemies
+        //delete enemies;
+        enemies = level.enemies;
+        ground = level.ground;
+        //pit = level.pit;
+        door = level.door;
+        level.door.prepFree();
+        //gameOver = false;
+        //cout << "enemies reset" << endl;
+        lives--;
+    } else {
+        //You are out of lives: game over
+        wlswitch = 2;
+        gameOver = true;
     }
-   camera.move(-1*camera.getTrueRect()->x, -1*camera.getTrueRect()->y);
-    //Reset all enemies
-   //delete enemies;
-    enemies = level.enemies;
-    ground = level.ground;
-    //pit = level.pit;
-    door = level.door;
-    level.door.prepFree();
-    //gameOver = false;
-    //cout << "enemies reset" << endl;
-    lives--;
-  } else {
-    //You are out of lives: game over
-    wlswitch = 2;
-    gameOver = true;
-  }
 }
 
 void GameScreen::hardReset() {
@@ -470,7 +471,7 @@ void GameScreen::hardReset() {
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
-    camera.move(-1*camera.getTrueRect()->x, -1*camera.getTrueRect()->y);
+    camera.move(-1 * camera.getTrueRect()->x, -1 * camera.getTrueRect()->y);
     lives = 5;
     score = 0;
     gameOver = false;
@@ -493,9 +494,8 @@ void GameScreen::advanceLevel() {
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
-    camera.move(-1*camera.getTrueRect()->x, -1*camera.getTrueRect()->y);
+    camera.move(-1 * camera.getTrueRect()->x, -1 * camera.getTrueRect()->y);
     gameOver = false;
     wlswitch = 0;
     youWin = false;
-  
 }
