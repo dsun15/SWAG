@@ -23,7 +23,6 @@ int timeSinceChange = 0;
 
 AutoMovable::AutoMovable() {}
 
-
 AutoMovable::~AutoMovable() {}
 
 void AutoMovable::automove(int time) {
@@ -75,29 +74,23 @@ void AutoMovable::move(int x, int y) {
 }
 
 void AutoMovable::moveBetween(int minCoor, int maxCoor, int dt) {
-//    std::cout << "X: " << this->truex << " Y: " << this->truey << " W: " << Movable::getRect()->w << " min: " << minCoor << " max: " << maxCoor << endl;
-  //  std::cout << this->isMoving << endl;
     if (!(this->isMoving)) {
-    //    std::cout << "only once" << std::endl;
-      Movable::accelerate(dt,1,0);
+        Movable::accelerate(dt, 1, 0);
         Movable::setMove(true);
     }
     if (this->isMoving) {
-      //  std::cout << "more than once" << std::endl;
         if ((this->truex + Movable::getRect()->w) >= maxCoor) {
             Movable::setVelX(0);
-            Movable::accelerate(dt, -1,0);
-            Movable::move(dt/4);
-        //    std::cout<< "move left" << std::endl;
+            Movable::accelerate(dt, -1, 0);
+            Movable::move(dt / 4);
         } else if ((this->truex) <= minCoor) {
             Movable::setVelX(0);
-            Movable::accelerate(dt, 1,0);
-            Movable::move(dt/4);
-          //  std::cout<< "move right" << std::endl;
+            Movable::accelerate(dt, 1, 0);
+            Movable::move(dt / 4);
         }
     }
 }
-        
+
 void AutoMovable::genDir() {
     int temp;
     temp = rand() % 4;
