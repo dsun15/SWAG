@@ -97,12 +97,14 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
     Movable jibby("jibbyidle.png", 50, 50, 0, 0, width, height, 950, 50);
-    //Movable jibby2("jibbyidle.png", 50, 50, 0, 0, width, height, 600, 50);
-
+    Movable jibby2("jibbyidle.png", 50, 50, 100, 0, width, height, 600, 50);
+    cout << "placing" << endl;
     playables.emplace_back(jibby);
-    //playables.emplace_back(jibby2);
+    cout << "placed one" << endl;
+    playables.emplace_back(jibby2);
+    cout << "placed two" << endl;
     jibby.prepFree();
-    //jibby2.prepFree();
+    jibby2.prepFree();
 
     //Objects from level file
     ground = level.ground;
@@ -242,7 +244,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
-
+  cout << "draw" << endl;
     SDL_RenderCopy(renderer, background[levelnum - 1], NULL, &backrect);
 
     SDL_Rect cameraLoc = *camera.getRect();
@@ -474,7 +476,7 @@ void GameScreen::advanceLevel() {
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
-    camera.move(-1 * camera.getTrueRect()->x, -1 * camera.getTrueRect()->y);
+    camera.move(level.playerInitX - camera.getTrueRect()->x, level.playerInitY-camera.getTrueRect()->y);
     gameOver = false;
     wlswitch = 0;
     youWin = false;
