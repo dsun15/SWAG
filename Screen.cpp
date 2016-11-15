@@ -27,10 +27,3 @@ int Screen::input(SDL_Event* event, int dt) {
     }
     return 0;
 }
-/*
-void Screen::draw(SDL_Renderer * renderer){
-  if (renderer != NULL) {
-    std::cout << "draw() method not overridden\n";
-  }
-}
-*/

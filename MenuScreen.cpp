@@ -45,7 +45,6 @@ const char* comfirmName = "confirmClick.ogg";
 
 MenuScreen::MenuScreen() {}
 MenuScreen::MenuScreen(SDL_Renderer* renderer) {
-  //TTF_Init();
     font = TTF_OpenFont("8bit.ttf", 72);
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* st = TTF_RenderUTF8_Blended(font, ng, white);
@@ -58,8 +57,7 @@ MenuScreen::MenuScreen(SDL_Renderer* renderer) {
     t2 = SDL_CreateTextureFromSurface(renderer, s2);
     t3 = SDL_CreateTextureFromSurface(renderer, s3);
     t4 = SDL_CreateTextureFromSurface(renderer, s4);
-    //indicator = Movable(point, 50, 50, 50, 50, 800, 600, 50, 50, false,false);
-    Movable tempind(point, 50, 50, 50, 50, 800, 600, 50, 50, false,false);
+    Movable tempind(point, 50, 50, 50, 50, 800, 600, 50, 50, false, false);
     indicator = tempind;
     tempind.prepFree();
     Mix_SetMusicCMD("ogg123");
@@ -73,39 +71,14 @@ MenuScreen::MenuScreen(SDL_Renderer* renderer) {
     SDL_FreeSurface(s4);
 }
 MenuScreen::~MenuScreen() {
-    //	Mix_FreeMusic(move);
-    //	Mix_FreeMusic(confirm);
-   // TTF_Quit();
-  //std::cout << "got to menu" << std::endl;
-  /*    if (tt!=NULL) {
     SDL_DestroyTexture(tt);
-  }
-  if (t1!=NULL) {
-  SDL_DestroyTexture(t1);
-  }
-  if (t2!=NULL) {
+    SDL_DestroyTexture(t1);
     SDL_DestroyTexture(t2);
-  }
-  if (t3!=NULL) {
     SDL_DestroyTexture(t3);
-  }
-  if (t4!=NULL) {
     SDL_DestroyTexture(t4);
-    }*/
-  SDL_DestroyTexture(tt);
-  SDL_DestroyTexture(t1);
-  SDL_DestroyTexture(t2);
-  SDL_DestroyTexture(t3);
-  SDL_DestroyTexture(t4);
-  TTF_CloseFont(font);
-  Mix_FreeChunk(move);
-  Mix_FreeChunk(confirm);
-  /*
-  tt = NULL;
-  t1 = NULL;
-  t2 = NULL;
-  t3 = NULL;
-  t4 = NULL;*/
+    TTF_CloseFont(font);
+    Mix_FreeChunk(move);
+    Mix_FreeChunk(confirm);
 }
 
 //return ints for to determine which screen to switch to
@@ -160,9 +133,9 @@ void MenuScreen::draw(SDL_Renderer* renderer, int dt) {
 }
 
 void MenuScreen::prepFree() {
-  tt = NULL;
-  t1 = NULL;
-  t2 = NULL;
-  t3 = NULL;
-  t4 = NULL;
+    tt = NULL;
+    t1 = NULL;
+    t2 = NULL;
+    t3 = NULL;
+    t4 = NULL;
 }

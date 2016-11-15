@@ -33,8 +33,6 @@ SDL_Texture* titletex;
 SDL_Rect titleRect;
 TTF_Font* TitleFont;
 TTF_Font* ScoresFont;
-//const char* ScoreTitle = "SWAG SCORES";
-//string name = "SMP: 9000";
 
 HighScoreScreen::HighScoreScreen() {}
 
@@ -73,8 +71,6 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer* renderer) {
             }
         }
     }
-    //cout << scores.size();
-    //TTF_Init();
     TitleFont = TTF_OpenFont("8bit.ttf", 72);
     ScoresFont = TTF_OpenFont("8bit.ttf", 24);
     titlesurface = TTF_RenderUTF8_Blended(TitleFont, ScoreTitle, textcolor);
@@ -88,25 +84,22 @@ HighScoreScreen::HighScoreScreen(SDL_Renderer* renderer) {
         const char* tempstr = tmp_scr.c_str();
         SDL_Surface* temp = TTF_RenderUTF8_Blended(ScoresFont, tempstr, textcolor);
         scoresurfaces[x] = temp;
-        //scoresurfaces.push_back(temp);
-        //scoresurfaces.push_back(TTF_RenderUTF8_Blended(ScoresFont, scores[x], textcolor));
         scoretex[x] = SDL_CreateTextureFromSurface(renderer, scoresurfaces[x]);
         scorerect[x] = { 150, (100 + 75 * x), 300, 50 };
     }
 }
 
 HighScoreScreen::~HighScoreScreen() {
-  TTF_CloseFont(TitleFont);
-  TTF_CloseFont(ScoresFont);
-  SDL_DestroyTexture(titletex);
-  SDL_FreeSurface(titlesurface);
-  for (int i=0; i<5; i++) {
-    SDL_DestroyTexture(scoretex[i]);
-  }
-  for (int i=0;i<5; i++) {
-    SDL_FreeSurface(scoresurfaces[i]);
-  }
-    //TTF_Quit();
+    TTF_CloseFont(TitleFont);
+    TTF_CloseFont(ScoresFont);
+    SDL_DestroyTexture(titletex);
+    SDL_FreeSurface(titlesurface);
+    for (int i = 0; i < 5; i++) {
+        SDL_DestroyTexture(scoretex[i]);
+    }
+    for (int i = 0; i < 5; i++) {
+        SDL_FreeSurface(scoresurfaces[i]);
+    }
 }
 
 //return ints for to determine which screen to switch to
