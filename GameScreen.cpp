@@ -67,7 +67,7 @@ string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable> playables;
 
-std::list<Movable>* ground;
+std::list<AutoMovable>* ground;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
 
@@ -258,7 +258,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         playables[z].setStacked(-1);
         bool anyCollide = false;
         //ground
-        for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
+        for (std::list<AutoMovable>::iterator it = ground->begin(); it != ground->end(); ++it) {
+            if ((*it).getAnimate()) {
+                (*it).hoverBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
+            }
             if ((*it).checkCollide(&cameraLoc)) {
                 (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
             }
