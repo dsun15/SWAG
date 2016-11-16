@@ -13,35 +13,40 @@ You start with 5 lives. Your current lives is displayed on the
 bottom right corner. Your score is in the top right corner.
 Get to the door at the end of the level to win.
 
-This week has mostly been behind-the-scenes cleanup.
+List of things that need fixing:
+ - collisions from below don't work, they move the player to the side
+ - when the camera is moving, the player graphic is jittery
+ - level 3 is janky
+ - camera upon level reset moves around in wonky ways
+ - music doesn't work
+
+Fixes:
+ - This works most of the time, we adjusted the logic to check for collisions and made
+   each clause more specific.
+ - A smoother scrolling method was implemented to move the camera alongside
+   the player instead of constantly centering on it, but it still doesn't
+   look good.
+ - Level objects in the text file were adjusted and I think it's better.
+ - This was fixed by specifying that the camera reset to (0,0) upon a level reset.
+ - A workaround identical to a previous iteration was implemented, but it's not
+   what we ultimately want.
 
 List of visible improvements from last time:
- - A new level is implemented.
- - A system for progressing through levels has been implemented.
- - New textures for level 2.
- - Musical adjustments.
- - A smoother movement experience, hopefully.
- - A new player character graphic - it's Jibby.
- - The lives count is more obvious because Jibby's face is next to it.
+ - new title graphic
+ - smoother camera?
+ - collisions from below sometimes work
+ - background colors
+ - enemy eye and mouth colors brighter
+ - music glitch workaround
+ - level 3 layout adjustment
+ - jibby blinks less frequently
 
 Here is what each member accomplished:
-Devin: Implemented the level progression system. Added ability to
-	specify the initial position of the player, which currently
-	isn't used, but is useful in the future.
-Chris: Fixed up multiple musical implementations. Restructured the code so
-	that a new GameScreen isn't constructed multiple times. Fixed
-	various memory leaks. Reconfigured gravity and dt movement.
-Kevin: Implemented a system for multiple playable characters. This currently
-	isn't used, however in the future you may see cool things. Multiple
-	players has been tested, and collision behavior between players is in.
-William: Designed level 2. Created textures for this level. Created the player
-	character - his name is Jibby.
-
-Note that we are not satisfied with level 2. The original vision for it
-was a lot more ambitious, featuring multiple floors allowing for up/down as 
-well as left-right movement, as well as multiple playable character that
-you can alternate through. This week has not been kind, and we were unable
-to fully implement all the planned features.
+Devin: Created and inserted new title graphic.
+Chris: Implemented the musical glitch workaround, though not perfect. Updated
+	the layout for level 3.
+Kevin: Adjusted camera movement.
+William: Made Jibby blink slower. Updated color palettes on enemies.
 
 (We implemented a cheat. By pressing R, you can force a level advance.
 Obviously, since level 3 doesn't exist, pressing R on level 2 will crash
