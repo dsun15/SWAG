@@ -95,11 +95,11 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
     Movable * jibby = new Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 950, 50);
-    Movable * jibby2 = new Movable("jibbyidle.png", 50, 50, 100, 0, width, height, 600, 50);
+    Movable * brad = new Movable("player1.png", 50, 50, 100, 0, width, height, 600, 50);
     cout << "placing" << endl;
     playables.push_back(jibby);
     cout << "placed one" << endl;
-    playables.push_back(jibby2);
+    playables.push_back(brad);
     cout << "placed two" << endl;
     //jibby->prepFree();
     //jibby2->prepFree();
@@ -243,7 +243,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 }
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
-  cout << "draw" << endl;
+  //cout << "draw" << endl;
     SDL_RenderCopy(renderer, background[levelnum - 1], NULL, &backrect);
 
     SDL_Rect cameraLoc = *camera.getRect();
@@ -256,16 +256,50 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     for (int z = 0; z < (int)playables.size(); z++) {
-
+        SDL_Rect* playrect = playables[z]->getTrueRect();
         playables[z]->setStacked(-1);
         bool anyCollide = false;
-        //ground
+        bool playerCollide = false;
+	
+		//player-player collision
+        for (int x = 0; x < (int)playables.size(); x++) {
+            if (playables[x]->checkCollide(playrect) && z != x) {
+                if (playables[x]->getTrueRect()->y < playrect->y) {
+                    playerOnGround = true;
+                    playables[x]->setLowerBound(playables[z]->getTrueRect()->y + 1);
+		    if (x==1) {
+		      cout << playables[0]->getTrueRect()->y << "\t" << playables[1]->getLowerBound() << endl;
+		    }
+		    playerCollide = true;
+                } else if (playables[x]->getTrueRect()->y > playrect->y) {
+                    //There is someone on top, get ready to bring them with
+                    playables[x]->setUpperBound(playrect->y + playrect->h);
+                    playerOnGround = false;
+                    playables[z]->setStacked(playerNum);
+		    playerCollide = true;
+                } else if (playables[x]->getTrueRect()->y >= playrect->y && playables[x]->getTrueRect()->x < playrect->x) {
+                    playables[x]->setRightBound(playables[z]->getTrueRect()->x);
+		    playerCollide = true;
+                } else if (playables[x]->getTrueRect()->y >= playrect->y && playables[x]->getTrueRect()->x > playrect->x) {
+                    playables[x]->setLeftBound(playables[z]->getTrueRect()->x + playables[z]->getRect()->w);
+		    playerCollide = true;
+                }
+            }
+        }
+	if (!playerCollide) {
+	  playables[z]->setUpperBound(0);
+	  playables[z]->setLeftBound(0);
+	  playables[z]->setRightBound(width);
+	  playables[z]->setLowerBound(height + 100);
+	}
+
+
+	//ground
         for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
             if ((*it).checkCollide(&cameraLoc)) {
                 (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
             }
             if (playables[z]->checkCollide(&*it)) {
-                SDL_Rect* playrect = playables[z]->getTrueRect();
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
                 if (playrect->y < itrect->y && (playrect->x + playrect->w) > itrect->x && playrect->x < itrect->x + itrect->w) {
@@ -292,24 +326,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             playables[z]->setRightBound(width);
             playables[z]->setLowerBound(height + 100);
             playables[z]->setAir(true);
-        }
-
-        for (int x = 0; x < (int)playables.size(); x++) {
-            if (playables[x]->checkCollide(playables[z]->getTrueRect()) && z != x) {
-                if (playables[x]->getTrueRect()->y < playables[z]->getTrueRect()->y) {
-                    playerOnGround = true;
-                    playables[x]->setLowerBound(playables[z]->getTrueRect()->y + 1);
-                } else if (playables[x]->getTrueRect()->y > playables[z]->getTrueRect()->y) {
-                    //There is someone on top, get ready to bring them with
-                    playables[x]->setUpperBound(playables[z]->getTrueRect()->y + playables[z]->getTrueRect()->h);
-                    playerOnGround = false;
-                    playables[z]->setStacked(playerNum);
-                } else if (playables[x]->getTrueRect()->y >= playables[z]->getTrueRect()->y && playables[x]->getTrueRect()->x < playables[z]->getTrueRect()->x) {
-                    playables[x]->setRightBound(playables[z]->getTrueRect()->x);
-                } else if (playables[x]->getTrueRect()->y >= playables[z]->getTrueRect()->y && playables[x]->getTrueRect()->x > playables[z]->getTrueRect()->x) {
-                    playables[x]->setLeftBound(playables[z]->getTrueRect()->x + playables[z]->getRect()->w);
-                }
-            }
         }
     }
 
@@ -359,7 +375,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     for (int z = 0; z < (int)playables.size(); z++) {
         if (playables[z]->checkCollide(&cameraLoc)) {
             if (z == playerNum) {
-				auto t = playables[z];
                 playables[z]->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
             } else {
                 if (playables[z]->getStacked() == playerNum) {
@@ -390,6 +405,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_RenderCopy(renderer, spriteLives, NULL, &livesRect);
     SDL_FreeSurface(ss);
     SDL_FreeSurface(ls);
+    SDL_DestroyTexture(scoretext);
+    SDL_DestroyTexture(lifetext);
     if (wlswitch == 1) {
         SDL_RenderCopy(renderer, wintext, NULL, &winrect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
