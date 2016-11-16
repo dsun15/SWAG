@@ -9,7 +9,7 @@ LevelEditor::LevelEditor() {
     this->enemies = new vector<AutoMovable>();
     this->enemies->reserve(30);
     this->pit = new list<AutoMovable>();
-    this->ground = new list<Movable>();
+    this->ground = new list<AutoMovable>();
 }
 
 LevelEditor::~LevelEditor() {
@@ -62,7 +62,13 @@ void LevelEditor::read(string fileName) {
 
         switch (code) {
         case 'G': {
-            Movable tempg(Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate));
+            inFile >> move;
+            inFile >> min;
+            inFile >> max;
+            AutoMovable tempg(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate));
+            if (animate) {
+                tempg.setMoveBounds(min, max);
+            }
             this->ground->push_back(tempg);
             tempg.prepFree();
             break;

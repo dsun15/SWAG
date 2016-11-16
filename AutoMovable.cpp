@@ -91,6 +91,29 @@ void AutoMovable::moveBetween(int minCoor, int maxCoor, int dt) {
     }
 }
 
+void AutoMovable::hoverBetween(int minCoor, int maxCoor, int dt) {
+    if (!(this->isMoving)) {
+        //move down
+        Movable::accelerate(dt, 0, -.20);
+        Movable::setMove(true);
+    }
+    if (this->isMoving) {
+        //move up 
+        if ((this->truey + Movable::getRect()->h) >= minCoor) {
+            cout << "move up" << endl;
+            Movable::setVelY(0);
+            Movable::accelerate(dt, 0, -.20);
+            Movable::move(dt/4);
+        //move down
+        } else if ((this->truey) <= maxCoor) {
+            cout << "move down" << endl;
+            Movable::setVelY(0);
+            Movable::accelerate(dt, 0, .20);
+            Movable::move(dt/4);
+        }
+    }
+}
+
 void AutoMovable::genDir() {
     int temp;
     temp = rand() % 4;
@@ -116,4 +139,8 @@ void AutoMovable::setLife(bool isAlive) {
 
 bool AutoMovable::getLife() {
     return this->isAlive;
+}
+
+bool AutoMovable::getAnimate() {
+    return this->animate;
 }
