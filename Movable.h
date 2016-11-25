@@ -38,7 +38,7 @@ protected:
     bool inAir = false;
     bool isMoving = false;
     bool alive = true;
-    //true laction
+    //true location
     int truex;
     int truey;
     SDL_Rect truerect;
@@ -54,6 +54,9 @@ protected:
     int stacked = -1;
     bool isJumping = false;
     int jumpTime = 0;
+    int initX;
+    int initY;
+
 public:
     Movable();
 
@@ -109,6 +112,14 @@ public:
     int getStacked();
     bool getStackedMove();
     void prepFree();
+    /*virtual int getInitX() {
+      return 0;
+    };
+    virtual int getInitY() {
+      return 0;
+      };*/
+    int getInitX();
+    int getInitY();
 private:
 };
 
