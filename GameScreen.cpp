@@ -458,7 +458,7 @@ void GameScreen::reset() {
 	    playables[x]->move(playables[x]->getInitX() - helperLoc.x, playables[x]->getInitY() - helperLoc.y);
 	  }
 	  }*/
-        camera.move(-1 * camera.getTrueRect()->x, -1 * camera.getTrueRect()->y);
+        camera.move(playerLoc.x - camera.getTrueRect()->x, playerLoc.y - camera.getTrueRect()->y);
         //Reset all enemies
         //delete enemies;
         enemies = level.enemies;
