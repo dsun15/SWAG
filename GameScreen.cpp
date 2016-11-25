@@ -322,10 +322,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playables[z]->setUpperBound(itrect->y + itrect->h);
                 } else if (playrect->y >= itrect->y && playrect->x < itrect->x) {
                     // from left
-                    playables[z]->setRightBound(itrect->x);
+                    playables[z]->setRightBound(itrect->x + 1);
                 } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
                     //from right
-                    playables[z]->setLeftBound(itrect->x + itrect->w);
+                    playables[z]->setLeftBound(itrect->x + itrect->w - 1);
                 }
             }
         }

@@ -2,7 +2,7 @@
 TODO
 - Camera goes to 0,0 on reset(). Should probably go to player.
 - Helper collisions break and are generally wonky.
-
+- inconsistent jump height
 *********
 
 This program requires that you have vorbis-tools installed.
