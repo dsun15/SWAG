@@ -486,7 +486,7 @@ void GameScreen::reset() {
 
 void GameScreen::hardReset() {
     levelnum = 1;
-    playernum = 0;
+    playerNum = 0;
     levelfile = "level" + to_string(levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
