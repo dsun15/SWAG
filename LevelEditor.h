@@ -8,7 +8,7 @@
 #include <vector>
 #include "Movable.h"
 #include "AutoMovable.h"
-
+#include "Helper.h"
 using std::string;
 
 #ifndef  _LEVELEDITOR_H
@@ -17,9 +17,10 @@ using std::string;
 class LevelEditor {
 
 public:
-    std::list<Movable> * ground;
+    std::list<AutoMovable> * ground;
     std::vector<AutoMovable> * enemies;
     std::list<AutoMovable> * pit;
+    std::list<Movable * > * helpers;
     int playerInitX;
     int playerInitY;
     Movable door;

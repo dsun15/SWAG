@@ -42,6 +42,8 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->upperBound = 0;
     this->lowerBound = levelHeight;
     this->inAir = true;
+    this->initX = cornerX;
+    this->initY = cornerY;
 }
 
 Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity, bool anim) {
@@ -71,6 +73,8 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
     this->upperBound = 0;
     this->lowerBound = levelHeight;
     this->inAir = true;
+    this->initX = cornerX;
+    this->initY = cornerY;
 }
 
 Movable::~Movable() {
@@ -344,4 +348,11 @@ int Movable::getUpperBound() {
 // to be used in the case of another object sharing the same SDL_Surface *
 void Movable::prepFree() {
     this->img = NULL;
+}
+
+int Movable::getInitX() {
+  return this->initX;
+}
+int Movable::getInitY() {
+  return this->initY;
 }

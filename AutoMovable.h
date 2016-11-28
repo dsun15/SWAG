@@ -36,11 +36,12 @@ public:
     ~AutoMovable();
     void automove(int time);
     void moveBetween(int minCoor, int maxCoor, int dt);
+    void hoverBetween(int minCoor, int maxCoor, int dt);
     void genDir();
     void move(int x, int y);
     void setLife(bool isAlive);
     bool getLife();
-
+    bool getAnimate();
 private:
 };
 
