@@ -212,6 +212,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 GameScreen::reset();
             }
             if (event->key.keysym.sym == SDLK_TAB) {
+	      playables[playerNum]->setVelX(0);
                 if (playerNum + 1 >= (int)playables.size()) {
                     playerNum = 0;
                 } else {
@@ -238,7 +239,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
                 if (!playables[playerNum]->getAir()) {
-                    playables[playerNum]->accelerate(9, 0, -2.75);
+                    playables[playerNum]->accelerate(15, 0, -3);
                     //playables[playerNum].jump();
                 }
             }
@@ -263,14 +264,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     for (int z = 0; z < (int)playables.size(); z++) {
 
-      //if (!anyCollide) {
-            playables[z]->setUpperBound(0);
-            playables[z]->setLeftBound(0);
-            playables[z]->setRightBound(width);
-            playables[z]->setLowerBound(height + 100);
-            playables[z]->setAir(true);
-	    //}
-      
+     
         SDL_Rect* playrect = playables[z]->getTrueRect();
         playables[z]->setStacked(-1);
         bool anyCollide = false;
@@ -280,33 +274,43 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         for (int x = 0; x < (int)playables.size(); x++) {
 	  if (playables[x]->checkCollide(playrect) && x != z) {
 	      SDL_Rect * xrect = playables[x]->getTrueRect();
-	      if (xrect->y + .8*xrect->h < playrect->y && xrect->x + 0.8*xrect->w > playrect->x && xrect->x + 0.2*xrect->w < playrect->x + playrect->w && playables[x]->getLowerBound() != 0) {
+	      if (xrect->y  + .9*xrect->h  < playrect->y && xrect->x + 0.9*xrect->w > playrect->x && xrect->x + 0.1*xrect->w < playrect->x + playrect->w) {
 		  // from above
                     playerOnGround = true;
                     playables[x]->setLowerBound(playrect->y + 1);
-		    if (x==1) {
-		      cout << playables[0]->getTrueRect()->y << "\t" << playables[1]->getLowerBound() << endl;
-		    }
+
+		    cout << playables[x]->getTrueRect()->h << "\n";
+
+		    
+		    
 		    playerCollide = true;
-	      } else if (xrect->y > playrect->y && playables[x]->getUpperBound() != 0) {
+	      } else if (xrect->y > playrect->y +.9*playrect->h && xrect->x +.9*xrect->w > playrect->x && xrect->x + .1*xrect->w < playrect->x + playrect->w) {
                     //There is someone on top, get ready to bring them with
 		  // from below
 		  playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
                     playables[z]->setStacked(playerNum);
 		    playerCollide = true;
-	      } else if (xrect->x < playrect->x && playables[x]->getRightBound() != 0) {
+	      } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
                   // from left
-		  playables[x]->setRightBound(playrect->x);
+		  playables[x]->setRightBound(playrect->x+1);
 		    playerCollide = true;
-	      } else if (xrect->x > playrect->x && playables[x]->getLeftBound() != 0) {
+	      } else if (xrect->x > playrect->x && xrect->y >= playrect->y) {
                   // from right
-		  playables[x]->setLeftBound(playrect->x + playrect->w);		  playerCollide = true;
+		  playables[x]->setLeftBound(playrect->x + playrect->w -1);
+		  playerCollide = true;
+
                 }
             }
         }
 
-	
+       if (!anyCollide) {
+            playables[z]->setUpperBound(0);
+            playables[z]->setLeftBound(0);
+            playables[z]->setRightBound(width);
+            playables[z]->setLowerBound(height + 100);
+       }
+      	
 
 
 	//ground
@@ -320,7 +324,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .75*playrect->h < itrect->y && (playrect->x + 0.8*playrect->w) > itrect->x && playrect->x + 0.2*playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .8*playrect->h < itrect->y && (playrect->x + 0.8*playrect->w) > itrect->x && playrect->x + 0.2*playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
@@ -330,9 +334,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     //below
                     playables[z]->setUpperBound(itrect->y + itrect->h);
 	        } else if (playrect->x < itrect->x) {
+
                     // from left
                     playables[z]->setRightBound(itrect->x + 1);
-                } else if (playrect->x > itrect->x) {
+                } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
                     //from right
                     playables[z]->setLeftBound(itrect->x + itrect->w - 1);
 		}
@@ -388,7 +393,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     
 
     for (int z = 0; z < (int)playables.size(); z++) {
-      		  std::cout << playables[z]->getLeftBound() << "\t" << playables[z]->getRightBound() << "\n";
 
         if (playables[z]->checkCollide(&cameraLoc)) {
             if (z == playerNum) {
