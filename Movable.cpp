@@ -356,3 +356,6 @@ int Movable::getInitX() {
 int Movable::getInitY() {
   return this->initY;
 }
+const char * Movable::getName() {
+    return this->fileName;
+}
