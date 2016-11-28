@@ -271,6 +271,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         for (int x = 0; x < (int)playables.size(); x++) {
             if (playables[x]->checkCollide(playrect) && z != x) {
                 if (playables[x]->getTrueRect()->y < playrect->y) {
+		  // from above
                     playerOnGround = true;
                     playables[x]->setLowerBound(playables[z]->getTrueRect()->y + 1);
 		    if (x==1) {
@@ -279,15 +280,18 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 		    playerCollide = true;
                 } else if (playables[x]->getTrueRect()->y > playrect->y) {
                     //There is someone on top, get ready to bring them with
-                    playables[x]->setUpperBound(playrect->y + playrect->h);
+		  // from below
+		  playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
                     playables[z]->setStacked(playerNum);
 		    playerCollide = true;
                 } else if (playables[x]->getTrueRect()->y >= playrect->y && playables[x]->getTrueRect()->x < playrect->x) {
-                    playables[x]->setRightBound(playables[z]->getTrueRect()->x);
+                  // from left
+		  playables[x]->setRightBound(playables[z]->getTrueRect()->x);
 		    playerCollide = true;
                 } else if (playables[x]->getTrueRect()->y >= playrect->y && playables[x]->getTrueRect()->x > playrect->x) {
-                    playables[x]->setLeftBound(playables[z]->getTrueRect()->x + playables[z]->getRect()->w);
+                  // from right
+		  playables[x]->setLeftBound(playables[z]->getTrueRect()->x + playables[z]->getRect()->w);
 		    playerCollide = true;
                 }
             }
@@ -311,7 +315,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y < itrect->y && (playrect->x + playrect->w) > itrect->x && playrect->x < itrect->x + itrect->w) {
+                if (playrect->y + .75*playrect->h < itrect->y && (playrect->x + 0.8*playrect->w) > itrect->x && playrect->x < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
@@ -458,8 +462,9 @@ void GameScreen::reset() {
 	    playables[x]->move(playables[x]->getInitX() - helperLoc.x, playables[x]->getInitY() - helperLoc.y);
 	  }
 	  }*/
-        camera.move(playerLoc.x - camera.getTrueRect()->x, playerLoc.y - camera.getTrueRect()->y);
-        //Reset all enemies
+        //camera.move(playerLoc.x - camera.getTrueRect()->x, playerLoc.y - camera.getTrueRect()->y);
+        camera.move(level.playerInitX - camera.getTrueRect()->x, level.playerInitY - camera.getTrueRect()->y);
+	//Reset all enemies
         //delete enemies;
         enemies = level.enemies;
         ground = level.ground;
