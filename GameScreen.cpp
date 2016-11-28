@@ -47,13 +47,11 @@ SDL_Texture* scoretext;
 SDL_Texture* lifetext;
 SDL_Texture* background[MAX_LV];
 SDL_Texture* spriteLives;
-SDL_Texture* deadtext;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 100, 125, 600, 50 };
 SDL_Rect gamescorerect = { 50, 50, 75, 50 };
 SDL_Rect lifecountrect = { 725, 525, 75, 50 };
-SDL_Rect deadrect = { 100, 75, 600, 400 };
 SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect livesRect = { 650, 534, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
@@ -239,9 +237,11 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
-	        if(!playables[playerNum].getAir())
-		  playables[playerNum].accelerate(dt, 0, -2.75);
-
+                if (!playables[playerNum]->getAir()) {
+                    playables[playerNum]->accelerate(9, 0, -2.75);
+                    //playables[playerNum].jump();
+                }
+            }
             break;
         }
     }
@@ -260,35 +260,17 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
- 
-    for (int z = 0; z < (int) playables.size(); z++){
-        
-	playables[z].setStacked(-1);
-	bool anyCollide = false;
-	//ground
-    for (std::list<Movable>::iterator it = ground->begin(); it != ground->end(); ++it) {
-        if ((*it).checkCollide(&cameraLoc)) {
-            (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-        }
-        if (playables[z].checkCollide(&*it)) {
-	  anyCollide = true;
-	  if (playables[z].getTrueRect()->y < (*it).getTrueRect()->y) {
-                playerOnGround = true;
 
-                playables[z].setLowerBound((*it).getTrueRect()->y + 1);
-	  } else if (playables[z].getTrueRect()->y > (*it).getTrueRect()->y + (*it).getTrueRect()->h) {
-	    playables[z].setUpperBound((*it).getTrueRect()->y + (*it).getTrueRect()->h);
-	    playables[z].setVelY(0);
-	  }else if (playables[z].getTrueRect()->y >= (*it).getTrueRect()->y && playables[z].getTrueRect()->x < (*it).getTrueRect()->x) {
-	    playables[z].setVelX(0);
-                playables[z].setRightBound((*it).getTrueRect()->x);
-	  } else if (playables[z].getTrueRect()->y >= (*it).getTrueRect()->y && playables[z].getTrueRect()->x > (*it).getTrueRect()->x) {
-                playables[z].setLeftBound((*it).getTrueRect()->x + (*it).getTrueRect()->w);
-		playables[z].setVelX(0);
-
-<<<<<<< HEAD
-=======
     for (int z = 0; z < (int)playables.size(); z++) {
+
+      //if (!anyCollide) {
+            playables[z]->setUpperBound(0);
+            playables[z]->setLeftBound(0);
+            playables[z]->setRightBound(width);
+            playables[z]->setLowerBound(height + 100);
+            playables[z]->setAir(true);
+	    //}
+      
         SDL_Rect* playrect = playables[z]->getTrueRect();
         playables[z]->setStacked(-1);
         bool anyCollide = false;
@@ -296,43 +278,35 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	
 		//player-player collision
         for (int x = 0; x < (int)playables.size(); x++) {
-            if (playables[x]->checkCollide(playrect) && z != x) {
+	  if (playables[x]->checkCollide(playrect) && x != z) {
 	      SDL_Rect * xrect = playables[x]->getTrueRect();
-                if (xrect->y + .8*xrect->h < playrect->y && xrect->x + 0.8*xrect->w > playrect->x && xrect->x + 0.2*xrect->w < playrect->x + playrect->w) {
+	      if (xrect->y + .8*xrect->h < playrect->y && xrect->x + 0.8*xrect->w > playrect->x && xrect->x + 0.2*xrect->w < playrect->x + playrect->w && playables[x]->getLowerBound() != 0) {
 		  // from above
                     playerOnGround = true;
                     playables[x]->setLowerBound(playrect->y + 1);
-		    cout << "above collide" << endl;
 		    if (x==1) {
 		      cout << playables[0]->getTrueRect()->y << "\t" << playables[1]->getLowerBound() << endl;
 		    }
 		    playerCollide = true;
-                } else if (xrect->y > playrect->y && xrect->x > playrect->x && xrect->x + xrect->w < playrect->x + playrect->w) {
+	      } else if (xrect->y > playrect->y && playables[x]->getUpperBound() != 0) {
                     //There is someone on top, get ready to bring them with
 		  // from below
-		  cout << "below collide" << endl;
 		  playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
                     playables[z]->setStacked(playerNum);
 		    playerCollide = true;
-                } else if (xrect->x < playrect->x) {
+	      } else if (xrect->x < playrect->x && playables[x]->getRightBound() != 0) {
                   // from left
-		  playables[x]->setRightBound(playrect->x+1);
+		  playables[x]->setRightBound(playrect->x);
 		    playerCollide = true;
-                } else if (xrect->x > playrect->x) {
+	      } else if (xrect->x > playrect->x && playables[x]->getLeftBound() != 0) {
                   // from right
-		  playables[x]->setLeftBound(playrect->x + playrect->w - 1);
-		    playerCollide = true;
+		  playables[x]->setLeftBound(playrect->x + playrect->w);		  playerCollide = true;
                 }
             }
         }
 
-	if (!playerCollide) {
-	  playables[z]->setUpperBound(0);
-	  playables[z]->setLeftBound(0);
-	  playables[z]->setRightBound(width);
-	  playables[z]->setLowerBound(height + 100);
-	}
+	
 
 
 	//ground
@@ -355,23 +329,16 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
                     //below
                     playables[z]->setUpperBound(itrect->y + itrect->h);
-                } else if (playrect->x < itrect->x) {
+	        } else if (playrect->x < itrect->x) {
                     // from left
                     playables[z]->setRightBound(itrect->x + 1);
                 } else if (playrect->x > itrect->x) {
                     //from right
                     playables[z]->setLeftBound(itrect->x + itrect->w - 1);
-                }
->>>>>>> f605985cb1641f09dc786dcd89cfa4b21517ed5c
+		}
             }
         }
-        if (!anyCollide) {
-            playables[z]->setUpperBound(0);
-            playables[z]->setLeftBound(0);
-            playables[z]->setRightBound(width);
-            playables[z]->setLowerBound(height + 100);
-            playables[z]->setAir(true);
-        }
+        
     }
 
     //collision with enemies
@@ -399,6 +366,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         } else {
             ++iter;
         }
+	
     }
 
     //non-killable enemies
@@ -417,7 +385,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
     }
 
+    
+
     for (int z = 0; z < (int)playables.size(); z++) {
+      		  std::cout << playables[z]->getLeftBound() << "\t" << playables[z]->getRightBound() << "\n";
+
         if (playables[z]->checkCollide(&cameraLoc)) {
             if (z == playerNum) {
                 playables[z]->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
@@ -438,7 +410,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     string temp = std::to_string(score);
     string life = std::to_string(lives);
-    string dead = "Get Ready!";
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
     SDL_Color white = { 255, 255, 255, 255 };
@@ -449,7 +420,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_RenderCopy(renderer, scoretext, NULL, &gamescorerect);
     SDL_RenderCopy(renderer, lifetext, NULL, &lifecountrect);
     SDL_RenderCopy(renderer, spriteLives, NULL, &livesRect);
-    
     SDL_FreeSurface(ss);
     SDL_FreeSurface(ls);
     SDL_DestroyTexture(scoretext);
@@ -470,13 +440,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (playables[playerNum]->getReallyRectY() > height - 25) {
         GameScreen::reset();
     }
-<<<<<<< HEAD
-    camera.center(playables[playerNum].getReallyRectX() + (playables[playerNum].getRect()->w / 2), playables[playerNum].getReallyRectY() + (playables[playerNum].getRect()->h / 2));
-    }
-=======
     camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
 
->>>>>>> f605985cb1641f09dc786dcd89cfa4b21517ed5c
 }
 
 void GameScreen::reset() {
@@ -521,7 +486,6 @@ void GameScreen::reset() {
 
 void GameScreen::hardReset() {
     levelnum = 1;
-    playerNum = 0;
     levelfile = "level" + to_string(levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);

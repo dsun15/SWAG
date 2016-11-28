@@ -336,6 +336,18 @@ bool Movable::getStackedMove() {
     return this->stackedMove;
 }
 
+int Movable::getLeftBound() {
+
+  return this->leftBound;
+
+}
+
+int Movable::getRightBound() {
+
+  return this->rightBound;
+
+}
+
 int Movable::getLowerBound() {
 
     return this->lowerBound;

@@ -101,6 +101,8 @@ public:
     void setRightBound(int x);
     void setUpperBound(int x);
     void setLowerBound(int x);
+    int getLeftBound();
+    int getRightBound();
     int getLowerBound();
     int getUpperBound();
     void setMoveBounds(int min, int max);
