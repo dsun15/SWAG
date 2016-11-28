@@ -275,13 +275,15 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 		  // from above
                     playerOnGround = true;
                     playables[x]->setLowerBound(playrect->y + 1);
+		    cout << "above collide" << endl;
 		    if (x==1) {
 		      cout << playables[0]->getTrueRect()->y << "\t" << playables[1]->getLowerBound() << endl;
 		    }
 		    playerCollide = true;
-                } else if (xrect->y > playrect->y) {
+                } else if (xrect->y > playrect->y && xrect->x > playrect->x && xrect->x + xrect->w < playrect->x + playrect->w) {
                     //There is someone on top, get ready to bring them with
 		  // from below
+		  cout << "below collide" << endl;
 		  playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
                     playables[z]->setStacked(playerNum);
@@ -484,6 +486,7 @@ void GameScreen::reset() {
 
 void GameScreen::hardReset() {
     levelnum = 1;
+    playernum = 0;
     levelfile = "level" + to_string(levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
