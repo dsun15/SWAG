@@ -10,7 +10,8 @@ LevelEditor::LevelEditor() {
     this->enemies->reserve(30);
     this->pit = new list<AutoMovable>();
     this->ground = new list<AutoMovable>();
-    this->helpers = new list<Movable *> ();
+    this->helpers = new list<Movable*>();
+    this->text = new list<Movable>();
 }
 
 LevelEditor::~LevelEditor() {
@@ -21,8 +22,8 @@ LevelEditor::~LevelEditor() {
     delete this->pit;
     delete this->ground;
     while (!this->helpers->empty()) {
-      delete this->helpers->front();
-      this->helpers->pop_front();
+        delete this->helpers->front();
+        this->helpers->pop_front();
     }
     delete this->helpers;
 }
@@ -32,8 +33,8 @@ void LevelEditor::read(string fileName) {
     ground->clear();
     pit->clear();
     while (!this->helpers->empty()) {
-      delete this->helpers->front();
-      this->helpers->pop_front();
+        delete this->helpers->front();
+        this->helpers->pop_front();
     }
 
     ifstream inFile;
@@ -71,11 +72,11 @@ void LevelEditor::read(string fileName) {
         inFile >> y;
         inFile >> width;
         inFile >> height;
-        inFile >> init;
-        imageName = init.c_str();
 
         switch (code) {
         case 'G': {
+            inFile >> init;
+            imageName = init.c_str();
             inFile >> move;
             inFile >> min;
             inFile >> max;
@@ -88,6 +89,8 @@ void LevelEditor::read(string fileName) {
             break;
         }
         case 'P': {
+            inFile >> init;
+            imageName = init.c_str();
             inFile >> move;
             inFile >> min;
             inFile >> max;
@@ -100,6 +103,8 @@ void LevelEditor::read(string fileName) {
             break;
         }
         case 'E': {
+            inFile >> init;
+            imageName = init.c_str();
             inFile >> move;
             inFile >> min;
             inFile >> max;
@@ -112,19 +117,40 @@ void LevelEditor::read(string fileName) {
             break;
         }
         case 'D': {
+            inFile >> init;
+            imageName = init.c_str();
             Movable doort(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false, animate);
             this->door = doort;
             doort.prepFree();
             break;
         }
-	case 'H': {
-	  //inFile >> spriteWidth;
-	  //inFile >> spriteHeight;
-	  inFile >> frames;
-	  Movable * help = new Helper(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x*frames, y, true, animate);
-	  this->helpers->push_back(help);
-	}
-      }
+        case 'H': {
+            inFile >> init;
+            imageName = init.c_str();
+            //inFile >> spriteWidth;
+            //inFile >> spriteHeight;
+            inFile >> frames;
+            Movable* help = new Helper(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x * frames, y, true, animate);
+            this->helpers->push_back(help);
+            break;
+        }
+        case 'T': {
+            //string temp;
+           // init = "";
+            //while (!inFile.eof()) {
+              //  inFile >> temp;
+                //init = init + temp + " ";
+           // }
+            getline(inFile, init);
+            cout << init <<endl;
+            imageName = init.c_str();
+            Movable textt(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x, y, false, animate);
+            cout << textt.getName() << endl;
+            this->text->push_back(textt);
+            //textt.prepFree();
+            break;
+        }
+        }
     }
 
     inFile.close();

@@ -122,6 +122,7 @@ public:
       };*/
     int getInitX();
     int getInitY();
+    const char * getName();
 private:
 };
 

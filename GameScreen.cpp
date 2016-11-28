@@ -68,11 +68,12 @@ int levelnum = 1;
 string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable *> playables;
-
 std::list<AutoMovable>* ground;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
-
+std::list<Movable> * text;
+vector<SDL_Texture*> textVector; 
+vector<SDL_Surface*> surfaceVector;
 SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibbyIcon = IMG_Load("jibbyOneFrame.png");
 
@@ -110,6 +111,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     ground = level.ground;
     enemies = level.enemies;
     pit = level.pit;
+    text = level.text;
+
     door = level.door;
     level.door.prepFree();
     for (list<Movable *>::iterator it = level.helpers->begin(); it!=level.helpers->end(); ++it) {
@@ -147,9 +150,15 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     SDL_FreeSurface(cm);
     wlswitch = 0;
     score = 0;
+    //SDL_Surface* tempSurf;
+    for (list<Movable>::iterator it = text->begin(); it!= text->end(); ++it) {
+       // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
+        //surfaceVector.insert(tempSurf);
+        textVector.push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white)));
+     //   SDL_FreeSurface(tempSurf);     
+    } 
 
     scorewritten = false;
-
     return;
 }
 
@@ -260,6 +269,15 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
     if (door.checkCollide(camera.getRect())) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+    }
+
+    //printing font
+    vector<SDL_Texture *>::iterator iterator = textVector.begin();
+    for (std::list<Movable>::iterator it = text->begin(); it != text->end(); ++it) {
+       // if ((*it).checkCollide(&cameraLoc)) {            
+            SDL_RenderCopy(renderer, *iterator, NULL, &(*it->getRect())); 
+       // } 
+        ++iterator;
     }
 
     for (int z = 0; z < (int)playables.size(); z++) {
