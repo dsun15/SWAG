@@ -38,7 +38,7 @@ P 1 650 279 50 71 enemy2.png 1 300 2350
 P 1 1100 279 50 71 enemy2.png 1 300 2350
 P 1 1800 279 50 71 enemy2.png 1 300 2350
 
-H 0 1275 670 75 75 green.png 1
-H 0 2420 900 50 75 green.png 1
+H 0 1275 670 75 75 Loofa.png 1
+H 0 2420 900 50 75 Loofa.png 1
 
 D 0 2400 700 50 50 door.png
