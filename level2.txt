@@ -10,7 +10,7 @@ G 0 2250 300 250 300 Level2Texture6.png 0 0 0
 G 0 2500 550 1600 50 Level2Texture5.png 0 0 0
 
 G 0 3100 375 300 175 Level2Texture6.png 0 0 0
-G 0 3400 200 350 350 Level2Texture6.png 0 0 0
+G 0 3400 200 700 350 Level2Texture6.png 0 0 0
 
 G 0 4200 200 75 50 Level2Texture6.png 0 0 0
 G 0 4375 200 75 50 Level2Texture6.png 0 0 0
