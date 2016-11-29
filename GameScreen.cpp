@@ -293,7 +293,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	      if (xrect->y + .9*xrect->h < playrect->y && xrect->x + 0.9*xrect->w > playrect->x && xrect->x + 0.1*xrect->w < playrect->x + playrect->w) {
 		  // from above
                     playerOnGround = true;
-                    playables[x]->setLowerBound(playrect->y + 1);
+                    playables[x]->setLowerBound(playrect->y+1);
 		    /*cout << "above collide" << endl;
 		    if (x==1) {
 		      cout << playables[0]->getTrueRect()->y << "\t" << playables[1]->getLowerBound() << endl;
@@ -307,12 +307,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playerOnGround = false;
                     playables[z]->setStacked(playerNum);
 		    playerCollide = true;
-                } else if (xrect->y >= playrect->y && xrect->x < playrect->x) {
+                } else if (xrect->x + .9*xrect->h > playrect->x && xrect->x < playrect->x) {
                   // from left
 		//cout << "left collide" << endl;
 		  playables[x]->setRightBound(playrect->x+1);
 		    playerCollide = true;
-                } else if (xrect->y >= playrect->y && xrect->x > playrect->x) {
+                } else if (xrect->x + .9*xrect->h > playrect->x && xrect->x > playrect->x) {
                   // from right
 		//cout << "right collide" << endl;
 		  playables[x]->setLeftBound(playrect->x + playrect->w - 1);
@@ -349,10 +349,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
                     //below
                     playables[z]->setUpperBound(itrect->y + itrect->h);
-                } else if (playrect->y >= itrect->y && playrect->x < itrect->x) {
+                } else if (playrect->x < itrect->x) {
                     // from left
                     playables[z]->setRightBound(itrect->x + 1);
-                } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
+                } else if (playrect->x > itrect->x) {
                     //from right
                     playables[z]->setLeftBound(itrect->x + itrect->w - 1);
                 }
