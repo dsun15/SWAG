@@ -220,12 +220,20 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_k) {
                 GameScreen::reset();
             }
-            if (event->key.keysym.sym == SDLK_TAB) {
+            if (event->key.keysym.sym == SDLK_e) {
 	      playables[playerNum]->setVelX(0);
                 if (playerNum + 1 >= (int)playables.size()) {
                     playerNum = 0;
                 } else {
                     playerNum++;
+                }
+            }
+	    if (event->key.keysym.sym == SDLK_q) {
+	      playables[playerNum]->setVelX(0);
+                if (playerNum - 1 < 0) {
+		  playerNum = (int) playables.size();
+                } else {
+                    playerNum--;
                 }
             }
             break;
@@ -290,7 +298,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	
 		//player-player collision
         for (int x = 0; x < (int)playables.size(); x++) {
-	  if (playables[x]->checkCollide(playrect) && x != z) {
+	  if (playables[x]->checkCollide(playrect)) {
 	      SDL_Rect * xrect = playables[x]->getTrueRect();
 	      if (xrect->y  + .9*xrect->h  < playrect->y && xrect->x + 0.9*xrect->w > playrect->x && xrect->x + 0.1*xrect->w < playrect->x + playrect->w) {
 		  // from above
