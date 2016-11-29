@@ -26,7 +26,7 @@ using namespace std;
 int width = 1000;
 int height = 600;
 Movable door;
-const int MAX_LV = 3;
+const int MAX_LV = 4;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -340,7 +340,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .8*playrect->h < itrect->y && (playrect->x + 0.8*playrect->w) > itrect->x && playrect->x + 0.2*playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .9*playrect->h < itrect->y && (playrect->x + 0.9*playrect->w) > itrect->x && playrect->x + 0.1*playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
