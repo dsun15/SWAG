@@ -329,7 +329,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 	}
 
 
-	//ground
+	//ground collisions
         for (std::list<AutoMovable>::iterator it = ground->begin(); it != ground->end(); ++it) {
             if ((*it).getAnimate()) {
                 (*it).hoverBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
