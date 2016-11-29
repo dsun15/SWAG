@@ -1,36 +1,36 @@
 6700 600
 0 0
-G 0 0 300 300 300 Level1Texture1.png 0 0 0
-G 0 300 400 75 200 Level1Texture2.png 0 0 0
-G 0 375 500 1125 100 Level1Texture3.png 0 0 0
-G 0 500 300 300 25 Level1Texture4.png 0 0 0
-G 0 1000 300 300 25 Level1Texture4.png 0 0 0
-G 0 1500 300 400 300 Level1Texture6.png 0 0 0
-G 0 2000 300 150 300 Level1Texture7.png 0 0 0
-G 0 2250 300 150 300 Level1Texture7.png 0 0 0
-G 0 2500 300 150 300 Level1Texture7.png 0 0 0
-G 0 2750 300 150 300 Level1Texture7.png 0 0 0
-G 0 2900 500 950 100 Level1Texture11.png 0 0 0
-G 0 3300 400 150 100 Level1Texture12.png 0 0 0
-G 0 3850 400 150 200 Level1Texture13.png 0 0 0
+G 0 0 300 300 300 Level1Texture1.png
+G 0 300 400 75 200 Level1Texture2.png
+G 0 375 500 1125 100 Level1Texture3.png
+G 0 500 300 300 25 Level1Texture4.png
+G 0 1000 300 300 25 Level1Texture4.png
+G 0 1500 300 400 300 Level1Texture6.png
+G 0 2000 300 150 300 Level1Texture7.png
+G 0 2250 300 150 300 Level1Texture7.png
+G 0 2500 300 150 300 Level1Texture7.png
+G 0 2750 300 150 300 Level1Texture7.png
+G 0 2900 500 950 100 Level1Texture11.png
+G 0 3300 400 150 100 Level1Texture12.png
+G 0 3850 400 150 200 Level1Texture13.png
 
-G 0 4150 400 100 200 red.png 0 0 0
-G 0 4300 300 50 300 red.png 0 0 0
-G 0 4450 200 100 400 red.png 0 0 0
-G 0 4650 200 75 400 red.png 0 0 0
-G 0 4900 300 100 300 red.png 0 0 0
-G 0 5200 400 100 200 red.png 0 0 0
-G 0 5450 500 250 100 red.png 0 0 0
-G 0 5850 500 400 100 red.png 0 0 0
-G 0 6400 500 300 100 red.png 0 0 0
+G 0 4150 400 50 200 red.png
+G 0 4300 300 50 300 red.png
+G 0 4450 200 50 400 red.png
+G 0 4650 200 50 400 red.png
+G 0 4900 300 50 300 red.png
+G 0 5150 400 50 200 red.png
+G 0 5300 500 400 100 red.png
+G 0 5850 500 400 100 red.png
+G 0 6400 500 300 100 red.png
 
 D 0 6650 450 50 50 door.png
 
 E 1 2900 450 50 50 enemy1.png 1 2900 3300
 E 1 3100 450 50 50 enemy1.png 1 2900 3300
-E 1 4900 250 50 50 enemy1.png 1 4900 5000
-E 1 5150 350 50 50 enemy1.png 1 5200 5300
+E 1 4900 250 50 50 enemy1.png 0 0 0
+E 1 5150 350 50 50 enemy1.png 0 0 0
 
 P 1 3500 429 50 71 enemy2.png 1 3450 3850
-E 1 5450 450 50 50 enemy1.png 1 5450 5700
-E 1 5850 450 50 50 enemy1.png 1 5850 6250
+E 1 5300 450 50 50 enemy1.png 1 5300 5700
+E 1 6200 450 50 50 enemy1.png 1 5850 6250
