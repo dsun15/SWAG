@@ -5,6 +5,8 @@ TODO
 - if there are two adjacent objects the player is walking across that have the same
   height, the player will have a left/right bound set when intersecting with the
   first pixel of the second object.
+- if jibby is stacked on top of helper 1, then player tabs to control helper 1
+  then tabs again to control a helper 2, jibby will be transported to helper 2
 *********
 
 This program requires that you have vorbis-tools installed.
