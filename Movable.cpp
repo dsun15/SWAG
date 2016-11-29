@@ -106,15 +106,15 @@ void Movable::accelerate(int dt, double accX, double accY) {
 void Movable::move(int dt) {
     this->rect.x = this->truex;
     this->rect.y = this->truey;
-
     //setting
     dt /= 3;
+    Movable::accelerate(dt, 0, 0);
     this->rect.x += this->velX * dt;
     this->rect.y += this->velY * dt;
     if (!this->isMoving) {
         this->velX = 0;
     }
-    Movable::accelerate(dt, 0, 0);
+    //Movable::accelerate(dt, 0, 0);
 
     //checking for boundary collisions
     if (this->rect.x < this->leftBound) {

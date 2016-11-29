@@ -1,8 +1,10 @@
 *********
 TODO
-- Camera goes to 0,0 on reset(). Should probably go to player.
-- Helper collisions break and are generally wonky.
 - inconsistent jump height
+- fix text in LevelEditor
+- if there are two adjacent objects the player is walking across that have the same
+  height, the player will have a left/right bound set when intersecting with the
+  first pixel of the second object.
 *********
 
 This program requires that you have vorbis-tools installed.

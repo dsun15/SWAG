@@ -26,7 +26,7 @@ using namespace std;
 int width = 1000;
 int height = 600;
 Movable door;
-const int MAX_LV = 3;
+const int MAX_LV = 4;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -301,6 +301,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
 		    
 		    
+
 		    playerCollide = true;
 	      } else if (xrect->y > playrect->y +.9*playrect->h && xrect->x +.9*xrect->w > playrect->x && xrect->x + .1*xrect->w < playrect->x + playrect->w) {
                     //There is someone on top, get ready to bring them with
@@ -310,10 +311,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playables[z]->setStacked(playerNum);
 		    playerCollide = true;
 	      } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
+
                   // from left
 		  playables[x]->setRightBound(playrect->x+1);
 		    playerCollide = true;
 	      } else if (xrect->x > playrect->x && xrect->y >= playrect->y) {
+
                   // from right
 		  playables[x]->setLeftBound(playrect->x + playrect->w -1);
 		  playerCollide = true;
@@ -331,7 +334,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
       	
 
 
-	//ground
+	//ground collisions
         for (std::list<AutoMovable>::iterator it = ground->begin(); it != ground->end(); ++it) {
             if ((*it).getAnimate()) {
                 (*it).hoverBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
@@ -342,7 +345,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .8*playrect->h < itrect->y && (playrect->x + 0.8*playrect->w) > itrect->x && playrect->x + 0.2*playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .9*playrect->h < itrect->y && (playrect->x + 0.9*playrect->w) > itrect->x && playrect->x + 0.1*playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
@@ -353,9 +356,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playables[z]->setUpperBound(itrect->y + itrect->h);
 	        } else if (playrect->x < itrect->x) {
 
+
                     // from left
                     playables[z]->setRightBound(itrect->x + 1);
-                } else if (playrect->y >= itrect->y && playrect->x > itrect->x) {
+                } else if (playrect->x > itrect->x) {
                     //from right
                     playables[z]->setLeftBound(itrect->x + itrect->w - 1);
 		}
