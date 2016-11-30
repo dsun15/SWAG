@@ -154,6 +154,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     score = 0;
     //SDL_Surface* tempSurf;
 
+    //initializing text
     textVector = new vector<SDL_Texture *>;
     for (list<Movable *>::iterator it = text->begin(); it!= text->end(); ++it) {
        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
@@ -290,8 +291,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
 
-    //printing font
-
+    //printing text
     vector<SDL_Texture *>::iterator iterator = textVector->begin();
     for (std::list<Movable *>::iterator it = text->begin(); it != text->end(); ++it) {
        // if ((*it).checkCollide(&cameraLoc)) {            
@@ -325,7 +325,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     // from below
                     playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
-                    playables[z]->setStacked(playerNum);
+                    playables[z]->setStacked(x);
                     playerCollide = true;
                 } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
 
