@@ -220,6 +220,12 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_k) {
                 GameScreen::reset();
             }
+	    if (event->key.keysym.sym == SDLK_w) {
+
+	      //only works if jibby is 0
+	      playerNum = 0;
+
+	    }
             if (event->key.keysym.sym == SDLK_e) {
                 playables[playerNum]->setVelX(0);
                 if (playerNum + 1 >= (int)playables.size()) {
