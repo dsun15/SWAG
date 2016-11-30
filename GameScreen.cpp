@@ -249,7 +249,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_q) {
                 playables[playerNum]->setVelX(0);
                 if (playerNum - 1 < 0) {
-		  playerNum = (int)playables.size();
+		  playerNum = (int)playables.size() - 1;
                 } else {
                     playerNum--;
                 }
