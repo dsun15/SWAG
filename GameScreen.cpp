@@ -1,4 +1,4 @@
-/*
+\/*
 * S.W.A.G.
 * Chris, Devin, Kevin, William
 * 600.255 Intro to Video Game Design
@@ -203,7 +203,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-            if (levelnum == 3) {
+            if (levelnum == MAX_LV) {
                 return 3;
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
@@ -471,7 +471,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         SDL_RenderCopy(renderer, losetext, NULL, &loserect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     }
-    if (playables[playerNum]->checkCollide(&door)) {
+    if (playables[0]->checkCollide(&door)) {
         wlswitch = 1;
         youWin = true;
         gameOver = true;
