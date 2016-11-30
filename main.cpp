@@ -108,7 +108,7 @@ void run() {
                 running = false;
                 break;
             case SDL_KEYUP:
-                if (event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
                     Mix_HaltChannel(-1);
                     running = false;
                 }
