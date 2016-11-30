@@ -14,10 +14,10 @@ G 0 2900 500 950 100 Level1Texture11.png 0 0 0
 G 0 3300 400 150 100 Level1Texture12.png 0 0 0
 G 0 3850 400 150 200 Level1Texture13.png 0 0 0
 
-G 0 4150 400 50 200 Level1Texture14.png 0 0 0
-G 0 4300 300 50 300 Level1Texture15.png 0 0 0
-G 0 4450 200 50 400 Level1Texture16.png 0 0 0
-G 0 4650 200 50 400 Level1Texture16.png 0 0 0
+G 0 4150 400 75 200 Level1Texture14.png 0 0 0
+G 0 4300 300 75 300 Level1Texture15.png 0 0 0
+G 0 4450 200 75 400 Level1Texture16.png 0 0 0
+G 0 4650 200 75 400 Level1Texture16.png 0 0 0
 G 0 4900 300 75 300 Level1Texture15.png 0 0 0
 G 0 5150 400 75 200 Level1Texture14.png 0 0 0
 G 0 5300 500 400 100 Level1Texture17.png 0 0 0
