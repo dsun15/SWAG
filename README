@@ -19,7 +19,8 @@ You can use the helpers as platforms and chauffers, but you shouldn't
 try to jump with someone on your shoulders, since that's dangerous.
 
 List of visible improvements from last time:
- - helpers implemented
+ - Helpers implemented. Q and E to cycle through characters, W to recenter
+   onto Jibby.
  - new level
  - layout adjustments for existing levels
 
@@ -34,5 +35,9 @@ William: Graphics and level design.
 Obviously, since level 5 doesn't exist, pressing R on level 2 will crash
 the game. We would take this out, but figured the graders may appreciate
 not having to go through each level over and over.)
+
+Known issues:
+ - wonky behavior on screen resets or level advances
+ - inconsistent movement
 
 That's all for now.
