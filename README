@@ -1,14 +1,3 @@
-*********
-TODO
-- inconsistent jump height
-- fix text in LevelEditor
-- if there are two adjacent objects the player is walking across that have the same
-  height, the player will have a left/right bound set when intersecting with the
-  first pixel of the second object.
-- if jibby is stacked on top of helper 1, then player tabs to control helper 1
-  then tabs again to control a helper 2, jibby will be transported to helper 2
-*********
-
 This program requires that you have vorbis-tools installed.
 Since we play .ogg music, the build defers to ogg123.
 As long as you can use ogg123 from the command line, the music
@@ -16,7 +5,7 @@ should be able to play correctly.
 
 There may be sound issues depending on your installation.
 
-Move with arrow keys. Jump with either spacebar or up.. Pause and 
+Move with arrow keys. Jump with either spacebar or up. Pause and 
 access menu with P. Press spacebar at the high score screen to continue
 with a new game. Jump on top of the enemies to get rid of them. You
 can't jump on top of the enemies with spiky protective helmets.
@@ -24,44 +13,26 @@ You start with 5 lives. Your current lives is displayed on the
 bottom right corner. Your score is in the top right corner.
 Get to the door at the end of the level to win.
 
-List of things that need fixing:
- - collisions from below don't work, they move the player to the side
- - when the camera is moving, the player graphic is jittery
- - level 3 is janky
- - camera upon level reset moves around in wonky ways
- - music doesn't work
-
-Fixes:
- - This works most of the time, we adjusted the logic to check for collisions and made
-   each clause more specific.
- - A smoother scrolling method was implemented to move the camera alongside
-   the player instead of constantly centering on it, but it still doesn't
-   look good.
- - Level objects in the text file were adjusted and I think it's better.
- - This was fixed by specifying that the camera reset to (0,0) upon a level reset.
- - A workaround identical to a previous iteration was implemented, but it's not
-   what we ultimately want.
+Use the helpers in each level to get to the end. Press Q or E to cycle
+through the available players. Press W to automatically return to Jibby.
+You can use the helpers as platforms and chauffers, but you shouldn't
+try to jump with someone on your shoulders, since that's dangerous.
 
 List of visible improvements from last time:
- - new title graphic
- - smoother camera?
- - collisions from below sometimes work
- - background colors
- - enemy eye and mouth colors brighter
- - music glitch workaround
- - level 3 layout adjustment
- - jibby blinks less frequently
+ - helpers implemented
+ - new level
+ - layout adjustments for existing levels
 
 Here is what each member accomplished:
-Devin: Created and inserted new title graphic.
-Chris: Implemented the musical glitch workaround, though not perfect. Updated
-	the layout for level 3.
-Kevin: Adjusted camera movement.
-William: Made Jibby blink slower. Updated color palettes on enemies.
+Devin: Helper implementation, collision adjustments. Bug fixes.
+Chris: Baseline for text boxes for instructions and story. This doesn't work yet
+       so it's not visible. Bug fixes.
+Kevin: QWE controls, bug fix for a teleport
+William: Graphics and level design.
 
 (We implemented a cheat. By pressing R, you can force a level advance.
-Obviously, since level 3 doesn't exist, pressing R on level 2 will crash
+Obviously, since level 5 doesn't exist, pressing R on level 2 will crash
 the game. We would take this out, but figured the graders may appreciate
-not having to go through level 1 over and over to get to 2.)
+not having to go through each level over and over.)
 
 That's all for now.

@@ -371,11 +371,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
                     //below
                     playables[z]->setUpperBound(itrect->y + itrect->h);
-                } else if (playrect->x < itrect->x) {
+                } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
 
                     // from left
                     playables[z]->setRightBound(itrect->x + 1);
-                } else if (playrect->x > itrect->x) {
+                } else if (playrect->x > itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     //from right
                     playables[z]->setLeftBound(itrect->x + itrect->w - 1);
                 }
