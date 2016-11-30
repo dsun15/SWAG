@@ -231,7 +231,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 	    if (event->key.keysym.sym == SDLK_q) {
 	      playables[playerNum]->setVelX(0);
                 if (playerNum - 1 < 0) {
-		  playerNum = (int) playables.size();
+		  playerNum = (int)playables.size();
                 } else {
                     playerNum--;
                 }
@@ -305,7 +305,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playerOnGround = true;
                     playables[x]->setLowerBound(playrect->y + 1);
 
-		    cout << playables[x]->getTrueRect()->h << "\n";
 
 		    
 		    
@@ -316,7 +315,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 		  // from below
 		  playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
-                    playables[z]->setStacked(playerNum);
+                    playables[z]->setStacked(x);
 		    playerCollide = true;
 	      } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
 
@@ -423,6 +422,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     
 
     for (int z = 0; z < (int)playables.size(); z++) {
+
 
         if (playables[z]->checkCollide(&cameraLoc)) {
             if (z == playerNum) {
