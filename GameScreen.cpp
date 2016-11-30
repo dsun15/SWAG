@@ -1,4 +1,4 @@
-\/*
+/*
 * S.W.A.G.
 * Chris, Devin, Kevin, William
 * 600.255 Intro to Video Game Design
