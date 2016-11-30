@@ -11,7 +11,7 @@ LevelEditor::LevelEditor() {
     this->pit = new list<AutoMovable>();
     this->ground = new list<AutoMovable>();
     this->helpers = new list<Movable*>();
-    this->text = new list<Movable>();
+    this->text = new list<Movable *>();
 }
 
 LevelEditor::~LevelEditor() {
@@ -26,6 +26,11 @@ LevelEditor::~LevelEditor() {
         this->helpers->pop_front();
     }
     delete this->helpers;
+    while (!this->text->empty()) {
+      delete this->text->front();
+      this->text->pop_front();
+    }
+    delete this->text;
 }
 
 void LevelEditor::read(string fileName) {
@@ -35,6 +40,10 @@ void LevelEditor::read(string fileName) {
     while (!this->helpers->empty()) {
         delete this->helpers->front();
         this->helpers->pop_front();
+    }
+    while (!this->text->empty()) {
+      delete this->text->front();
+      this->text->pop_front();
     }
 
     ifstream inFile;
@@ -144,10 +153,11 @@ void LevelEditor::read(string fileName) {
             getline(inFile, init);
             cout << init <<endl;
             imageName = init.c_str();
-            Movable textt(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x, y, false, animate);
-            cout << textt.getName() << endl;
+            Movable * textt = new Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x, y, false, animate);
+            cout << textt->getName() << endl;
             this->text->push_back(textt);
             //textt.prepFree();
+	    inFile >> code;
             break;
         }
         }

@@ -71,8 +71,8 @@ std::vector<Movable *> playables;
 std::list<AutoMovable>* ground;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
-std::list<Movable> * text;
-vector<SDL_Texture*> textVector; 
+std::list<Movable *> * text;
+vector<SDL_Texture*> * textVector; 
 vector<SDL_Surface*> surfaceVector;
 SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibbyIcon = IMG_Load("jibbyOneFrame.png");
@@ -151,11 +151,14 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     wlswitch = 0;
     score = 0;
     //SDL_Surface* tempSurf;
-    for (list<Movable>::iterator it = text->begin(); it!= text->end(); ++it) {
+    textVector = new vector<SDL_Texture *>;
+    for (list<Movable *>::iterator it = text->begin(); it!= text->end(); ++it) {
        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
         //surfaceVector.insert(tempSurf);
-        textVector.push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white)));
-     //   SDL_FreeSurface(tempSurf);     
+      cout << (*it)->getName() << endl;
+      cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
+        textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it)->getName(), white)));
+     //   SDL_FreeSurface(tempSurf);
     } 
 
     scorewritten = false;
@@ -179,6 +182,10 @@ GameScreen::~GameScreen() {
         SDL_DestroyTexture(background[i]);
     }
     delete jibby;
+    for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
+      SDL_DestroyTexture(*it);
+    }
+    delete textVector;
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -272,10 +279,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     //printing font
-    vector<SDL_Texture *>::iterator iterator = textVector.begin();
-    for (std::list<Movable>::iterator it = text->begin(); it != text->end(); ++it) {
+    vector<SDL_Texture *>::iterator iterator = textVector->begin();
+    for (std::list<Movable *>::iterator it = text->begin(); it != text->end(); ++it) {
        // if ((*it).checkCollide(&cameraLoc)) {            
-            SDL_RenderCopy(renderer, *iterator, NULL, &(*it->getRect())); 
+      SDL_RenderCopy(renderer, *iterator, NULL, ((*it)->getTrueRect())); 
        // } 
         ++iterator;
     }
