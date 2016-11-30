@@ -71,8 +71,10 @@ std::vector<Movable*> playables;
 std::list<AutoMovable>* ground;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
-std::list<Movable>* text;
-vector<SDL_Texture*> textVector;
+
+std::list<Movable *> * text;
+vector<SDL_Texture*> * textVector; 
+
 vector<SDL_Surface*> surfaceVector;
 SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibbyIcon = IMG_Load("jibbyOneFrame.png");
@@ -151,12 +153,18 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     wlswitch = 0;
     score = 0;
     //SDL_Surface* tempSurf;
-    for (list<Movable>::iterator it = text->begin(); it != text->end(); ++it) {
-        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
+
+    //initializing text
+    textVector = new vector<SDL_Texture *>;
+    for (list<Movable *>::iterator it = text->begin(); it!= text->end(); ++it) {
+       // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
         //surfaceVector.insert(tempSurf);
-        textVector.push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white)));
-        //   SDL_FreeSurface(tempSurf);
-    }
+      cout << (*it)->getName() << endl;
+      cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
+        textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it)->getName(), white)));
+     //   SDL_FreeSurface(tempSurf);
+    } 
+
 
     scorewritten = false;
     return;
@@ -179,6 +187,10 @@ GameScreen::~GameScreen() {
         SDL_DestroyTexture(background[i]);
     }
     delete jibby;
+    for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
+      SDL_DestroyTexture(*it);
+    }
+    delete textVector;
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
@@ -285,12 +297,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
 
-    //printing font
-    vector<SDL_Texture*>::iterator iterator = textVector.begin();
-    for (std::list<Movable>::iterator it = text->begin(); it != text->end(); ++it) {
-        // if ((*it).checkCollide(&cameraLoc)) {
-        SDL_RenderCopy(renderer, *iterator, NULL, &(*it->getRect()));
-        // }
+    //printing text
+    vector<SDL_Texture *>::iterator iterator = textVector->begin();
+    for (std::list<Movable *>::iterator it = text->begin(); it != text->end(); ++it) {
+       // if ((*it).checkCollide(&cameraLoc)) {            
+      SDL_RenderCopy(renderer, *iterator, NULL, ((*it)->getTrueRect())); 
+       // } 
+
         ++iterator;
     }
 
@@ -305,26 +318,20 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         for (int x = 0; x < (int)playables.size(); x++) {
             if (playables[x]->checkCollide(playrect)) {
                 SDL_Rect* xrect = playables[x]->getTrueRect();
-                if (xrect->y + .9 * xrect->h < playrect->y && xrect->x + 0.9 * xrect->w > playrect->x && xrect->x + 0.1 * xrect->w < playrect->x + playrect->w) {
+                if (xrect->y + .8 * xrect->h < playrect->y && xrect->x + 0.8 * xrect->w > playrect->x && xrect->x + 0.2 * xrect->w < playrect->x + playrect->w) {
                     // from above
                     playerOnGround = true;
                     playables[x]->setLowerBound(playrect->y + 1);
 
                     playerCollide = true;
-                } else if (xrect->y > playrect->y + .9 * playrect->h && xrect->x + .9 * xrect->w > playrect->x && xrect->x + .1 * xrect->w < playrect->x + playrect->w) {
+                } else if (xrect->y > playrect->y + .8 * playrect->h && xrect->x + .8 * xrect->w > playrect->x && xrect->x + .2 * xrect->w < playrect->x + playrect->w) {
                     //There is someone on top, get ready to bring them with
                     // from below
                     playables[x]->setUpperBound(playrect->y + playrect->h);
                     playerOnGround = false;
                     playables[z]->setStacked(x);
-		    playerCollide = true;
-	      } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
-
-                  // from left
-		  playables[x]->setRightBound(playrect->x+1);
-		    playerCollide = true;
-	      } else if (xrect->x > playrect->x && xrect->y >= playrect->y) {
-
+                    playerCollide = true;
+                } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
                     // from left
                     playables[x]->setRightBound(playrect->x + 1);
                     playerCollide = true;
@@ -355,7 +362,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .9 * playrect->h < itrect->y && (playrect->x + 0.9 * playrect->w) > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .8 * playrect->h < itrect->y && (playrect->x + 0.8 * playrect->w) > itrect->x && playrect->x + 0.2 * playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);

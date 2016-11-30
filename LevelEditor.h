@@ -21,7 +21,7 @@ public:
     std::vector<AutoMovable> * enemies;
     std::list<AutoMovable> * pit;
     std::list<Movable * > * helpers;
-    std::list<Movable> * text;
+    std::list<Movable *> * text;
     int playerInitX;
     int playerInitY;
     Movable door;
