@@ -152,10 +152,16 @@ void LevelEditor::read(string fileName) {
            // }
             getline(inFile, init);
             cout << init <<endl;
+	    const auto strBegin = init.find_first_not_of(" \n");
+	    const auto strEnd = init.find_last_not_of(" \n");
+	    init = init.substr(strBegin, strEnd - strBegin +1);
+	    //cout << init << endl;
             imageName = init.c_str();
+	    cout << imageName << endl;
             Movable * textt = new Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x, y, false, animate);
-            cout << textt->getName() << endl;
+            //cout << textt->getName() << endl;
             this->text->push_back(textt);
+	    //cout << this->text->back()->getName();
             //textt.prepFree();
 	    inFile >> code;
             break;

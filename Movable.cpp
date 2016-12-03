@@ -20,7 +20,7 @@ using std::string;
 Movable::Movable() {}
 
 Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight) {
-    this->fileName = fileName;
+  this->fileName = string(fileName);
     if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || levelWidth < 0 || levelHeight < 0) {
         cout << "something's negative\n";
     }
@@ -47,7 +47,7 @@ Movable::Movable(const char* fileName, int width, int height, int cornerX, int c
 }
 
 Movable::Movable(const char* fileName, int width, int height, int cornerX, int cornerY, int levelWidth, int levelHeight, int sheetWidth, int sheetHeight, bool hasGravity, bool anim) {
-    this->fileName = fileName;
+  this->fileName = string(fileName);
     if (width < 0 || height < 0 || cornerX < 0 || cornerY < 0 || levelWidth < 0 || levelHeight < 0) {
         cout << "something's negative\n";
     }
@@ -368,6 +368,6 @@ int Movable::getInitX() {
 int Movable::getInitY() {
   return this->initY;
 }
-const char * Movable::getName() {
+ string Movable::getName() {
     return this->fileName;
 }

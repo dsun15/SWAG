@@ -159,9 +159,11 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     for (list<Movable *>::iterator it = text->begin(); it!= text->end(); ++it) {
        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
         //surfaceVector.insert(tempSurf);
-      cout << (*it)->getName() << endl;
-      cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
-        textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it)->getName(), white)));
+      //cout << (*it)->getName() << endl;
+      string temp = (*it)->getName();
+      temp = temp.substr(0,temp.size()-1);
+      //cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
+      textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
      //   SDL_FreeSurface(tempSurf);
     } 
 

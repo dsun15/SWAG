@@ -1,3 +1,9 @@
+********TODO********
+- make text move along with camera
+- add text to relevant places in levels for 'story' elements
+- more improvements for final submission!!)
+********************
+
 This program requires that you have vorbis-tools installed.
 Since we play .ogg music, the build defers to ogg123.
 As long as you can use ogg123 from the command line, the music
@@ -17,6 +23,8 @@ Use the helpers in each level to get to the end. Press Q or E to cycle
 through the available players. Press W to automatically return to Jibby.
 You can use the helpers as platforms and chauffers, but you shouldn't
 try to jump with someone on your shoulders, since that's dangerous.
+
+Press Escape to instantly quit.
 
 List of visible improvements from last time:
  - Helpers implemented. Q and E to cycle through characters, W to recenter
@@ -38,6 +46,7 @@ not having to go through each level over and over.)
 
 Known issues:
  - wonky behavior on screen resets or level advances
+ - respawn glitches
  - inconsistent movement
 
 That's all for now.
