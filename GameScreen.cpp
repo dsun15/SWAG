@@ -40,7 +40,7 @@ const char* effect = "bump.ogg";
 const char* jumpEffect = "jump.ogg";
 const char* win = "You win";
 const char* lose = "You lose";
-const char* cont = "Press Enter To Continue";
+const char* cont = "[Press Enter To Continue]";
 SDL_Texture* wintext;
 SDL_Texture* losetext;
 SDL_Texture* continuetext;
@@ -50,11 +50,11 @@ SDL_Texture* background[MAX_LV];
 SDL_Texture* spriteLives;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
-SDL_Rect continuerect = { 100, 125, 600, 50 };
-SDL_Rect gamescorerect = { 50, 50, 75, 50 };
-SDL_Rect lifecountrect = { 725, 525, 75, 50 };
+SDL_Rect continuerect = { 395, 50, 400, 50 };
+SDL_Rect gamescorerect = { 50, 50, 45, 50 };
+SDL_Rect lifecountrect = { 725, 525, 45, 50 };
 SDL_Rect backrect = { 0, 0, 800, 600 };
-SDL_Rect livesRect = { 650, 534, 40, 40 };
+SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
@@ -65,7 +65,7 @@ int playerNum = 0;
 
 Movable* jibby;
 
-int levelnum = 1;
+int levelnum = 0;
 string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable*> playables;
@@ -140,7 +140,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 
     //Text Stuff
     //TTF_Init();
-    gamefont = TTF_OpenFont("8bit.ttf", 72);
+    gamefont = TTF_OpenFont("8bit.ttf", 65);
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ws = TTF_RenderUTF8_Blended(gamefont, win, white);
     SDL_Surface* ls = TTF_RenderUTF8_Blended(gamefont, lose, white);
@@ -496,7 +496,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_DestroyTexture(scoretext);
     SDL_DestroyTexture(lifetext);
     if (wlswitch == 1) {
-        SDL_RenderCopy(renderer, wintext, NULL, &winrect);
+   //     SDL_RenderCopy(renderer, wintext, NULL, &winrect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     }
     if (wlswitch == 2) {
@@ -557,7 +557,7 @@ void GameScreen::reset() {
 }
 
 void GameScreen::hardReset() {
-    levelnum = 1;
+    levelnum = 0;
     levelfile = "level" + to_string(levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
