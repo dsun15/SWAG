@@ -163,7 +163,7 @@ void LevelEditor::read(string fileName) {
             this->text->push_back(textt);
 	    //cout << this->text->back()->getName();
             //textt.prepFree();
-	    inFile >> code;
+//	    inFile >> code;
             break;
         }
         }
