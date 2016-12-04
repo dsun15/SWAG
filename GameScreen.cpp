@@ -365,7 +365,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playerOnGround = false;
                     playables[z]->setStacked(x);
                     playerCollide = true;
-		    cout << "riding \n";
                 } else if (xrect->x < playrect->x && xrect->y >= playrect->y) {
                     // from left
                     playables[x]->setRightBound(playrect->x + 1);
