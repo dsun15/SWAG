@@ -594,6 +594,8 @@ void GameScreen::hardReset() {
     gameOver = false;
     wlswitch = 0;
     playerNum = 0;
+    arrow->setRightBound(width);
+    arrow->setLowerBound(height);
 }
 
 void GameScreen::advanceLevel() {
@@ -625,6 +627,8 @@ void GameScreen::advanceLevel() {
     gameOver = false;
     wlswitch = 0;
     youWin = false;
+    arrow->setRightBound(width);
+    arrow->setLowerBound(height);
 }
 
 void GameScreen::textPrep() {
