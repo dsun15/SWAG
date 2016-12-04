@@ -64,6 +64,7 @@ int lives;
 int playerNum = 0;
 
 Movable* jibby;
+Movable* arrow;
 
 int levelnum = 1;
 string levelfile;
@@ -101,6 +102,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
     jibby = new Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 950, 50);
+    arrow = new Movable("arrow.png", 30, 30, 0,0,width, height, 300, 30, false, true);
+    
     //Movable * brad = new Movable("player1.png", 50, 50, 100, 0, width, height, 600, 50);
     //cout << "placing" << endl;
     playables.push_back(jibby);
@@ -190,6 +193,7 @@ GameScreen::~GameScreen() {
         SDL_DestroyTexture(background[i]);
     }
     delete jibby;
+    delete arrow;
     for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
       SDL_DestroyTexture(*it);
     }
@@ -511,6 +515,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (playables[playerNum]->getReallyRectY() > height - 25) {
         GameScreen::reset();
     }
+    SDL_Rect* playerLoc = playables[playerNum]->getTrueRect();
+    SDL_Rect* arrowLoc = arrow->getTrueRect();
+    arrow->move(playerLoc->x - arrowLoc->x + playerLoc->w/2-arrowLoc->w/2, playerLoc->y - arrowLoc->y - 50);
+    arrow->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
 }
 
