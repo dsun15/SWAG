@@ -1,9 +1,19 @@
 ********TODO********
-- make text move along with camera
-- add text to relevant places in levels for 'story' elements
+- inconsistent jumps
 - more improvements for final submission!!)
+- level 4 is really freakin jank
+  * first helper has issues respawning (idk why)
+  * long green  helper has issues crossing gap (left collide is triggered)
 ********************
 
+*****PROGRESS*******
+- text implemented, gets offset correctly
+- P on pause screen unpauses
+- tutorial level
+- helpers dying dont decrease lives
+- changed font
+- text written to appropriate places
+********************
 This program requires that you have vorbis-tools installed.
 Since we play .ogg music, the build defers to ogg123.
 As long as you can use ogg123 from the command line, the music
