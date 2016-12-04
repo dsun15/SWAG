@@ -113,8 +113,12 @@ void run() {
                     running = false;
                 }
                 if (event.key.keysym.sym == SDLK_p) {
-                    Mix_HaltChannel(-1);
-                    screenswitch = 2;
+                    if (activeScreen != &m) {
+                        Mix_HaltChannel(-1);
+                        screenswitch = 2;
+                    } else {
+                        screenswitch = 1;
+                    }
                 }
                 break;
             }
