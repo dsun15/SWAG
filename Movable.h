@@ -21,7 +21,7 @@ class Movable {
 
 
 protected:
-    const char* fileName;
+    string fileName;
     double MAX_HORIZ = 2;
     double MAX_VERT = 2;
     double gravity = 1;
@@ -122,7 +122,7 @@ public:
       };*/
     int getInitX();
     int getInitY();
-    const char * getName();
+    string getName();
 private:
 };
 

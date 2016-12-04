@@ -25,6 +25,6 @@ E 1 3450 200 50 50 enemy1.png 1 3450 3550
 
 H 0 525 575 75 75 Loofa.png 1
 H 0 750 325 150 175 Loofa.png 1
-H 0 2050 200 350 50 green.png 1
+H 0 2050 200 450 50 green.png 1
 H 0 3975 150 125 100 Loofa.png 1
 D 0 4950 425 50 50 door.png

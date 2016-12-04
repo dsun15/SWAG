@@ -160,9 +160,11 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     for (list<Movable *>::iterator it = text->begin(); it!= text->end(); ++it) {
        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
         //surfaceVector.insert(tempSurf);
-      cout << (*it)->getName() << endl;
-      cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
-        textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, (*it)->getName(), white)));
+      //cout << (*it)->getName() << endl;
+      string temp = (*it)->getName();
+      temp = temp.substr(0,temp.size()-1);
+      //cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
+      textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
      //   SDL_FreeSurface(tempSurf);
     } 
 
@@ -223,7 +225,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-            if (levelnum == 3) {
+            if (levelnum == MAX_LV) {
                 return 3;
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
@@ -392,11 +394,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
                     //below
                     playables[z]->setUpperBound(itrect->y + itrect->h);
-                } else if (playrect->x < itrect->x) {
+                } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
 
                     // from left
                     playables[z]->setRightBound(itrect->x + 1);
-                } else if (playrect->x > itrect->x) {
+                } else if (playrect->x > itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     //from right
                     playables[z]->setLeftBound(itrect->x + itrect->w - 1);
                 }
@@ -492,7 +494,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         SDL_RenderCopy(renderer, losetext, NULL, &loserect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     }
-    if (playables[playerNum]->checkCollide(&door)) {
+    if (playables[0]->checkCollide(&door)) {
         wlswitch = 1;
         youWin = true;
         gameOver = true;
