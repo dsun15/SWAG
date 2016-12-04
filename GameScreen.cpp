@@ -16,18 +16,18 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <list>
 #include <string>
 #include <unistd.h>
 #include <vector>
-#include <cmath>
 using namespace std;
 int width = 1000;
 int height = 600;
 Movable door;
-const int MAX_LV = 4;
+const int MAX_LV = 5;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -40,7 +40,7 @@ const char* effect = "bump.ogg";
 const char* jumpEffect = "jump.ogg";
 const char* win = "You win";
 const char* lose = "You lose";
-const char* cont = "Press Enter To Continue";
+const char* cont = "[Press Enter To Continue]";
 SDL_Texture* wintext;
 SDL_Texture* losetext;
 SDL_Texture* continuetext;
@@ -50,11 +50,11 @@ SDL_Texture* background[MAX_LV];
 SDL_Texture* spriteLives;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
-SDL_Rect continuerect = { 100, 125, 600, 50 };
-SDL_Rect gamescorerect = { 50, 50, 75, 50 };
-SDL_Rect lifecountrect = { 725, 525, 75, 50 };
+SDL_Rect continuerect = { 395, 50, 400, 50 };
+SDL_Rect gamescorerect = { 50, 50, 45, 50 };
+SDL_Rect lifecountrect = { 725, 525, 45, 50 };
 SDL_Rect backrect = { 0, 0, 800, 600 };
-SDL_Rect livesRect = { 650, 534, 40, 40 };
+SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
@@ -64,8 +64,9 @@ int lives;
 int playerNum = 0;
 
 Movable* jibby;
+Movable* arrow;
 
-int levelnum = 1;
+int levelnum = 0;
 string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable*> playables;
@@ -73,8 +74,8 @@ std::list<AutoMovable>* ground;
 std::vector<AutoMovable>* enemies;
 std::list<AutoMovable>* pit;
 
-std::list<Movable *> * text;
-vector<SDL_Texture*> * textVector; 
+std::list<Movable*>* text;
+vector<SDL_Texture*>* textVector;
 
 vector<SDL_Surface*> surfaceVector;
 SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
@@ -91,7 +92,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     width = level.levelWidth;
     height = level.levelHeight;
     for (int i = 0; i < MAX_LV; i++) {
-        string backfile = "BackgroundGradient" + to_string(i + 1) + ".png";
+        string backfile = "BackgroundGradient" + to_string(i) + ".png";
         bs[i] = IMG_Load(backfile.c_str());
         background[i] = SDL_CreateTextureFromSurface(renderer, bs[i]);
     }
@@ -101,6 +102,8 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     camera = Camera(level.levelWidth, level.levelHeight, 0, 0, 800, 600);
 
     jibby = new Movable("jibbyidle.png", 50, 50, 0, 0, width, height, 950, 50);
+    arrow = new Movable("arrow.png", 30, 30, 0,0,width, height, 300, 30, false, true);
+    
     //Movable * brad = new Movable("player1.png", 50, 50, 100, 0, width, height, 600, 50);
     //cout << "placing" << endl;
     playables.push_back(jibby);
@@ -140,7 +143,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
 
     //Text Stuff
     //TTF_Init();
-    gamefont = TTF_OpenFont("8bit.ttf", 72);
+    gamefont = TTF_OpenFont("8bit.ttf", 65);
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ws = TTF_RenderUTF8_Blended(gamefont, win, white);
     SDL_Surface* ls = TTF_RenderUTF8_Blended(gamefont, lose, white);
@@ -156,18 +159,17 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //SDL_Surface* tempSurf;
 
     //initializing text
-    textVector = new vector<SDL_Texture *>;
-    for (list<Movable *>::iterator it = text->begin(); it!= text->end(); ++it) {
-       // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
+    textVector = new vector<SDL_Texture*>;
+    for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
+        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
         //surfaceVector.insert(tempSurf);
-      //cout << (*it)->getName() << endl;
-      string temp = (*it)->getName();
-      temp = temp.substr(0,temp.size()-1);
-      //cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
-      textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
-     //   SDL_FreeSurface(tempSurf);
-    } 
-
+        //cout << (*it)->getName() << endl;
+        string temp = (*it)->getName();
+        temp = temp.substr(0, temp.size() - 1);
+        //cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
+        textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+        //   SDL_FreeSurface(tempSurf);
+    }
 
     scorewritten = false;
     return;
@@ -190,38 +192,39 @@ GameScreen::~GameScreen() {
         SDL_DestroyTexture(background[i]);
     }
     delete jibby;
+    delete arrow;
     for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
-      SDL_DestroyTexture(*it);
+        SDL_DestroyTexture(*it);
     }
     delete textVector;
+    for (vector<SDL_Texture*>::iterator it = textVector->begin(); it != textVector->end(); ++it) {
+        SDL_DestroyTexture(*it);
+    }
 }
 
-int GameScreen::findDistances(){
+int GameScreen::findDistances() {
 
-  vector<double> distances;
-  distances.push_back(10000);
-  //playables index
-  int closest = playerNum;
-  for(int x = 0; x < (int) playables.size(); x++){
+    vector<double> distances;
+    distances.push_back(10000);
+    //playables index
+    int closest = playerNum;
+    for (int x = 0; x < (int)playables.size(); x++) {
 
-    if(x != playerNum){
+        if (x != playerNum) {
 
-      double temp = abs(playables[x]->getTrueRect()->x - playables[playerNum]->getTrueRect()->x/* + ((playables[x]->getTrueRect()->y - playables[playerNum]->getTrueRect()->y)^2)*/);
-      if(temp < distances.back()){
-	distances.push_back(temp);
-	closest = x;
-      }
-
+            double temp = abs(playables[x]->getTrueRect()->x - playables[playerNum]->getTrueRect()->x /* + ((playables[x]->getTrueRect()->y - playables[playerNum]->getTrueRect()->y)^2)*/);
+            if (temp < distances.back()) {
+                distances.push_back(temp);
+                closest = x;
+            }
+        }
     }
 
-  }
-
-  return closest;
-
+    return closest;
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
-  
+
     if (gameOver) {
         playables[playerNum]->setVelX(0);
         std::ofstream inFile;
@@ -260,12 +263,11 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_k) {
                 GameScreen::reset();
             }
-	    if (event->key.keysym.sym == SDLK_w) {
+            if (event->key.keysym.sym == SDLK_w) {
 
-	      //only works if jibby is 0
-	      playerNum = 0;
-
-	    }
+                //only works if jibby is 0
+                playerNum = 0;
+            }
             if (event->key.keysym.sym == SDLK_e) {
                 playables[playerNum]->setVelX(0);
                 if (playerNum + 1 >= (int)playables.size()) {
@@ -275,9 +277,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 }
             }
             if (event->key.keysym.sym == SDLK_q) {
-    
+
                 playables[playerNum]->setVelX(0);
-		playerNum = GameScreen::findDistances();
+                playerNum = GameScreen::findDistances();
                 /*if (playerNum - 1 < 0) {
 		  playerNum = (int)playables.size() - 1;
                 } else {
@@ -316,7 +318,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //cout << "draw" << endl;
-    SDL_RenderCopy(renderer, background[levelnum - 1], NULL, &backrect);
+    SDL_RenderCopy(renderer, background[levelnum], NULL, &backrect);
 
     SDL_Rect cameraLoc = *camera.getRect();
     bool playerOnGround = false;
@@ -328,13 +330,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     //printing text
-    vector<SDL_Texture *>::iterator iterator = textVector->begin();
-    for (std::list<Movable *>::iterator it = text->begin(); it != text->end(); ++it) {
-       // if ((*it).checkCollide(&cameraLoc)) {            
-      SDL_Rect temp = { (*it)->getTrueRect()->x - cameraLoc.x, (*it)->getTrueRect()->y- cameraLoc.y, (*it)->getTrueRect()->w, (*it)->getTrueRect()->h};
-      //SDL_RenderCopy(renderer, *iterator, NULL, ((*it)->getTrueRect())); 
-      SDL_RenderCopy(renderer, *iterator, NULL, &temp);
-       // } 
+    vector<SDL_Texture*>::iterator iterator = textVector->begin();
+    for (std::list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
+        // if ((*it).checkCollide(&cameraLoc)) {
+        SDL_Rect temp = { (*it)->getTrueRect()->x - cameraLoc.x, (*it)->getTrueRect()->y - cameraLoc.y, (*it)->getTrueRect()->w, (*it)->getTrueRect()->h };
+        //SDL_RenderCopy(renderer, *iterator, NULL, ((*it)->getTrueRect()));
+        SDL_RenderCopy(renderer, *iterator, NULL, &temp);
+        // }
 
         ++iterator;
     }
@@ -461,7 +463,6 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     for (int z = 0; z < (int)playables.size(); z++) {
 
-
         if (playables[z]->checkCollide(&cameraLoc)) {
             if (z == playerNum) {
                 playables[z]->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
@@ -497,11 +498,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_DestroyTexture(scoretext);
     SDL_DestroyTexture(lifetext);
     if (wlswitch == 1) {
-        SDL_RenderCopy(renderer, wintext, NULL, &winrect);
+        //     SDL_RenderCopy(renderer, wintext, NULL, &winrect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     }
     if (wlswitch == 2) {
-        SDL_RenderCopy(renderer, losetext, NULL, &loserect);
+        //        SDL_RenderCopy(renderer, losetext, NULL, &loserect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     }
     if (playables[0]->checkCollide(&door)) {
@@ -512,6 +513,10 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     if (playables[playerNum]->getReallyRectY() > height - 25) {
         GameScreen::reset();
     }
+    SDL_Rect* playerLoc = playables[playerNum]->getTrueRect();
+    SDL_Rect* arrowLoc = arrow->getTrueRect();
+    arrow->move(playerLoc->x - arrowLoc->x + playerLoc->w/2-arrowLoc->w/2, playerLoc->y - arrowLoc->y - 50);
+    arrow->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
 }
 
@@ -548,8 +553,8 @@ void GameScreen::reset() {
         level.door.prepFree();
         //gameOver = false;
         if (playerNum == 0) {
-	  lives--;
-	}
+            lives--;
+        }
     } else {
         //You are out of lives: game over
         wlswitch = 2;
@@ -558,7 +563,7 @@ void GameScreen::reset() {
 }
 
 void GameScreen::hardReset() {
-    levelnum = 1;
+    levelnum = 0;
     levelfile = "level" + to_string(levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
@@ -577,6 +582,7 @@ void GameScreen::hardReset() {
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    text = level.text;
     level.door.prepFree();
     width = level.levelWidth;
     height = level.levelHeight;
@@ -606,6 +612,7 @@ void GameScreen::advanceLevel() {
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    text = level.text;
     level.door.prepFree();
     playerNum = 0;
     width = level.levelWidth;
