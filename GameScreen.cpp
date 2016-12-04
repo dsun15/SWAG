@@ -331,7 +331,9 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     vector<SDL_Texture *>::iterator iterator = textVector->begin();
     for (std::list<Movable *>::iterator it = text->begin(); it != text->end(); ++it) {
        // if ((*it).checkCollide(&cameraLoc)) {            
-      SDL_RenderCopy(renderer, *iterator, NULL, ((*it)->getTrueRect())); 
+      SDL_Rect temp = { (*it)->getTrueRect()->x - cameraLoc.x, (*it)->getTrueRect()->y- cameraLoc.y, (*it)->getTrueRect()->w, (*it)->getTrueRect()->h};
+      //SDL_RenderCopy(renderer, *iterator, NULL, ((*it)->getTrueRect())); 
+      SDL_RenderCopy(renderer, *iterator, NULL, &temp);
        // } 
 
         ++iterator;
@@ -544,7 +546,9 @@ void GameScreen::reset() {
         door = level.door;
         level.door.prepFree();
         //gameOver = false;
-        lives--;
+        if (playerNum == 0) {
+	  lives--;
+	}
     } else {
         //You are out of lives: game over
         wlswitch = 2;
