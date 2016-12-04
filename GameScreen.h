@@ -25,6 +25,7 @@ public:
     ~GameScreen();
     int input(SDL_Event* event, int dt);
     void draw(SDL_Renderer* renderer, int dt);
+    int findDistances();
     void reset();
     void hardReset();
     void advanceLevel();

@@ -196,7 +196,7 @@ GameScreen::~GameScreen() {
     delete textVector;
 }
 
-int GameScreen::input(SDL_Event* event, int dt) {
+int GameScreen::findDistances(){
 
   vector<double> distances;
   distances.push_back(10000);
@@ -206,7 +206,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
     if(x != playerNum){
 
-      double temp = (playables[x]->getTrueRect()->x - playables[playerNum]->getTrueRect()->x/* + ((playables[x]->getTrueRect()->y - playables[playerNum]->getTrueRect()->y)^2)*/);
+      double temp = abs(playables[x]->getTrueRect()->x - playables[playerNum]->getTrueRect()->x/* + ((playables[x]->getTrueRect()->y - playables[playerNum]->getTrueRect()->y)^2)*/);
       if(temp < distances.back()){
 	distances.push_back(temp);
 	closest = x;
@@ -215,6 +215,12 @@ int GameScreen::input(SDL_Event* event, int dt) {
     }
 
   }
+
+  return closest;
+
+}
+
+int GameScreen::input(SDL_Event* event, int dt) {
   
     if (gameOver) {
         playables[playerNum]->setVelX(0);
@@ -269,8 +275,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 }
             }
             if (event->key.keysym.sym == SDLK_q) {
+    
                 playables[playerNum]->setVelX(0);
-		playerNum = closest;
+		playerNum = GameScreen::findDistances();
                 /*if (playerNum - 1 < 0) {
 		  playerNum = (int)playables.size() - 1;
                 } else {
