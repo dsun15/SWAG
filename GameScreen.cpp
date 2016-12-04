@@ -22,6 +22,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <cmath>
 using namespace std;
 int width = 1000;
 int height = 600;
@@ -196,6 +197,25 @@ GameScreen::~GameScreen() {
 }
 
 int GameScreen::input(SDL_Event* event, int dt) {
+
+  vector<double> distances;
+  distances.push_back(10000);
+  //playables index
+  int closest = playerNum;
+  for(int x = 0; x < (int) playables.size(); x++){
+
+    if(x != playerNum){
+
+      double temp = (playables[x]->getTrueRect()->x - playables[playerNum]->getTrueRect()->x/* + ((playables[x]->getTrueRect()->y - playables[playerNum]->getTrueRect()->y)^2)*/);
+      if(temp < distances.back()){
+	distances.push_back(temp);
+	closest = x;
+      }
+
+    }
+
+  }
+  
     if (gameOver) {
         playables[playerNum]->setVelX(0);
         std::ofstream inFile;
@@ -250,11 +270,12 @@ int GameScreen::input(SDL_Event* event, int dt) {
             }
             if (event->key.keysym.sym == SDLK_q) {
                 playables[playerNum]->setVelX(0);
-                if (playerNum - 1 < 0) {
+		playerNum = closest;
+                /*if (playerNum - 1 < 0) {
 		  playerNum = (int)playables.size() - 1;
                 } else {
                     playerNum--;
-                }
+		}*/
             }
             break;
 
