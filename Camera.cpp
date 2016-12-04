@@ -31,18 +31,16 @@ Camera::~Camera() {}
 
 void Camera::center(int x, int y) {
     if (x > this->rect.x + this->rect.w / 2) {
-        if (x > this->rect.x + this->rect.w / 2 + 20 && x < this->rect.x + this->rect.w / 2 + 7) {
-            this->rect.x = x + this->rect.w / 2;
-            std::cout << "warp right\n";
+      if (x + 400 > this->rect.x + this->rect.w / 2 && x > this->rect.x) {
+	  this->rect.x = x - (this->rect.w / 2);
         } else if (x + 7 > this->rect.x + this->rect.w / 2 && x > this->rect.x) {
             this->rect.x += 7;
         } else {
             this->rect.x++;
         }
     } else if (x < this->rect.x + this->rect.w / 2) {
-        if (x < this->rect.x + this->rect.w / 2 - 20 && x > this->rect.x + this->rect.w / 2 - 7) {
-            this->rect.x = x - this->rect.h / 2;
-            std::cout << "warp left\n";
+      if (x - 400 < this->rect.x + this->rect.w / 2 && x < this->rect.x + this->rect.h / 2) {
+	  this->rect.x = x - (this->rect.h / 2);
         } else if (x - 7 < this->rect.x + this->rect.w / 2 && x < this->rect.x + this->rect.h / 2) {
             this->rect.x -= 7;
         } else {
@@ -58,14 +56,14 @@ void Camera::center(int x, int y) {
     }
     //this->rect.y = (y - (this->rect.h / 2));
     if (y > this->rect.y + this->rect.h / 2) {
-        if (y + 20 > this->rect.y + this->rect.h / 2 && y + 7 < this->rect.y + this->rect.h / 2)
+        if (y + 400 > this->rect.y + this->rect.h / 2 && y > this->rect.y + this->rect.h / 2)
             this->rect.y = y + this->rect.h / 2;
         else if (y + 7 > this->rect.y + this->rect.h / 2 && y > this->rect.y + this->rect.h / 2)
             this->rect.y += 7;
         else
             this->rect.y++;
     } else if (y < this->rect.y + this->rect.h / 2) {
-        if (y < this->rect.y + this->rect.h / 2 - 20 && y > this->rect.y + this->rect.h / 2 - 7)
+      if (y - 400 < this->rect.y + this->rect.h / 2 && y < this->rect.y)
             this->rect.y = y - this->rect.h / 2;
         else if (y - 7 < this->rect.y + this->rect.h / 2 && y < this->rect.y)
             this->rect.y -= 7;
