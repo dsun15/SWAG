@@ -593,6 +593,7 @@ void GameScreen::hardReset() {
     score = 0;
     gameOver = false;
     wlswitch = 0;
+    playerNum = 0;
 }
 
 void GameScreen::advanceLevel() {
