@@ -1,30 +1,30 @@
 2500 1200
 100 1000
-G 0 0 1150 1400 50 red.png 0 0 0
-G 0 500 1000 200 150 red.png 0 0 0
-G 0 1400 975 350 225 red.png 0 0 0
-G 0 1800 1000 50 200 red.png 0 0 0
-G 0 1950 1050 50 150 red.png 0 0 0
-G 0 2100 1100 50 100 red.png 0 0 0
-G 0 2250 1050 50 150 red.png 0 0 0
-G 0 2400 1000 100 200 red.png 0 0 0
+G 0 0 1150 1400 50 Level3Texture1.png 0 0 0
+G 0 500 1000 200 150 Level3Texture2.png 0 0 0
+G 0 1400 975 350 225 Level3Texture3.png 0 0 0
+G 0 1800 1000 50 200 Level3Texture4.png 0 0 0
+G 0 1950 1050 50 150 Level3Texture5.png 0 0 0
+G 0 2100 1100 50 100 Level3Texture6.png 0 0 0
+G 0 2250 1050 50 150 Level3Texture5.png 0 0 0
+G 0 2400 1000 100 200 Level3Texture7.png 0 0 0
 
-G 0 1250 750 100 75 red.png 0 0 0
-G 0 1350 650 100 175 red.png 0 0 0
-G 0 1450 700 50 125 red.png 0 0 0
-G 0 1500 750 50 75 red.png 0 0 0
-G 0 1550 800 50 25 red.png 0 0 0
+G 0 1250 750 100 75 Level3Texture8.png 0 0 0
+G 0 1350 650 100 175 Level3Texture9.png 0 0 0
+G 0 1450 700 50 125 Level3Texture10.png 0 0 0
+G 0 1500 750 50 75 Level3Texture11.png 0 0 0
+G 0 1550 800 50 25 Level3Texture12.png 0 0 0
 
-G 0 0 600 1400 50 red.png 0 0 0
+G 0 0 600 1400 50 Level3Texture1.png 0 0 0
 
-G 0 0 450 75 200 red.png 0 0 0
-G 0 175 335 75 25 red.png 0 0 0
+G 0 0 450 75 200 Level3Texture13.png 0 0 0
+G 0 175 335 75 25 Level3Texture14.png 0 0 0
 
-G 0 250 250 50 200 red.png 0 0 0
-G 0 300 350 2050 50 red.png 0 0 0
-G 0 1700 400 50 300 red.png 0 0 0
-G 0 1850 500 650 50 red.png 0 0 0
-G 0 1700 700 800 50 red.png 0 0 0
+G 0 250 250 50 200 Level3Texture4.png 0 0 0
+G 0 300 350 2050 50 Level3Texture15.png 0 0 0
+G 0 1700 400 50 300 Level3Texture16.png 0 0 0
+G 0 1850 500 650 50 Level3Texture17.png 0 0 0
+G 0 1700 700 800 50 Level3Texture18.png 0 0 0
 
 E 1 850 1100 50 50 enemy1.png 1 700 1400
 E 1 1050 1100 50 50 enemy1.png 1 700 1400
