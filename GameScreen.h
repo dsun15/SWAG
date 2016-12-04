@@ -32,6 +32,7 @@ public:
     static bool isDead(AutoMovable m) {
       return !m.getLife();
     };
+    void textPrep();
 };
 
 #endif
