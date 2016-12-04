@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <vector>
 using namespace std;
+SDL_Renderer * renderer;
 int width = 1000;
 int height = 600;
 Movable door;
@@ -82,10 +83,10 @@ SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibbyIcon = IMG_Load("jibbyOneFrame.png");
 
 GameScreen::GameScreen() {}
-GameScreen::GameScreen(SDL_Renderer* renderer) {
+GameScreen::GameScreen(SDL_Renderer* render) {
     //set starting lives
     lives = 5;
-
+    renderer = render;
     //Level Stuff
     levelfile = "level" + to_string(levelnum) + ".txt";
     level.read(levelfile);
@@ -161,14 +162,9 @@ GameScreen::GameScreen(SDL_Renderer* renderer) {
     //initializing text
     textVector = new vector<SDL_Texture*>;
     for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
-        // tempSurf = TTF_RenderUTF8_Blended(gamefont, (*it).getName(), white);
-        //surfaceVector.insert(tempSurf);
-        //cout << (*it)->getName() << endl;
         string temp = (*it)->getName();
         temp = temp.substr(0, temp.size() - 1);
-        //cout << (*it)->getTrueRect()->x << "    " << (*it)->getTrueRect()->y << endl;
         textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
-        //   SDL_FreeSurface(tempSurf);
     }
 
     scorewritten = false;
@@ -581,7 +577,13 @@ void GameScreen::hardReset() {
     ground = level.ground;
     pit = level.pit;
     door = level.door;
+    /*for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
+      SDL_DestroyTexture(*it);
+    }
+    textVector.clear();*/
     text = level.text;
+    GameScreen::textPrep();
+
     level.door.prepFree();
     width = level.levelWidth;
     height = level.levelHeight;
@@ -612,6 +614,7 @@ void GameScreen::advanceLevel() {
     pit = level.pit;
     door = level.door;
     text = level.text;
+    GameScreen::textPrep();
     level.door.prepFree();
     playerNum = 0;
     width = level.levelWidth;
@@ -621,4 +624,18 @@ void GameScreen::advanceLevel() {
     gameOver = false;
     wlswitch = 0;
     youWin = false;
+}
+
+void GameScreen::textPrep() {
+  //assumes already text = level.text
+  for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
+    SDL_DestroyTexture(*it);
+  }
+  textVector->clear();
+  SDL_Color white = { 255, 255, 255, 255 };
+  for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
+    string temp = (*it)->getName();
+    temp = temp.substr(0, temp.size() - 1);
+    textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+  }
 }
