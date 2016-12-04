@@ -1,10 +1,10 @@
 2500 600
 0 0
-G 0 0 550 800 50 red.png 0 0 0
+G 0 0 550 800 50 Level0Texture1.png 0 0 0
 T 0 200 150 400 50 Use Arrow Keys To Move And Space To Jump!
-G 0 800 500 1050 100 red.png 0 0 0
-G 0 1300 400 150 25 red.png 0 0 0
-G 0 1850 350 650 250 red.png 0 0 0
+G 0 800 500 1050 100 Level0Texture2.png 0 0 0
+G 0 1300 400 150 25 Level0Texture3.png 0 0 0
+G 0 1850 350 650 250 Level0Texture4.png 0 0 0
 E 1 900 450 50 50 enemy1.png 1 900 1200
 P 1 1300 329 50 71 enemy2.png 1 1300 1450
 T 0 850 150 400 50 You Can Jump on Round Enemies to Kill Them
