@@ -4,6 +4,7 @@ G 0 0 300 300 300 Level1Texture1.png 0 0 0
 G 0 300 400 75 200 Level1Texture2.png 0 0 0
 G 0 375 500 1125 100 Level1Texture3.png 0 0 0
 G 0 500 300 300 25 Level1Texture4.png 0 0 0
+T 0 600 150 400 50 Use Jibby's Jump to Clear the Level!
 G 0 1000 300 300 25 Level1Texture4.png 0 0 0
 G 0 1500 300 400 300 Level1Texture6.png 0 0 0
 G 0 2000 300 150 300 Level1Texture7.png 0 0 0
