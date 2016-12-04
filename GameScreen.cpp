@@ -539,7 +539,7 @@ void GameScreen::reset() {
         door = level.door;
         level.door.prepFree();
         //gameOver = false;
-        if (playerNum) {
+        if (playerNum == 0) {
 	  lives--;
 	}
     } else {
