@@ -19,9 +19,13 @@ G 0 4725 200 75 50 Level2Texture11.png 0 0 0
 G 0 4900 200 100 100 Level2Texture12.png 0 0 0
 
 H 0 250 400 150 125 Loofa.png 1
+T 0 100 50 400 50 Press Q to Switch to the Closest Helper!
+T 0 100 150 400 50 Press W to Return to Jibby!
+T 0 100 200 400 50 Press E to Switch between All Characters!
 H 0 1500 250 100 75 Loofa.png 1
+T 0 1560 150 400 50 Helper Characters Have Unlimited Lives!
 
-H 0 2500 475 75 75 Loofa.png 1
+H 0 2600 475 75 75 Loofa.png 1
 H 0 3100 300 75 75 Loofa.png 1
 
 D 0 4950 150 50 50 door.png
