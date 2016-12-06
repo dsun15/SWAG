@@ -19,6 +19,8 @@ G 0 4725 200 75 50 Level2Texture11.png 0 0 0
 G 0 4900 200 100 100 Level2Texture12.png 0 0 0
 
 H 0 250 400 150 125 Loofa.png 1
+T 0 425 455 160 30 Hi friend, move me right
+T 0 425 490 160 30 and I can help you up.
 T 0 175 100 450 50 Press Q to Switch to the Closest Helper!
 T 0 200 150 400 50 Press W to Return to Jibby!
 T 0 175 200 450 50 Press E to Switch between All Characters!

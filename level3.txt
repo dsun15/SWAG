@@ -1,5 +1,6 @@
 2500 1200
 100 1000
+T 0 50 1050 300 40 I'm a bit lost...
 G 0 0 1150 1400 50 Level3Texture1.png 0 0 0
 G 0 500 1000 200 150 Level3Texture2.png 0 0 0
 G 0 1400 975 350 225 Level3Texture3.png 0 0 0
