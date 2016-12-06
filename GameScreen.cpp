@@ -512,7 +512,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     SDL_Rect* arrowLoc = arrow->getTrueRect();
     arrow->move(playerLoc->x - arrowLoc->x + playerLoc->w/2-arrowLoc->w/2, playerLoc->y - arrowLoc->y - 50);
     arrow->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-    camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
+    //camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
 }
 
 void GameScreen::reset() {
