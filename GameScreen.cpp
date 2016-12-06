@@ -463,9 +463,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 playables[z]->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, playerOnGround);
             } else {
                 if (playables[z]->getStacked() == playerNum) {
-
-                    playables[z]->move(playables[playerNum]->getTrueRect()->x - playables[z]->getTrueRect()->x,
-                        playables[playerNum]->getTrueRect()->y - playables[z]->getTrueRect()->y);
+		  playables[z]->move(playables[playerNum]->getTrueRect()->x + (playables[playerNum]->getTrueRect()->w / 2) - playables[z]->getTrueRect()->x - (playables[z]->getTrueRect()->w / 2),
+				     playables[playerNum]->getTrueRect()->y + (playables[playerNum]->getTrueRect()->h / 2) - playables[z]->getTrueRect()->y - (playables[z]->getTrueRect()->h / 2));
                     playables[z]->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
 
                 } else {
