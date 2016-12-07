@@ -143,6 +143,10 @@ void run() {
         if (screenswitch == 4) {
             //title
             activeScreen = &t;
+            Mix_HaltChannel(-1);
+            gMusic = Mix_LoadWAV("titleScreen.ogg");
+            Mix_PlayChannel(-1, gMusic, -1);
+            switchSong = true;
         }
         if (screenswitch == 5) {
 //            Mix_HaltMusic();
