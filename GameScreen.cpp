@@ -28,7 +28,7 @@ SDL_Renderer * renderer;
 int width = 1000;
 int height = 600;
 Movable door;
-const int MAX_LV = 5;
+const int MAX_LV = 4;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -47,7 +47,7 @@ SDL_Texture* losetext;
 SDL_Texture* continuetext;
 SDL_Texture* scoretext;
 SDL_Texture* lifetext;
-SDL_Texture* background[MAX_LV];
+SDL_Texture* background[MAX_LV+1];
 SDL_Texture* spriteLives;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
@@ -63,6 +63,7 @@ bool scorewritten = false;
 Camera camera;
 int lives;
 int playerNum = 0;
+bool tutComplete = false;
 
 Movable* jibby;
 Movable* arrow;
@@ -78,7 +79,7 @@ std::list<Movable*>* text;
 vector<SDL_Texture*>* textVector;
 
 vector<SDL_Surface*> surfaceVector;
-SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
+SDL_Surface* bs[MAX_LV+1]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibbyIcon = IMG_Load("jibbyOneFrame.png");
 
 GameScreen::GameScreen() {}
@@ -91,7 +92,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     level.read(levelfile);
     width = level.levelWidth;
     height = level.levelHeight;
-    for (int i = 0; i < MAX_LV; i++) {
+    for (int i = 0; i <= MAX_LV; i++) {
         string backfile = "BackgroundGradient" + to_string(i) + ".png";
         bs[i] = IMG_Load(backfile.c_str());
         background[i] = SDL_CreateTextureFromSurface(renderer, bs[i]);
@@ -180,7 +181,7 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(jibbyIcon);
     TTF_CloseFont(gamefont);
-    for (int i = 0; i < MAX_LV; i++) {
+    for (int i = 0; i <= MAX_LV; i++) {
         SDL_FreeSurface(bs[i]);
         SDL_DestroyTexture(background[i]);
     }
@@ -399,7 +400,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .8 * playrect->h < itrect->y && (playrect->x + 0.8 * playrect->w) > itrect->x && playrect->x + 0.2 * playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .8 * playrect->h < itrect->y && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
@@ -565,7 +566,11 @@ void GameScreen::reset() {
 }
 
 void GameScreen::hardReset() {
-    this->levelnum = 0;
+    if (tutComplete) {
+      this->levelnum = 1;
+    } else {
+      this->levelnum = 0;
+    }
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
@@ -609,6 +614,7 @@ void GameScreen::hardReset() {
 }
 
 void GameScreen::advanceLevel() {
+    tutComplete = true;
     this->levelnum++;
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     level.read(levelfile);
