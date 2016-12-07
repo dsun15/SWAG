@@ -193,9 +193,6 @@ GameScreen::~GameScreen() {
         SDL_DestroyTexture(*it);
     }
     delete textVector;
-    for (vector<SDL_Texture*>::iterator it = textVector->begin(); it != textVector->end(); ++it) {
-        SDL_DestroyTexture(*it);
-    }
 }
 
 int GameScreen::findDistances() {
@@ -558,22 +555,16 @@ void GameScreen::reset() {
     if (lives > 0) {
         //Move player back to start
         SDL_Rect playerLoc = *playables[0]->getTrueRect();
-        playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
         playables.clear();
         playables.push_back(jibby);
-        for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
+        playables[0]->setLeftBound(0);
+	playables[0]->setUpperBound(0);
+	playables[0]->setLowerBound(level.levelHeight);
+	playables[0]->setRightBound(level.levelWidth);
+	playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+	for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
             playables.push_back(*it);
         }
-        /*for (int x = 0; x < (int)playables.size(); x++) {
-          if (x==0) {
-	    //this should always be jibby
-	    playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	  } else { //the rest should be helpers
-	    SDL_Rect helperLoc = *playables[x]->getTrueRect();
-	    playables[x]->move(playables[x]->getInitX() - helperLoc.x, playables[x]->getInitY() - helperLoc.y);
-	  }
-	  }*/
-        //camera.move(playerLoc.x - camera.getTrueRect()->x, playerLoc.y - camera.getTrueRect()->y);
         camera.move(level.playerInitX - camera.getTrueRect()->x, level.playerInitY - camera.getTrueRect()->y);
         //Reset all enemies
         //delete enemies;
@@ -606,24 +597,19 @@ void GameScreen::hardReset() {
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    playables[0]->setLeftBound(0);
+    playables[0]->setUpperBound(0);
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
-    /*for (int x = 0; x < (int)playables.size(); x++) {
-        playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	}*/
     //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;
     door = level.door;
-    /*for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
-      SDL_DestroyTexture(*it);
-    }
-    textVector.clear();*/
     text = level.text;
     GameScreen::textPrep();
 
@@ -650,15 +636,14 @@ void GameScreen::advanceLevel() {
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    playables[0]->setLeftBound(0);
+    playables[0]->setUpperBound(0);
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
-    /*for (int i = 0; i < (int)playables.size(); i++) {
-        playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	}*/
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;
