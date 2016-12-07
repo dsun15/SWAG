@@ -67,7 +67,6 @@ int playerNum = 0;
 Movable* jibby;
 Movable* arrow;
 
-int levelnum = 0;
 string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable*> playables;
@@ -88,7 +87,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     lives = 5;
     renderer = render;
     //Level Stuff
-    levelfile = "level" + to_string(levelnum) + ".txt";
+    levelfile = "level" + to_string(this->levelnum) + ".txt";
     level.read(levelfile);
     width = level.levelWidth;
     height = level.levelHeight;
@@ -129,13 +128,11 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     Mix_HaltChannel(1);
     Mix_Resume(1);
     if (!Mix_PausedMusic()) {
-        Mix_SetMusicCMD("ogg123");
         music = Mix_LoadMUS(musicName);
-        Mix_PlayMusic(music, -1);
+//        Mix_PlayMusic(music, -1);
     } else {
         Mix_ResumeMusic();
     }
-    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
     sfx = Mix_LoadWAV(effect);
     sfxJump = Mix_LoadWAV(jumpEffect);
 
@@ -230,7 +227,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             scorewritten = true;
         }
         if (event->key.keysym.sym == SDLK_RETURN) {
-            if (levelnum == MAX_LV) {
+            if (this->levelnum == MAX_LV) {
                 return 3;
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
@@ -272,6 +269,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
                     playerNum++;
                 }
             }
+	    if (event->key.keysym.sym == SDLK_c){
+	      lives = 9000;
+	    }
             if (event->key.keysym.sym == SDLK_q) {
 
                 playables[playerNum]->setVelX(0);
@@ -321,7 +321,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //cout << "draw" << endl;
-    SDL_RenderCopy(renderer, background[levelnum], NULL, &backrect);
+    SDL_RenderCopy(renderer, background[this->levelnum], NULL, &backrect);
 
     SDL_Rect cameraLoc = *camera.getRect();
     bool playerOnGround = false;
@@ -565,8 +565,8 @@ void GameScreen::reset() {
 }
 
 void GameScreen::hardReset() {
-    levelnum = 0;
-    levelfile = "level" + to_string(levelnum) + ".txt";
+    this->levelnum = 0;
+    levelfile = "level" + to_string(this->levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
     SDL_Rect playerLoc = *playables[0]->getTrueRect();
@@ -609,8 +609,8 @@ void GameScreen::hardReset() {
 }
 
 void GameScreen::advanceLevel() {
-    levelnum++;
-    levelfile = "level" + to_string(levelnum) + ".txt";
+    this->levelnum++;
+    levelfile = "level" + to_string(this->levelnum) + ".txt";
     level.read(levelfile);
     SDL_Rect playerLoc = *playables[playerNum]->getTrueRect();
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
