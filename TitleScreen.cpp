@@ -37,7 +37,7 @@ TitleScreen::~TitleScreen() {
 int TitleScreen::input(SDL_Event* event, int dt) {
     switch (event->type) {
     case SDL_KEYUP:
-        if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_RETURN) {
+        if (event->key.keysym.sym == SDLK_SPACE /*|| event->key.keysym.sym == SDLK_RETURN*/) {
             Mix_PlayChannel(-1, sfxConfirm, 0);
             return 1;
         }

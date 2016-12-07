@@ -219,7 +219,8 @@ int GameScreen::findDistances() {
 int GameScreen::input(SDL_Event* event, int dt) {
 
     if (gameOver) {
-        playables[playerNum]->setVelX(0);
+      cout << "game over" << endl;
+        playables[0]->setVelX(0);
         std::ofstream inFile;
         inFile.open("scores.txt", std::ios_base::app);
         if (!scorewritten) {
@@ -232,8 +233,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
             } else {
-                GameScreen::hardReset();
-            }
+	      GameScreen::hardReset();
+	      return 4;
+	    }
         }
 
     } else {
@@ -551,7 +553,9 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 void GameScreen::reset() {
     //We will need the level object to replace dead enemies
     //delete enemies;
+  
     level.read(levelfile);
+    cout << "reset" << endl;
     if (lives > 0) {
         //Move player back to start
         SDL_Rect playerLoc = *playables[0]->getTrueRect();
@@ -597,14 +601,17 @@ void GameScreen::hardReset() {
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    cout << "player bounds" << endl;
     playables[0]->setLeftBound(0);
     playables[0]->setUpperBound(0);
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+    cout << "helpers" << endl;
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
+    cout << "setting" << endl;
     //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
