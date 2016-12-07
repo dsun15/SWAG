@@ -287,11 +287,13 @@ int GameScreen::input(SDL_Event* event, int dt) {
         case SDL_KEYDOWN:
             if (event->key.keysym.sym == SDLK_RIGHT) {
                 option = 3;
+		
                 playables[playerNum]->accelerate(dt, 1, 0);
                 playables[playerNum]->setMove(true);
             }
             if (event->key.keysym.sym == SDLK_LEFT) {
                 option = 4;
+		
                 playables[playerNum]->accelerate(dt, -1, 0);
                 playables[playerNum]->setMove(true);
             }
@@ -302,6 +304,11 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
                 if (!playables[playerNum]->getAir()) {
+		  for(int x = 0; x < (int) playables.size(); x++){
+
+		    if(playables[x]->getStacked() == playerNum)
+		      playables[x]->accelerate(15, 0, -3);
+		  }
                     playables[playerNum]->accelerate(15, 0, -3);
                     //playables[playerNum].jump();
                 }
@@ -474,6 +481,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
     }
 
+    int frames = dt;
     string temp = std::to_string(score);
     string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
