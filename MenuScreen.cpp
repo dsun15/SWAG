@@ -60,7 +60,6 @@ MenuScreen::MenuScreen(SDL_Renderer* renderer) {
     Movable tempind(point, 50, 50, 50, 50, 800, 600, 50, 50, false, false);
     indicator = tempind;
     tempind.prepFree();
-    Mix_SetMusicCMD("ogg123");
     move = Mix_LoadWAV(moveName);
     confirm = Mix_LoadWAV(comfirmName);
 

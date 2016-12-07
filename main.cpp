@@ -50,7 +50,6 @@ void setup() {
         std::cerr << "oops. Failed to init: " << SDL_GetError() << "\n";
     }
 
-    Mix_SetMusicCMD("ogg123");
     if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
         std::cerr << "SDL_mixer could not initialize! SDL_mixer Error:"
                   << Mix_GetError() << "\n";
@@ -114,7 +113,6 @@ void run() {
                 }
                 if (event.key.keysym.sym == SDLK_p) {
                     if (activeScreen != &m) {
-                        Mix_HaltChannel(-1);
                         screenswitch = 2;
                     } else {
                         screenswitch = 1;
@@ -140,7 +138,7 @@ void run() {
             activeScreen = &t;
         }
         if (screenswitch == 5) {
-            Mix_HaltMusic();
+//            Mix_HaltMusic();
             running = false;
         }
         if (screenswitch == 6) {

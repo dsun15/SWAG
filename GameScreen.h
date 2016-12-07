@@ -33,6 +33,7 @@ public:
       return !m.getLife();
     };
     void textPrep();
+    int levelnum = 0;
 };
 
 #endif
