@@ -129,13 +129,11 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     Mix_HaltChannel(1);
     Mix_Resume(1);
     if (!Mix_PausedMusic()) {
-        Mix_SetMusicCMD("ogg123");
         music = Mix_LoadMUS(musicName);
-        Mix_PlayMusic(music, -1);
+//        Mix_PlayMusic(music, -1);
     } else {
         Mix_ResumeMusic();
     }
-    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
     sfx = Mix_LoadWAV(effect);
     sfxJump = Mix_LoadWAV(jumpEffect);
 
