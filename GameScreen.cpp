@@ -397,13 +397,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playerOnGround = true;
                     //playables[z].move(0,-1);
                     playables[z]->setLowerBound(itrect->y + 1);
-
                 } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
                     //below
                     playables[z]->setUpperBound(itrect->y + itrect->h);
                 } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
-
                     // from left
+		  //cout << "left" << itrect->x << "   " << itrect->y << endl;
                     playables[z]->setRightBound(itrect->x + 1);
                 } else if (playrect->x > itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     //from right
@@ -562,9 +561,12 @@ void GameScreen::hardReset() {
     //level = LevelEditor(levelfile);
     level.read(levelfile);
     SDL_Rect playerLoc = *playables[0]->getTrueRect();
-    playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+    //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    playables[0]->setLowerBound(level.levelHeight);
+    playables[0]->setRightBound(level.levelWidth);
+    playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
@@ -602,9 +604,12 @@ void GameScreen::advanceLevel() {
     levelfile = "level" + to_string(levelnum) + ".txt";
     level.read(levelfile);
     SDL_Rect playerLoc = *playables[playerNum]->getTrueRect();
-    playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+    //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    playables[0]->setLowerBound(level.levelHeight);
+    playables[0]->setRightBound(level.levelWidth);
+    playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
