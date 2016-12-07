@@ -272,6 +272,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
                     playerNum++;
                 }
             }
+	    if (event->key.keysym.sym == SDLK_c){
+	      lives = 9000;
+	    }
             if (event->key.keysym.sym == SDLK_q) {
 
                 playables[playerNum]->setVelX(0);
