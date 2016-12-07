@@ -409,11 +409,12 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playables[z]->setUpperBound(itrect->y + itrect->h);
                 } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     // from left
-		  //cout << "left" << itrect->x << "   " << itrect->y << endl;
+		    cout << "left" << "   " << itrect->x << "   " << itrect->y << endl;
                     playables[z]->setRightBound(itrect->x + 1);
                 } else if (playrect->x > itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     //from right
-                    playables[z]->setLeftBound(itrect->x + itrect->w - 1);
+                  cout << "right" << "   " << itrect->x << "   " << itrect->y << endl;  
+		  playables[z]->setLeftBound(itrect->x + itrect->w - 1);
                 }
             }
         }
