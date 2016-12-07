@@ -28,6 +28,7 @@ SDL_Window* gWindow;
 SDL_Renderer* gRenderer;
 Screen* activeScreen;
 Mix_Chunk* gMusic;
+bool switchSong = true;
 
 int center(int large, int small) {
 
@@ -95,6 +96,12 @@ void run() {
     MenuScreen m = MenuScreen(gRenderer);
 
     while (running) {
+        if (g.levelnum == 3 && switchSong) {
+            Mix_HaltChannel(-1);
+            gMusic = Mix_LoadWAV("secondSong.ogg");
+            Mix_PlayChannel(-1, gMusic, -1);
+            switchSong = false;
+        }
         currentTime = SDL_GetTicks();
         unsigned int dt = currentTime - lastTime;
         lastTime = currentTime;

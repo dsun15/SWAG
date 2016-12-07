@@ -28,7 +28,7 @@ SDL_Renderer * renderer;
 int width = 1000;
 int height = 600;
 Movable door;
-const int MAX_LV = 5;
+const int MAX_LV = 4;
 bool gameOver = false;
 bool youWin = false;
 bool play[] = { true, true, true, true, true };
@@ -47,7 +47,7 @@ SDL_Texture* losetext;
 SDL_Texture* continuetext;
 SDL_Texture* scoretext;
 SDL_Texture* lifetext;
-SDL_Texture* background[MAX_LV];
+SDL_Texture* background[MAX_LV+1];
 SDL_Texture* spriteLives;
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
@@ -64,6 +64,8 @@ Camera camera;
 int lives;
 int playerNum = 0;
 bool super_jump = false;
+bool tutComplete = false;
+bool god_mode = false;
 
 Movable* jibby;
 Movable* arrow;
@@ -79,7 +81,7 @@ std::list<Movable*>* text;
 vector<SDL_Texture*>* textVector;
 
 vector<SDL_Surface*> surfaceVector;
-SDL_Surface* bs[MAX_LV]; /* = IMG_Load("BackgroundGradient1.png");*/
+SDL_Surface* bs[MAX_LV+1]; /* = IMG_Load("BackgroundGradient1.png");*/
 SDL_Surface* jibbyIcon = IMG_Load("jibbyOneFrame.png");
 
 GameScreen::GameScreen() {}
@@ -92,7 +94,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     level.read(levelfile);
     width = level.levelWidth;
     height = level.levelHeight;
-    for (int i = 0; i < MAX_LV; i++) {
+    for (int i = 0; i <= MAX_LV; i++) {
         string backfile = "BackgroundGradient" + to_string(i) + ".png";
         bs[i] = IMG_Load(backfile.c_str());
         background[i] = SDL_CreateTextureFromSurface(renderer, bs[i]);
@@ -181,7 +183,7 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(jibbyIcon);
     TTF_CloseFont(gamefont);
-    for (int i = 0; i < MAX_LV; i++) {
+    for (int i = 0; i <= MAX_LV; i++) {
         SDL_FreeSurface(bs[i]);
         SDL_DestroyTexture(background[i]);
     }
@@ -257,6 +259,11 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_k) {
                 GameScreen::reset();
             }
+	    if (event->key.keysym.sym == SDLK_g) {
+
+	      god_mode = !god_mode;
+
+	    }
 	    if (event->key.keysym.sym == SDLK_j) {
 
 	      super_jump = !super_jump;
@@ -417,7 +424,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(&*it)) {
                 SDL_Rect* itrect = (*it).getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .8 * playrect->h < itrect->y && (playrect->x + 0.8 * playrect->w) > itrect->x && playrect->x + 0.2 * playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .8 * playrect->h < itrect->y && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
@@ -427,11 +434,11 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playables[z]->setUpperBound(itrect->y + itrect->h);
                 } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     // from left
-		    cout << "left" << "   " << itrect->x << "   " << itrect->y << endl;
+		    //cout << "left" << "   " << itrect->x << "   " << itrect->y << endl;
                     playables[z]->setRightBound(itrect->x + 1);
                 } else if (playrect->x > itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     //from right
-                  cout << "right" << "   " << itrect->x << "   " << itrect->y << endl;  
+                    //cout << "right" << "   " << itrect->x << "   " << itrect->y << endl;  
 		  playables[z]->setLeftBound(itrect->x + itrect->w - 1);
                 }
             }
@@ -454,11 +461,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                 score += 100;
                 (*iter).setLife(false);
             } else {
+	      if(!god_mode){
                 Mix_PlayChannel(-1, sfx, 0);
                 iter = enemies->end();
                 if (!gameOver) {
                     GameScreen::reset();
                 }
+	      }
             }
         } else {
             ++iter;
@@ -473,11 +482,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
         (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         if (playables[playerNum]->checkCollide((*it).getTrueRect())) {
+	  if (!god_mode){
             Mix_PlayChannel(-1, sfx, 0);
             if (!gameOver) {
                 GameScreen::reset();
             }
             it = end;
+	  }
         }
     }
 
@@ -583,7 +594,11 @@ void GameScreen::reset() {
 }
 
 void GameScreen::hardReset() {
-    this->levelnum = 0;
+    if (tutComplete) {
+      this->levelnum = 1;
+    } else {
+      this->levelnum = 0;
+    }
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     //level = LevelEditor(levelfile);
     level.read(levelfile);
@@ -627,6 +642,7 @@ void GameScreen::hardReset() {
 }
 
 void GameScreen::advanceLevel() {
+    tutComplete = true;
     this->levelnum++;
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     level.read(levelfile);
