@@ -63,6 +63,7 @@ bool scorewritten = false;
 Camera camera;
 int lives;
 int playerNum = 0;
+bool super_jump = false;
 
 Movable* jibby;
 Movable* arrow;
@@ -256,6 +257,11 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_k) {
                 GameScreen::reset();
             }
+	    if (event->key.keysym.sym == SDLK_j) {
+
+	      super_jump = !super_jump;
+
+	    }
             if (event->key.keysym.sym == SDLK_w) {
 
                 //only works if jibby is 0
@@ -303,7 +309,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
-                if (!playables[playerNum]->getAir()) {
+                if (!playables[playerNum]->getAir() && !super_jump) {
 		  for(int x = 0; x < (int) playables.size(); x++){
 
 		    if(playables[x]->getStacked() == playerNum)
@@ -312,6 +318,18 @@ int GameScreen::input(SDL_Event* event, int dt) {
                     playables[playerNum]->accelerate(15, 0, -3);
                     //playables[playerNum].jump();
                 }
+		else if(!playables[playerNum]->getAir() && super_jump){
+
+		  for(int w = 0; w < (int) playables.size(); w++){
+
+		    if(playables[w]->getStacked() == playerNum)
+		      playables[w]->accelerate(15, 0, -6);
+
+		  }
+
+		  playables[playerNum]->accelerate(15, 0, -6);
+		  
+		}
             }
             break;
         }
@@ -483,7 +501,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     int frames = dt;
-    string temp = std::to_string(score);
+    string temp = std::to_string(frames);
     string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
