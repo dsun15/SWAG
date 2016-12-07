@@ -405,9 +405,9 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playerOnGround = true;
                     //playables[z].move(0,-1);
                     playables[z]->setLowerBound(itrect->y + 1);
-                } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
+                } else if (playrect->y + .5*playrect->h> itrect->y+.5*itrect->h && playrect->x +0.9*playrect->w  > itrect->x && playrect->x + 0.1*playrect->w < itrect->x + itrect->w) {
                     //below
-                    playables[z]->setUpperBound(itrect->y + itrect->h);
+                    playables[z]->setUpperBound(itrect->y + itrect->h-1);
                 } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     // from left
 		    //cout << "left" << "   " << itrect->x << "   " << itrect->y << endl;
