@@ -511,8 +511,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
     }
 
-    int frames = dt;
-    string temp = std::to_string(frames);
+    //int frames = dt;
+    string temp = std::to_string(score);
     string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
