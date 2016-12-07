@@ -233,9 +233,9 @@ int GameScreen::input(SDL_Event* event, int dt) {
             } else if (youWin == true) {
                 GameScreen::advanceLevel();
             } else {
-	      GameScreen::hardReset();
-	      return 4;
-	    }
+                GameScreen::hardReset();
+                return 4;
+            }
         }
 
     } else {
@@ -628,6 +628,7 @@ void GameScreen::hardReset() {
     lives = 5;
     score = 0;
     gameOver = false;
+    youWin = false;
     wlswitch = 0;
     playerNum = 0;
     arrow->setRightBound(width);
