@@ -57,7 +57,7 @@ void Camera::center(int x, int y) {
     //this->rect.y = (y - (this->rect.h / 2));
     if (y > this->rect.y + this->rect.h / 2) {
         if (y + 400 > this->rect.y + this->rect.h / 2 && y > this->rect.y + this->rect.h / 2)
-            this->rect.y = y + this->rect.h / 2;
+            this->rect.y = y - this->rect.h / 2;
         else if (y + 7 > this->rect.y + this->rect.h / 2 && y > this->rect.y + this->rect.h / 2)
             this->rect.y += 7;
         else
