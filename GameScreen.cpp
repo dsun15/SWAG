@@ -53,8 +53,8 @@ SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 395, 50, 400, 50 };
-SDL_Rect gamescorerect = { 50, 50, 45, 50 };
-SDL_Rect lifecountrect = { 725, 525, 45, 50 };
+SDL_Rect gamescorerect = { 50, 50, 60, 50 };
+SDL_Rect lifecountrect = { 725, 525, 15, 50 };
 SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
@@ -521,6 +521,9 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     //int frames = dt;
     string temp = std::to_string(score);
+    while (temp.size() < 4) {
+        temp  = "0" + temp;
+    }
     string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
