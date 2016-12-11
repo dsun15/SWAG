@@ -27,7 +27,7 @@ using namespace std;
 SDL_Renderer * renderer;
 int width = 1000;
 int height = 600;
-Movable door;
+Movable * door;
 const int MAX_LV = 4;
 bool gameOver = false;
 bool youWin = false;
@@ -75,9 +75,9 @@ Movable* arrow;
 string levelfile;
 LevelEditor level; // = LevelEditor(levelfile);
 std::vector<Movable*> playables;
-std::list<AutoMovable>* ground;
-std::vector<AutoMovable>* enemies;
-std::list<AutoMovable>* pit;
+std::list<AutoMovable *>* ground;
+std::vector<AutoMovable *>* enemies;
+std::list<AutoMovable *>* pit;
 
 std::list<Movable*>* text;
 vector<SDL_Texture*>* textVector;
@@ -125,7 +125,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     text = level.text;
 
     door = level.door;
-    level.door.prepFree();
+    //level.door.prepFree();
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
@@ -359,8 +359,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 
     //camera centering
     camera.center(playables[playerNum]->getReallyRectX() + (playables[playerNum]->getRect()->w / 2), playables[playerNum]->getReallyRectY() + (playables[playerNum]->getRect()->h / 2));
-    if (door.checkCollide(camera.getRect())) {
-        door.draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+    if (door->checkCollide(camera.getRect())) {
+        door->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
     }
 
     //printing text
@@ -420,15 +420,15 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
 
         //ground collisions
-        for (std::list<AutoMovable>::iterator it = ground->begin(); it != ground->end(); ++it) {
-            if ((*it).getAnimate()) {
+        for (std::list<AutoMovable *>::iterator it = ground->begin(); it != ground->end(); ++it) {
+	  /*if ((*it).getAnimate()) {
                 (*it).hoverBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
+		}*/
+            if ((*it)->checkCollide(&cameraLoc)) {
+                (*it)->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
             }
-            if ((*it).checkCollide(&cameraLoc)) {
-                (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-            }
-            if (playables[z]->checkCollide(&*it)) {
-                SDL_Rect* itrect = (*it).getTrueRect();
+            if (playables[z]->checkCollide(*it)) {
+                SDL_Rect* itrect = (*it)->getTrueRect();
                 anyCollide = true;
                 if (playrect->y + .8 * playrect->h < itrect->y && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
                     //above
@@ -452,20 +452,20 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     //collision with enemies
-    vector<AutoMovable>::iterator iter = enemies->begin();
+    vector<AutoMovable *>::iterator iter = enemies->begin();
     while (iter != enemies->end()) {
-        if (!((*iter).getGravity())) {
-            (*iter).moveBetween((*iter).getMinMoveBound(), (*iter).getMaxMoveBound(), dt);
+        if (!((*iter)->getGravity())) {
+            (*iter)->moveBetween((*iter)->getMinMoveBound(), (*iter)->getMaxMoveBound(), dt);
         }
-        if ((*iter).getLife() /*(*iter).checkCollide(&cameraLoc)*/) {
-            (*iter).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+        if ((*iter)->getLife() /*(*iter).checkCollide(&cameraLoc)*/) {
+            (*iter)->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
         }
-        if (playables[playerNum]->checkCollide((*iter).getTrueRect()) && (*iter).getLife()) {
-            if (playables[playerNum]->getTrueRect()->y < (*iter).getTrueRect()->y) {
+        if (playables[playerNum]->checkCollide((*iter)->getTrueRect()) && (*iter)->getLife()) {
+            if (playables[playerNum]->getTrueRect()->y < (*iter)->getTrueRect()->y) {
                 //enemy kill;
                 playables[playerNum]->setVelY(-4);
                 score += 100;
-                (*iter).setLife(false);
+                (*iter)->setLife(false);
             } else {
 	      if(!god_mode){
                 Mix_PlayChannel(-1, sfx, 0);
@@ -481,13 +481,13 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     }
 
     //non-killable enemies
-    for (std::list<AutoMovable>::iterator it = pit->begin(), end = pit->end(); it != end; ++it) {
+    for (std::list<AutoMovable *>::iterator it = pit->begin(), end = pit->end(); it != end; ++it) {
         //if no gravity, then it is moving between a bounds
-        if (!((*it).getGravity())) {
-            (*it).moveBetween((*it).getMinMoveBound(), (*it).getMaxMoveBound(), dt);
+        if (!((*it)->getGravity())) {
+            (*it)->moveBetween((*it)->getMinMoveBound(), (*it)->getMaxMoveBound(), dt);
         }
-        (*it).draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
-        if (playables[playerNum]->checkCollide((*it).getTrueRect())) {
+        (*it)->draw(renderer, dt, -cameraLoc.x, -cameraLoc.y, true);
+        if (playables[playerNum]->checkCollide((*it)->getTrueRect())) {
 	  if (!god_mode){
             Mix_PlayChannel(-1, sfx, 0);
             if (!gameOver) {
@@ -542,7 +542,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         //        SDL_RenderCopy(renderer, losetext, NULL, &loserect);
         SDL_RenderCopy(renderer, continuetext, NULL, &continuerect);
     }
-    if (playables[0]->checkCollide(&door)) {
+    if (playables[0]->checkCollide(door)) {
         wlswitch = 1;
         youWin = true;
         gameOver = true;
@@ -583,7 +583,7 @@ void GameScreen::reset() {
         ground = level.ground;
         //pit = level.pit;
         door = level.door;
-        level.door.prepFree();
+        //level.door.prepFree();
         //gameOver = false;
         if (playerNum == 0) {
             lives--;
@@ -627,7 +627,7 @@ void GameScreen::hardReset() {
     text = level.text;
     GameScreen::textPrep();
 
-    level.door.prepFree();
+    //level.door.prepFree();
     width = level.levelWidth;
     height = level.levelHeight;
     camera.updateBounds(width, height);
@@ -675,7 +675,7 @@ void GameScreen::advanceLevel() {
     door = level.door;
     text = level.text;
     GameScreen::textPrep();
-    level.door.prepFree();
+    //level.door.prepFree();
     playerNum = 0;
     width = level.levelWidth;
     height = level.levelHeight;
