@@ -226,7 +226,7 @@ int GameScreen::findDistances() {
 int GameScreen::input(SDL_Event* event, int dt) {
 
     if (gameOver) {
-      cout << "game over" << endl;
+      //cout << "game over" << endl;
         playables[0]->setVelX(0);
         std::ofstream inFile;
         inFile.open("scores.txt", std::ios_base::app);
@@ -353,7 +353,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //cout << "draw" << endl;
     SDL_Rect cameraLoc = *camera.getRect();
-    SDL_Rect paralax = { (cameraLoc.x / 3), 0, 800, 600 };
+    SDL_Rect paralax = { (cameraLoc.x / 4), 0, 800, 600 };
     SDL_RenderCopy(renderer, background[this->levelnum], &paralax, &backrect);
 
     bool playerOnGround = false;
@@ -593,7 +593,7 @@ void GameScreen::reset() {
             lives--;
         }
     } else {
-      cout << "seg fault?" << endl;
+      //cout << "seg fault?" << endl;
         //You are out of lives: game over
         wlswitch = 2;
         gameOver = true;
@@ -609,24 +609,24 @@ void GameScreen::hardReset() {
     }
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     //level = LevelEditor(levelfile);
-    cout << "reading" << endl;
+    //cout << "reading" << endl;
     level.read(levelfile);
-    cout << "read complete" << endl;
+    //cout << "read complete" << endl;
     SDL_Rect playerLoc = *playables[0]->getTrueRect();
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
-    cout << "player bounds" << endl;
+    //cout << "player bounds" << endl;
     playables[0]->setLeftBound(0);
     playables[0]->setUpperBound(0);
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-    cout << "helpers" << endl;
+    //cout << "helpers" << endl;
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
-    cout << "setting" << endl;
+    //cout << "setting" << endl;
     //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
