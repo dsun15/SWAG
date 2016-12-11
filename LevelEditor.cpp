@@ -6,18 +6,30 @@
 using namespace std;
 
 LevelEditor::LevelEditor() {
-    this->enemies = new vector<AutoMovable>();
+    this->enemies = new vector<AutoMovable*>();
     this->enemies->reserve(30);
-    this->pit = new list<AutoMovable>();
-    this->ground = new list<AutoMovable>();
+    this->pit = new list<AutoMovable*>();
+    this->ground = new list<AutoMovable*>();
     this->helpers = new list<Movable*>();
     this->text = new list<Movable *>();
 }
 
 LevelEditor::~LevelEditor() {
-    this->enemies->clear();
-    this->ground->clear();
-    this->pit->clear();
+    //this->enemies->clear();
+    while (!this->enemies->empty()) {
+      delete this->enemies->back();
+      this->enemies->pop_back();
+    }  
+    //this->ground->clear();
+    while (!this->ground->empty()) {
+      delete this->ground->front();
+      this->ground->pop_front();
+    }
+    //this->pit->clear();
+    while (!this->pit->empty()) {
+      delete this->pit->front();
+      this->pit->pop_front();
+    }
     delete this->enemies;
     delete this->pit;
     delete this->ground;
@@ -31,12 +43,27 @@ LevelEditor::~LevelEditor() {
       this->text->pop_front();
     }
     delete this->text;
+    if (this->door != NULL) {
+      delete this->door;
+    }
 }
 
 void LevelEditor::read(string fileName) {
-    enemies->clear();
+  /*enemies->clear();
     ground->clear();
-    pit->clear();
+    pit->clear();*/
+    while (!this->enemies->empty()) {
+      delete this->enemies->back();
+      this->enemies->pop_back();
+    }
+    while (!this->ground->empty()) {
+      delete this->ground->front();
+      this->ground->pop_front();
+    }
+    while (!this->pit->empty()) {
+      delete this->pit->front();
+      this->pit->pop_front();
+    }
     while (!this->helpers->empty()) {
         delete this->helpers->front();
         this->helpers->pop_front();
@@ -44,6 +71,9 @@ void LevelEditor::read(string fileName) {
     while (!this->text->empty()) {
       delete this->text->front();
       this->text->pop_front();
+    }
+    if (this->door != NULL) {
+      delete this->door;
     }
 
     ifstream inFile;
@@ -89,12 +119,12 @@ void LevelEditor::read(string fileName) {
             inFile >> move;
             inFile >> min;
             inFile >> max;
-            AutoMovable tempg(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate));
+            AutoMovable * tempg = new AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate);
             if (animate) {
-                tempg.setMoveBounds(min, max);
+                tempg->setMoveBounds(min, max);
             }
             this->ground->push_back(tempg);
-            tempg.prepFree();
+            //tempg.prepFree();
             break;
         }
         case 'P': {
@@ -103,12 +133,12 @@ void LevelEditor::read(string fileName) {
             inFile >> move;
             inFile >> min;
             inFile >> max;
-            AutoMovable tempp(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 550, 50, !move, animate));
+            AutoMovable * tempp = new AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 550, 50, !move, animate);
             if (move) {
-                tempp.setMoveBounds(min, max);
+                tempp->setMoveBounds(min, max);
             }
             this->pit->push_back(tempp);
-            tempp.prepFree();
+            //tempp.prepFree();
             break;
         }
         case 'E': {
@@ -117,20 +147,20 @@ void LevelEditor::read(string fileName) {
             inFile >> move;
             inFile >> min;
             inFile >> max;
-            AutoMovable tempe(AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 550, 50, !move, animate));
+            AutoMovable * tempe = new AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 550, 50, !move, animate);
             if (move) {
-                tempe.setMoveBounds(min, max);
+                tempe->setMoveBounds(min, max);
             }
             this->enemies->push_back(tempe);
-            tempe.prepFree();
+            //tempe.prepFree();
             break;
         }
         case 'D': {
             inFile >> init;
             imageName = init.c_str();
-            Movable doort(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false, animate);
+            Movable * doort = new Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, 50, 50, false, animate);
             this->door = doort;
-            doort.prepFree();
+            //doort.prepFree();
             break;
         }
         case 'H': {
