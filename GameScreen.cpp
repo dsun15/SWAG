@@ -49,12 +49,18 @@ SDL_Texture* scoretext;
 SDL_Texture* lifetext;
 SDL_Texture* background[MAX_LV+1];
 SDL_Texture* spriteLives;
+SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 395, 50, 400, 50 };
+<<<<<<< HEAD
 SDL_Rect gamescorerect = { 50, 50, 60, 50 };
 SDL_Rect lifecountrect = { 725, 525, 15, 50 };
 SDL_Rect backrect = { 0, 0, 800, 600 };
+=======
+SDL_Rect gamescorerect = { 50, 50, 45, 50 };
+SDL_Rect lifecountrect = { 725, 525, 45, 50 };
+>>>>>>> 627e12d94f2b890dbc38a261eb344dabdf8ba5d2
 SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
@@ -352,9 +358,10 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //cout << "draw" << endl;
-    SDL_RenderCopy(renderer, background[this->levelnum], NULL, &backrect);
-
     SDL_Rect cameraLoc = *camera.getRect();
+    SDL_Rect paralax = { (cameraLoc.x / 3), 0, 800, 600 };
+    SDL_RenderCopy(renderer, background[this->levelnum], &paralax, &backrect);
+
     bool playerOnGround = false;
 
     //camera centering
@@ -583,7 +590,7 @@ void GameScreen::reset() {
         //Reset all enemies
         //delete enemies;
         enemies = level.enemies;
-        ground = level.ground;
+        //ground = level.ground;
         //pit = level.pit;
         door = level.door;
         //level.door.prepFree();
@@ -592,10 +599,12 @@ void GameScreen::reset() {
             lives--;
         }
     } else {
+      cout << "seg fault?" << endl;
         //You are out of lives: game over
         wlswitch = 2;
         gameOver = true;
     }
+    youWin = false;
 }
 
 void GameScreen::hardReset() {
@@ -606,7 +615,9 @@ void GameScreen::hardReset() {
     }
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     //level = LevelEditor(levelfile);
+    cout << "reading" << endl;
     level.read(levelfile);
+    cout << "read complete" << endl;
     SDL_Rect playerLoc = *playables[0]->getTrueRect();
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
