@@ -52,7 +52,7 @@ SDL_Texture* spriteLives;
 SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
-SDL_Rect continuerect = { 395, 50, 400, 50 };
+SDL_Rect continuerect = { 395, 50, 375, 50 };
 SDL_Rect gamescorerect = { 50, 50, 60, 50 };
 SDL_Rect lifecountrect = { 725, 525, 15, 50 };
 SDL_Rect livesRect = { 665, 533, 40, 40 };
