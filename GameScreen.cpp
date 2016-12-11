@@ -290,7 +290,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 }
             }
 	    if (event->key.keysym.sym == SDLK_c){
-	      lives = 9000;
+	      lives = 9001;
 	    }
             if (event->key.keysym.sym == SDLK_q) {
 
