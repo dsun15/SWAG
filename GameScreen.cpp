@@ -60,7 +60,8 @@ int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
 TTF_Font* gamespeech;
-SDL_Color white = { 255, 255, 255, 255 };
+SDL_Color white = {255,255,255,255};
+//SDL_Color white = { 133, 184, 214, 1 };
 bool scorewritten = false;
 Camera camera;
 int lives;
@@ -523,7 +524,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
-    SDL_Color white = { 255, 255, 255, 255 };
+    //SDL_Color white = { 255, 255, 255, 255 };
     SDL_Surface* ss = TTF_RenderUTF8_Blended(gamefont, temp2, white);
     SDL_Surface* ls = TTF_RenderUTF8_Blended(gamefont, templife, white);
     scoretext = SDL_CreateTextureFromSurface(renderer, ss);
@@ -710,7 +711,7 @@ void GameScreen::textPrep() {
     SDL_DestroyTexture(*it);
   }
   textVector->clear();
-  SDL_Color white = { 255, 255, 255, 255 };
+  //SDL_Color white = { 255, 255, 255, 255 };
   for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
     string temp = (*it)->getName();
     temp = temp.substr(0, temp.size() - 1);
