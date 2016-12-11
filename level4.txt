@@ -1,3 +1,4 @@
+
 5000 700
 0 100
 T 0 20 370 200 30 Almost there...
@@ -25,7 +26,7 @@ E 1 1500 200 50 50 enemy1.png 1 1500 1650
 E 1 3450 200 50 50 enemy1.png 1 3450 3550
 
 H 0 525 550 75 75 Loofa.png 1
-H 0 750 320 150 175 Loofa.png 1
+H 0 750 320 150 130 Loofa.png 1
 H 0 2050 200 450 50 snek.png 1
 H 0 3975 150 125 100 Loofa.png 1
 D 0 4950 425 50 50 door.png

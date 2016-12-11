@@ -193,9 +193,6 @@ GameScreen::~GameScreen() {
         SDL_DestroyTexture(*it);
     }
     delete textVector;
-    for (vector<SDL_Texture*>::iterator it = textVector->begin(); it != textVector->end(); ++it) {
-        SDL_DestroyTexture(*it);
-    }
 }
 
 int GameScreen::findDistances() {
@@ -222,7 +219,8 @@ int GameScreen::findDistances() {
 int GameScreen::input(SDL_Event* event, int dt) {
 
     if (gameOver) {
-        playables[playerNum]->setVelX(0);
+      cout << "game over" << endl;
+        playables[0]->setVelX(0);
         std::ofstream inFile;
         inFile.open("scores.txt", std::ios_base::app);
         if (!scorewritten) {
@@ -236,6 +234,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 GameScreen::advanceLevel();
             } else {
                 GameScreen::hardReset();
+                return 4;
             }
         }
 
@@ -429,9 +428,9 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
                     playerOnGround = true;
                     //playables[z].move(0,-1);
                     playables[z]->setLowerBound(itrect->y + 1);
-                } else if (playrect->y > itrect->y && playrect->x > itrect->x && playrect->x + playrect->w < itrect->x + itrect->w) {
+                } else if (playrect->y + .5*playrect->h> itrect->y+.5*itrect->h && playrect->x +0.9*playrect->w  > itrect->x && playrect->x + 0.1*playrect->w < itrect->x + itrect->w) {
                     //below
-                    playables[z]->setUpperBound(itrect->y + itrect->h);
+                    playables[z]->setUpperBound(itrect->y + itrect->h-1);
                 } else if (playrect->x < itrect->x && playrect->y + playrect->h != itrect->y + 1) {
                     // from left
 		    //cout << "left" << "   " << itrect->x << "   " << itrect->y << endl;
@@ -511,8 +510,8 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
         }
     }
 
-    int frames = dt;
-    string temp = std::to_string(frames);
+    //int frames = dt;
+    string temp = std::to_string(score);
     string life = std::to_string(lives);
     const char* temp2 = temp.c_str();
     const char* templife = life.c_str();
@@ -554,26 +553,22 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
 void GameScreen::reset() {
     //We will need the level object to replace dead enemies
     //delete enemies;
+  
     level.read(levelfile);
+    cout << "reset" << endl;
     if (lives > 0) {
         //Move player back to start
         SDL_Rect playerLoc = *playables[0]->getTrueRect();
-        playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
         playables.clear();
         playables.push_back(jibby);
-        for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
+        playables[0]->setLeftBound(0);
+	playables[0]->setUpperBound(0);
+	playables[0]->setLowerBound(level.levelHeight);
+	playables[0]->setRightBound(level.levelWidth);
+	playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+	for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
             playables.push_back(*it);
         }
-        /*for (int x = 0; x < (int)playables.size(); x++) {
-          if (x==0) {
-	    //this should always be jibby
-	    playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	  } else { //the rest should be helpers
-	    SDL_Rect helperLoc = *playables[x]->getTrueRect();
-	    playables[x]->move(playables[x]->getInitX() - helperLoc.x, playables[x]->getInitY() - helperLoc.y);
-	  }
-	  }*/
-        //camera.move(playerLoc.x - camera.getTrueRect()->x, playerLoc.y - camera.getTrueRect()->y);
         camera.move(level.playerInitX - camera.getTrueRect()->x, level.playerInitY - camera.getTrueRect()->y);
         //Reset all enemies
         //delete enemies;
@@ -606,24 +601,22 @@ void GameScreen::hardReset() {
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    cout << "player bounds" << endl;
+    playables[0]->setLeftBound(0);
+    playables[0]->setUpperBound(0);
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
+    cout << "helpers" << endl;
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
-    /*for (int x = 0; x < (int)playables.size(); x++) {
-        playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	}*/
+    cout << "setting" << endl;
     //delete enemies;
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;
     door = level.door;
-    /*for (vector<SDL_Texture *>::iterator it = textVector->begin(); it!=textVector->end(); ++it) {
-      SDL_DestroyTexture(*it);
-    }
-    textVector.clear();*/
     text = level.text;
     GameScreen::textPrep();
 
@@ -635,6 +628,7 @@ void GameScreen::hardReset() {
     lives = 5;
     score = 0;
     gameOver = false;
+    youWin = false;
     wlswitch = 0;
     playerNum = 0;
     arrow->setRightBound(width);
@@ -650,15 +644,14 @@ void GameScreen::advanceLevel() {
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
     playables.push_back(jibby);
+    playables[0]->setLeftBound(0);
+    playables[0]->setUpperBound(0);
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
-    /*for (int i = 0; i < (int)playables.size(); i++) {
-        playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	}*/
     enemies = level.enemies;
     ground = level.ground;
     pit = level.pit;

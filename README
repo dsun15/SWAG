@@ -8,15 +8,11 @@ There may be sound issues depending on your installation.
 Press Escape to instantly quit.
 
 *****PROGRESS*******
-- text implemented, gets offset correctly
-- P on pause screen unpauses
-- tutorial level
-- helpers dying no longer decrease life count
-- changed font
-- text written to appropriate places
-- camera fixed
-- arrow indicating which player you are implemented
-- glitches related to above fixed
+- music fixed
+- new music
+- levels 3 and 4 unjanked afaik
+- helpers carry jibby better, can jump with jibby
+- collisions cleaned even more
 ********************
 
 Here is what each member accomplished:
@@ -32,15 +28,13 @@ not having to go through each level over and over. Also K resets the
 level in exchange for a life. This was used for testing but you may need
 it in case something unexpected happens)
 
+J to toggle superjumps and G for god mode.
+
 ********TODO********
-- spawning and respawning in level 3 doesn't work correctly
 - track down memory leaks
 - inconsistent jumps
-- differentiate  ialogue with instruction text via font/color
-- level 4 is really jank
-  * first helper has issues respawning (idk why, workaround)
-  * long green  helper has issues crossing gap (left collide is triggered)
-- needs more content
+- differentiate dialogue with instruction text via font/color
+- more content
 ********************
 
 That's all for now.
