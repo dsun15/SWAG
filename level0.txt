@@ -1,16 +1,16 @@
 2500 600
 0 0
 G 0 0 550 800 50 Level0Texture1.png 0 0 0
-T 0 200 150 400 50 Use Arrow Keys To Move And Space To Jump!
+T 0 93 150 615 50 Use Arrow Keys to Move and Space to Jump!
 G 0 800 500 1050 100 Level0Texture2.png 0 0 0
 G 0 1300 400 150 25 Level0Texture3.png 0 0 0
 G 0 1850 350 650 250 Level0Texture4.png 0 0 0
 E 1 900 450 50 50 enemy1.png 1 900 1200
 P 1 1300 329 50 71 enemy2.png 1 1300 1450
-T 0 850 150 400 50 You Can Jump on Round Enemies to Kill Them
-T 0 825 210 450 50 But Enemies with Spikey Hats Cannot Be Killed!
-T 0 1500 150 400 50 Hmm... I Wonder If this Yellow Guy 
-T 0 1550 210 300 50 Can Help Us Down The line...
+T 0 885 150 630 50 You Can Jump on Round Enemies to Kill Them
+T 0 840 210 720 50 But Enemies with Spikey Hats Cannot Be Killed!
+T 1 1645 150 510 50 Hmm... I wonder if this Yellow Guy 
+T 1 1700 210 435 50 can help us down the line...
 H 0 1700 375 75 75 Loofa.png 1
 D 0 2450 300 50 50 door.png
-T 0 2290 200 200 50 Advance To Level 1
+T 0 2220 200 270 50 Advance To Level 1
