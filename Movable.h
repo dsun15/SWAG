@@ -123,6 +123,7 @@ public:
     int getInitX();
     int getInitY();
     string getName();
+    bool getAnimate();
 private:
 };
 

@@ -372,3 +372,6 @@ int Movable::getInitY() {
  string Movable::getName() {
     return this->fileName;
 }
+bool Movable::getAnimate() {
+    return this->animate;
+}
