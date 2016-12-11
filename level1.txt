@@ -1,6 +1,6 @@
 6700 600
 0 0
-T 0 50 150 400 50 I need to get home!
+T 1 50 150 400 50 I need to get home!
 G 0 0 300 300 300 Level1Texture1.png 0 0 0
 G 0 300 400 75 200 Level1Texture2.png 0 0 0
 G 0 375 500 1125 100 Level1Texture3.png 0 0 0
