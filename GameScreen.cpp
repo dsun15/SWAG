@@ -53,14 +53,8 @@ SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 395, 50, 400, 50 };
-<<<<<<< HEAD
 SDL_Rect gamescorerect = { 50, 50, 60, 50 };
 SDL_Rect lifecountrect = { 725, 525, 15, 50 };
-SDL_Rect backrect = { 0, 0, 800, 600 };
-=======
-SDL_Rect gamescorerect = { 50, 50, 45, 50 };
-SDL_Rect lifecountrect = { 725, 525, 45, 50 };
->>>>>>> 627e12d94f2b890dbc38a261eb344dabdf8ba5d2
 SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
