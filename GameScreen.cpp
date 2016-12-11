@@ -322,12 +322,14 @@ int GameScreen::input(SDL_Event* event, int dt) {
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
                 Mix_PlayChannel(-1, sfxJump, 0);
                 option = 2;
+		bool nojump = false;
                 if (!playables[playerNum]->getAir() && !super_jump) {
 		  for(int x = 0; x < (int) playables.size(); x++){
 
 		    if(playables[x]->getStacked() == playerNum)
-		      playables[x]->accelerate(15, 0, -3);
+		      nojump = true;
 		  }
+		  if(!nojump)
                     playables[playerNum]->accelerate(15, 0, -3);
                     //playables[playerNum].jump();
                 }
