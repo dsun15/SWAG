@@ -587,8 +587,8 @@ void GameScreen::reset() {
         //Reset all enemies
         //delete enemies;
         enemies = level.enemies;
-        //ground = level.ground;
-        //pit = level.pit;
+        ground = level.ground;
+        pit = level.pit;
         door = level.door;
         //level.door.prepFree();
         //gameOver = false;
