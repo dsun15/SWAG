@@ -182,6 +182,7 @@ bool Movable::checkCollide(SDL_Rect* rect) {
 }
 
 void Movable::draw(SDL_Renderer* renderer, int dt, int transx, int transy, bool onGround) {
+  cout << "drawing " << this->fileName << endl;
     if (this->isJumping) {
         jumpTime += dt;
         if (jumpTime <= 400) {
