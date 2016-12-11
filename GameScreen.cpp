@@ -49,12 +49,12 @@ SDL_Texture* scoretext;
 SDL_Texture* lifetext;
 SDL_Texture* background[MAX_LV+1];
 SDL_Texture* spriteLives;
+SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect winrect = { 400, 50, 300, 50 };
 SDL_Rect loserect = { 400, 50, 300, 50 };
 SDL_Rect continuerect = { 395, 50, 400, 50 };
 SDL_Rect gamescorerect = { 50, 50, 45, 50 };
 SDL_Rect lifecountrect = { 725, 525, 45, 50 };
-SDL_Rect backrect = { 0, 0, 800, 600 };
 SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
@@ -352,9 +352,10 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 void GameScreen::draw(SDL_Renderer* renderer, int dt) {
     //cout << "draw" << endl;
-    SDL_RenderCopy(renderer, background[this->levelnum], NULL, &backrect);
-
     SDL_Rect cameraLoc = *camera.getRect();
+    SDL_Rect paralax = { (cameraLoc.x / 3), 0, 800, 600 };
+    SDL_RenderCopy(renderer, background[this->levelnum], &paralax, &backrect);
+
     bool playerOnGround = false;
 
     //camera centering
