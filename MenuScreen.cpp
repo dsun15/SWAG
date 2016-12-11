@@ -32,11 +32,11 @@ SDL_Texture* t2;
 SDL_Texture* t3;
 SDL_Texture* t4;
 
-SDL_Rect titlerect = { 150, 50, 300, 50 };
-SDL_Rect rect1 = { 150, 150, 300, 50 };
-SDL_Rect rect2 = { 150, 250, 300, 50 };
-SDL_Rect rect3 = { 150, 350, 300, 50 };
-SDL_Rect rect4 = { 150, 450, 300, 50 };
+SDL_Rect titlerect = { 150, 50, 120, 50 };
+SDL_Rect rect1 = { 150, 150, 150, 50 };
+SDL_Rect rect2 = { 150, 250, 90, 50 };
+SDL_Rect rect3 = { 150, 350, 165, 50 };
+SDL_Rect rect4 = { 150, 450, 60, 50 };
 
 Mix_Chunk* move;
 Mix_Chunk* confirm;
