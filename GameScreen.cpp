@@ -582,10 +582,12 @@ void GameScreen::reset() {
             lives--;
         }
     } else {
+      cout << "seg fault?" << endl;
         //You are out of lives: game over
         wlswitch = 2;
         gameOver = true;
     }
+    youWin = false;
 }
 
 void GameScreen::hardReset() {
@@ -596,7 +598,9 @@ void GameScreen::hardReset() {
     }
     levelfile = "level" + to_string(this->levelnum) + ".txt";
     //level = LevelEditor(levelfile);
+    cout << "reading" << endl;
     level.read(levelfile);
+    cout << "read complete" << endl;
     SDL_Rect playerLoc = *playables[0]->getTrueRect();
     //playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     playables.clear();
