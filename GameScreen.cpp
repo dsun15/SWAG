@@ -59,6 +59,8 @@ SDL_Rect livesRect = { 665, 533, 40, 40 };
 int wlswitch; // 1 = win, 2 = lose
 int score;
 TTF_Font* gamefont;
+TTF_Font* gamespeech;
+SDL_Color white = { 255, 255, 255, 255 };
 bool scorewritten = false;
 Camera camera;
 int lives;
@@ -145,7 +147,8 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     //Text Stuff
     //TTF_Init();
     gamefont = TTF_OpenFont("8bit.ttf", 65);
-    SDL_Color white = { 255, 255, 255, 255 };
+    gamespeech = TTF_OpenFont("square-deal.ttf", 65);
+
     SDL_Surface* ws = TTF_RenderUTF8_Blended(gamefont, win, white);
     SDL_Surface* ls = TTF_RenderUTF8_Blended(gamefont, lose, white);
     SDL_Surface* cm = TTF_RenderUTF8_Blended(gamefont, cont, white);
@@ -164,8 +167,12 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
         string temp = (*it)->getName();
         temp = temp.substr(0, temp.size() - 1);
-        textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
-    }
+        if ((*it)->getAnimate()) {
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white)));
+        } else { 
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+        }
+     }
 
     scorewritten = false;
     return;
@@ -633,6 +640,16 @@ void GameScreen::hardReset() {
     playerNum = 0;
     arrow->setRightBound(width);
     arrow->setLowerBound(height);
+    textVector = new vector<SDL_Texture*>;
+    for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
+        string temp = (*it)->getName();
+        temp = temp.substr(0, temp.size() - 1);
+        if ((*it)->getAnimate()) {
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white)));
+        } else { 
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+        }
+     }
 }
 
 void GameScreen::advanceLevel() {
@@ -669,6 +686,17 @@ void GameScreen::advanceLevel() {
     youWin = false;
     arrow->setRightBound(width);
     arrow->setLowerBound(height);
+    //initializing text
+    textVector = new vector<SDL_Texture*>;
+    for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
+        string temp = (*it)->getName();
+        temp = temp.substr(0, temp.size() - 1);
+        if ((*it)->getAnimate()) {
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white)));
+        } else { 
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+        }
+     }
 }
 
 void GameScreen::textPrep() {
