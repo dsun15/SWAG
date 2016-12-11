@@ -147,7 +147,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     //Text Stuff
     //TTF_Init();
     gamefont = TTF_OpenFont("8bit.ttf", 65);
-    gamespeech = TTF_OpenFont("square-deal.ttf", 65);
+    gamespeech = TTF_OpenFont("Cone.ttf", 65);
 
     SDL_Surface* ws = TTF_RenderUTF8_Blended(gamefont, win, white);
     SDL_Surface* ls = TTF_RenderUTF8_Blended(gamefont, lose, white);
