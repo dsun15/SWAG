@@ -335,14 +335,14 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 }
 		else if(!playables[playerNum]->getAir() && super_jump){
 
-		  for(int w = 0; w < (int) playables.size(); w++){
+		  bool nojump = false;
+		  for(int x = 0; x < (int) playables.size(); x++){
 
-		    if(playables[w]->getStacked() == playerNum)
-		      playables[w]->accelerate(15, 0, -6);
-
+		    if(playables[x]->getStacked() == playerNum)
+		      nojump = true;
 		  }
-
-		  playables[playerNum]->accelerate(15, 0, -6);
+		  if(!nojump)
+                    playables[playerNum]->accelerate(15, 0, -6);
 		  
 		}
             }
