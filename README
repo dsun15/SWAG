@@ -4,25 +4,33 @@ As long as you can use ogg123 from the command line, the music
 should be able to play correctly.
 
 There may be sound issues depending on your installation.
+When running through valgrind or a VM, the game can get choppy
+and dt can reach high enough values to break collisions.
 
 Press Escape to instantly quit.
 
 *****PROGRESS*******
-- music fixed
-- new music
-- levels 3 and 4 unjanked afaik
-- helpers carry jibby better, can jump with jibby
-- collisions cleaned even more
+- parallax backgrounds implemented
+- camera jank on level 3 fixed
+- snek is visually changed
+- door on lv 3 isnt invisible anymore
+- text box proportions changed
+- 2nd font to distinguish dialogue added
+- helpers can't jump with another player on top - this fixes some jank
+  with the rider on top falling through
 ********************
 
 Here is what each member accomplished:
-Devin: Text implemented, added dialogues, current player indicator, bug fixes
-Chris: Added instructional texts, bug fixes
-Kevin: Camera fix, bug fixes
-William: Graphics and level 0 (tutorial).
+Devin: Restructured code to work pretty much exclusively with pointers.
+	Fixed a bunch of memory leaks - not sure if I can do any more.
+	Changed ground collisions again to be a bit nicer with valgrind
+		and hopefully alleviate some issues with helpers.
+Chris: Changed text box dimensions and added 2nd font.
+Kevin: Scrolling backgrounds that move slower than the camera does.
+William: Made all the new graphics.
 
 (We implemented a cheat. By pressing R, you can force a level advance.
-Obviously, since level 5 doesn't exist, pressing R on level 5 will crash
+Obviously, since level 5 doesn't exist, pressing R on level 4 will crash
 the game. We would take this out, but figured the graders may appreciate
 not having to go through each level over and over. Also K resets the 
 level in exchange for a life. This was used for testing but you may need
@@ -31,9 +39,12 @@ it in case something unexpected happens)
 J to toggle superjumps and G for god mode.
 
 ********TODO********
+- game crashes when dying on 0 lives, but sometimes doesn't
+- but sometimes the game advances a level instead of a game over
+- sometimes helpers on lv 4 dont spawn correctly (addressed but not sure if totally fixed)
+- give indication of completing game instead of jumping to high scores
 - track down memory leaks
 - inconsistent jumps
-- differentiate dialogue with instruction text via font/color
 - more content
 ********************
 

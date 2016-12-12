@@ -10,7 +10,8 @@ LevelEditor::LevelEditor() {
     this->enemies->reserve(30);
     this->pit = new list<AutoMovable*>();
     this->ground = new list<AutoMovable*>();
-    this->helpers = new list<Movable*>();
+    this->helpers = new vector<Movable*>();
+    this->helpers->reserve(30);
     this->text = new list<Movable *>();
 }
 
@@ -34,8 +35,8 @@ LevelEditor::~LevelEditor() {
     delete this->pit;
     delete this->ground;
     while (!this->helpers->empty()) {
-        delete this->helpers->front();
-        this->helpers->pop_front();
+        delete this->helpers->back();
+        this->helpers->pop_back();
     }
     delete this->helpers;
     while (!this->text->empty()) {
@@ -52,29 +53,37 @@ void LevelEditor::read(string fileName) {
   /*enemies->clear();
     ground->clear();
     pit->clear();*/
+  //cout << "deleting prev level..." << endl;
+  //cout << "deleting enemies..." << endl;
     while (!this->enemies->empty()) {
       delete this->enemies->back();
       this->enemies->pop_back();
     }
+    //cout << "deleting grounds" << endl;
     while (!this->ground->empty()) {
       delete this->ground->front();
       this->ground->pop_front();
     }
+    //cout << "deleting pits" << endl;
     while (!this->pit->empty()) {
       delete this->pit->front();
       this->pit->pop_front();
     }
+    //cout << "deleting helpers" << endl;
     while (!this->helpers->empty()) {
-        delete this->helpers->front();
-        this->helpers->pop_front();
+        delete this->helpers->back();
+        this->helpers->pop_back();
     }
+    //cout << "deleting texts" << endl;
     while (!this->text->empty()) {
       delete this->text->front();
       this->text->pop_front();
     }
+    //cout << "deleting door" << endl;
     if (this->door != NULL) {
       delete this->door;
     }
+    //cout << "prev lv deleted" << endl;
 
     ifstream inFile;
     inFile.open(fileName);
@@ -120,6 +129,7 @@ void LevelEditor::read(string fileName) {
             inFile >> min;
             inFile >> max;
             AutoMovable * tempg = new AutoMovable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, width, height, false, animate);
+	    //cout << "created ground" << endl;
             if (animate) {
                 tempg->setMoveBounds(min, max);
             }
@@ -169,7 +179,7 @@ void LevelEditor::read(string fileName) {
             //inFile >> spriteWidth;
             //inFile >> spriteHeight;
             inFile >> frames;
-            Movable* help = new Helper(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x * frames, y, true, animate);
+            Movable* help = new Movable(imageName, width, height, x, y, this->levelWidth, this->levelHeight, x * frames, y, true, animate);
             this->helpers->push_back(help);
             break;
         }
@@ -198,6 +208,6 @@ void LevelEditor::read(string fileName) {
         }
         }
     }
-
+    //cout << "lv read complete" << endl;
     inFile.close();
 }

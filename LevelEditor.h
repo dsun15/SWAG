@@ -20,7 +20,7 @@ public:
     std::list<AutoMovable *> * ground;
     std::vector<AutoMovable *> * enemies;
     std::list<AutoMovable *> * pit;
-    std::list<Movable *> * helpers;
+    std::vector<Movable *> * helpers;
     std::list<Movable *> * text;
     int playerInitX;
     int playerInitY;

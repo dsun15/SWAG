@@ -21,7 +21,7 @@
 
 using namespace std;
 string name = "SMP: 9000";
-const char* ScoreTitle = "SWAG SCORES";
+const char* ScoreTitle = "HIGH SCORES";
 
 SDL_Surface* scoresurfaces[5];
 SDL_Texture* scoretex[5];

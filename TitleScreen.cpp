@@ -17,7 +17,7 @@
 #include <iostream>
 #include <string>
 
-Mix_Chunk* titleMusic;
+//Mix_Chunk* titleMusic;
 Mix_Chunk* sfxConfirm;
 const char* effectName = "confirmClick.ogg";
 const char* titleImageFile = "title.png";
@@ -28,10 +28,12 @@ TitleScreen::TitleScreen(SDL_Renderer* renderer) {
     SDL_Surface* surf = IMG_Load(titleImageFile);
     titleImage = SDL_CreateTextureFromSurface(renderer, surf);
     SDL_FreeSurface(surf);
+    sfxConfirm = Mix_LoadWAV(effectName);
 }
 
 TitleScreen::~TitleScreen() {
     SDL_DestroyTexture(titleImage);
+    Mix_FreeChunk(sfxConfirm);
 }
 
 int TitleScreen::input(SDL_Event* event, int dt) {
