@@ -21,7 +21,7 @@
 
 const int width = 800;
 const int height = 600;
-const char* title = "S.W.A.G. Demo";
+const char* title = "Jibby Land";
 const double radToDeg = 180 / M_PI;
 
 SDL_Window* gWindow;
@@ -79,6 +79,7 @@ void cleanup() {
     SDL_DestroyWindow(gWindow);
     TTF_Quit();
     Mix_Quit();
+    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Quit();
 }
 
@@ -98,7 +99,8 @@ void run() {
     while (running) {
         if (g.levelnum == 3 && switchSong) {
             Mix_HaltChannel(-1);
-            gMusic = Mix_LoadWAV("secondSong.ogg");
+            Mix_FreeChunk(gMusic);
+	    gMusic = Mix_LoadWAV("secondSong.ogg");
             Mix_PlayChannel(-1, gMusic, -1);
             switchSong = false;
         }
@@ -144,6 +146,7 @@ void run() {
             //title
             activeScreen = &t;
             Mix_HaltChannel(-1);
+	    Mix_FreeChunk(gMusic);
             gMusic = Mix_LoadWAV("titleScreen.ogg");
             Mix_PlayChannel(-1, gMusic, -1);
             switchSong = true;
@@ -154,6 +157,7 @@ void run() {
         }
         if (screenswitch == 6) {
             Mix_HaltChannel(-1);
+	    Mix_FreeChunk(gMusic);
             gMusic = Mix_LoadWAV("titleScreen.ogg");
             Mix_PlayChannel(-1, gMusic, -1);
             switchSong = true;

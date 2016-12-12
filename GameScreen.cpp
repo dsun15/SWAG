@@ -127,7 +127,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
 
     door = level.door;
     //level.door.prepFree();
-    for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
+    for (vector<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
     //Audio Stuff
@@ -169,9 +169,13 @@ GameScreen::GameScreen(SDL_Renderer* render) {
         string temp = (*it)->getName();
         temp = temp.substr(0, temp.size() - 1);
         if ((*it)->getAnimate()) {
-            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white)));
+	    SDL_Surface * tempsurf = TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white);
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, tempsurf));
+	    SDL_FreeSurface(tempsurf);
         } else { 
-            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+  	    SDL_Surface * tempsurf = TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white);
+            textVector->push_back(SDL_CreateTextureFromSurface(renderer, tempsurf));
+	    SDL_FreeSurface(tempsurf);
         }
      }
 
@@ -191,6 +195,7 @@ GameScreen::~GameScreen() {
     SDL_DestroyTexture(spriteLives);
     SDL_FreeSurface(jibbyIcon);
     TTF_CloseFont(gamefont);
+    TTF_CloseFont(gamespeech);
     for (int i = 0; i <= MAX_LV; i++) {
         SDL_FreeSurface(bs[i]);
         SDL_DestroyTexture(background[i]);
@@ -434,7 +439,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(*it)) {
                 SDL_Rect* itrect = (*it)->getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .8 * playrect->h < itrect->y && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .5 * playrect->h < itrect->y+.5*itrect->h && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
@@ -569,7 +574,7 @@ void GameScreen::reset() {
     //delete enemies;
   
     level.read(levelfile);
-    cout << "reset" << endl;
+    //cout << "reset" << endl;
     if (lives > 0) {
         //Move player back to start
         SDL_Rect playerLoc = *playables[0]->getTrueRect();
@@ -580,7 +585,7 @@ void GameScreen::reset() {
 	playables[0]->setLowerBound(level.levelHeight);
 	playables[0]->setRightBound(level.levelWidth);
 	playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-	for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
+	for (vector<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
             playables.push_back(*it);
         }
         camera.move(level.playerInitX - camera.getTrueRect()->x, level.playerInitY - camera.getTrueRect()->y);
@@ -626,7 +631,7 @@ void GameScreen::hardReset() {
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
     //cout << "helpers" << endl;
-    for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
+    for (vector<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
     //cout << "setting" << endl;
@@ -651,16 +656,6 @@ void GameScreen::hardReset() {
     playerNum = 0;
     arrow->setRightBound(width);
     arrow->setLowerBound(height);
-    textVector = new vector<SDL_Texture*>;
-    for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
-        string temp = (*it)->getName();
-        temp = temp.substr(0, temp.size() - 1);
-        if ((*it)->getAnimate()) {
-            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white)));
-        } else { 
-            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
-        }
-     }
 }
 
 void GameScreen::advanceLevel() {
@@ -677,7 +672,7 @@ void GameScreen::advanceLevel() {
     playables[0]->setLowerBound(level.levelHeight);
     playables[0]->setRightBound(level.levelWidth);
     playables[0]->move(level.playerInitX - playerLoc.x, level.playerInitY - playerLoc.y);
-    for (list<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
+    for (vector<Movable*>::iterator it = level.helpers->begin(); it != level.helpers->end(); ++it) {
         playables.push_back(*it);
     }
     enemies = level.enemies;
@@ -697,17 +692,6 @@ void GameScreen::advanceLevel() {
     youWin = false;
     arrow->setRightBound(width);
     arrow->setLowerBound(height);
-    //initializing text
-    textVector = new vector<SDL_Texture*>;
-    for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
-        string temp = (*it)->getName();
-        temp = temp.substr(0, temp.size() - 1);
-        if ((*it)->getAnimate()) {
-            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white)));
-        } else { 
-            textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
-        }
-     }
 }
 
 void GameScreen::textPrep() {
@@ -720,6 +704,14 @@ void GameScreen::textPrep() {
   for (list<Movable*>::iterator it = text->begin(); it != text->end(); ++it) {
     string temp = (*it)->getName();
     temp = temp.substr(0, temp.size() - 1);
-    textVector->push_back(SDL_CreateTextureFromSurface(renderer, TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white)));
+    if ((*it)->getAnimate()) {                                                                                                                        
+      SDL_Surface * tempsurf = TTF_RenderUTF8_Blended(gamespeech, temp.c_str(), white);                                                                 
+      textVector->push_back(SDL_CreateTextureFromSurface(renderer, tempsurf));                       
+      SDL_FreeSurface(tempsurf);                                                                                                                        
+    } else {                                                                                                                                          
+      SDL_Surface * tempsurf = TTF_RenderUTF8_Blended(gamefont, temp.c_str(), white);                                                                   
+      textVector->push_back(SDL_CreateTextureFromSurface(renderer, tempsurf));                         
+      SDL_FreeSurface(tempsurf);                                                                                                                        
+    } 
   }
 }
