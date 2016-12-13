@@ -439,7 +439,7 @@ void GameScreen::draw(SDL_Renderer* renderer, int dt) {
             if (playables[z]->checkCollide(*it)) {
                 SDL_Rect* itrect = (*it)->getTrueRect();
                 anyCollide = true;
-                if (playrect->y + .5 * playrect->h < itrect->y+.5*itrect->h && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
+                if (playrect->y + .8 * playrect->h < itrect->y+.2*itrect->h && playrect->x + 0.9 * playrect->w > itrect->x && playrect->x + 0.1 * playrect->w < itrect->x + itrect->w) {
                     //above
                     playerOnGround = true;
                     //playables[z].move(0,-1);
