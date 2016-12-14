@@ -189,6 +189,7 @@ GameScreen::~GameScreen() {
     Mix_FreeMusic(music);
     Mix_FreeChunk(sfx);
     Mix_FreeChunk(sfxJump);
+    Mix_FreeChunk(sfxSwitch);
     SDL_DestroyTexture(wintext);
     SDL_DestroyTexture(losetext);
     SDL_DestroyTexture(continuetext);
