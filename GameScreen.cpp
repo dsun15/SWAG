@@ -34,6 +34,7 @@ bool youWin = false;
 bool play[] = { true, true, true, true, true };
 Mix_Chunk* sfx;
 Mix_Chunk* sfxJump;
+Mix_Chunk* sfxSwitch;
 int option;
 Mix_Music* music;
 const char* musicName = "levelOne.ogg";
@@ -141,6 +142,7 @@ GameScreen::GameScreen(SDL_Renderer* render) {
     }
     sfx = Mix_LoadWAV(effect);
     sfxJump = Mix_LoadWAV(jumpEffect);
+    sfxSwitch = Mix_LoadWAV("switch.ogg");
 
     gameOver = false;
     youWin = false;
@@ -282,11 +284,14 @@ int GameScreen::input(SDL_Event* event, int dt) {
 
 	    }
             if (event->key.keysym.sym == SDLK_w) {
-
+                if (playerNum != 0) {
+                    Mix_PlayChannel(-1, sfxSwitch, 0);
+                }
                 //only works if jibby is 0
                 playerNum = 0;
             }
             if (event->key.keysym.sym == SDLK_e) {
+                Mix_PlayChannel(-1, sfxSwitch, 0);
                 playables[playerNum]->setVelX(0);
                 if (playerNum + 1 >= (int)playables.size()) {
                     playerNum = 0;
@@ -298,6 +303,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
 	      lives = 9001;
 	    }
             if (event->key.keysym.sym == SDLK_q) {
+                Mix_PlayChannel(-1, sfxSwitch, 0);
 
                 playables[playerNum]->setVelX(0);
                 playerNum = GameScreen::findDistances();
@@ -326,7 +332,7 @@ int GameScreen::input(SDL_Event* event, int dt) {
                 option = 1;
             }
             if (event->key.keysym.sym == SDLK_SPACE || event->key.keysym.sym == SDLK_UP) {
-                Mix_PlayChannel(-1, sfxJump, 0);
+
                 option = 2;
 		bool nojump = false;
                 if (!playables[playerNum]->getAir() && !super_jump) {
@@ -348,7 +354,8 @@ int GameScreen::input(SDL_Event* event, int dt) {
 		      nojump = true;
 		  }
 		  if(!nojump)
-                    playables[playerNum]->accelerate(15, 0, -6);
+                 playables[playerNum]->accelerate(15, 0, -6);
+                Mix_PlayChannel(-1, sfxJump, 0);
 		  
 		}
             }
